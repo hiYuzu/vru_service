@@ -5,5 +5,7 @@ target/
 mvnw
 *.iml
 *.cmd
+.mvn
+lib/
 
 
