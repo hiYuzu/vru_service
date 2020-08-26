@@ -6,9 +6,7 @@ import com.tcb.vru_service.service.IRoleResourceService;
 import com.tcb.vru_service.service.IUserService;
 import com.tcb.vru_service.util.ShaUtil;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -28,7 +26,7 @@ public class LoginController {
     private TokenProcess tokenProcess;
 
     @Resource
-    private IUserService IUserService;
+    private IUserService userService;
 
     @Resource
     private IRoleResourceService roleResourceService;
@@ -41,17 +39,27 @@ public class LoginController {
      * @throws Exception
      */
     @PostMapping(value = "login")
-    public ResultVO login(@RequestParam(value = "userName") String userCode,
-                          @RequestParam(value = "password") String userPassword) throws Exception {
-        if (StringUtils.isEmpty(userCode) || StringUtils.isEmpty(userPassword)) {
-            return new ResultVO(false, "login param error !");
+    public ResultVO login(@RequestParam(value = "userCode") String userCode,
+                          @RequestParam(value = "userPassword") String userPassword,
+                          @RequestParam(value = "validCode") String validCode,
+                          HttpServletRequest request) throws Exception {
+        Object object = request.getSession(true).getAttribute("_validCode");
+        if (object == null) {
+            return new ResultVO(false, "login error !");
         }
-        boolean status = IUserService.login(userCode, ShaUtil.shaEncode(userPassword));
+        String yzm = object.toString().toLowerCase();
+        if (!yzm.equals(validCode.toLowerCase())) {
+            return new ResultVO(false, "验证信息错误，请刷新登陆页后尝试!");
+        }
+        if (StringUtils.isEmpty(userCode) || StringUtils.isEmpty(userPassword)) {
+            return new ResultVO(false, "用户名或密码不能为空!");
+        }
+        boolean status = userService.login(userCode, ShaUtil.shaEncode(userPassword));
         if (status) {
             String token = tokenProcess.generateToken(userCode);
             return new ResultVO(token);
         }
-        return new ResultVO(false, "login error !");
+        return new ResultVO(false, "登录失败!");
     }
 
     /**
@@ -77,4 +85,12 @@ public class LoginController {
     public ResultVO logout() {
         return new ResultVO("OK");
     }
+
+    @RequestMapping("/getValidCode")
+    public String getValidCode(HttpServletRequest request) {
+        String code = ShaUtil.shaEncode(String.valueOf(Math.random()));
+        request.getSession(true).setAttribute("_validCode", code);
+        return code;
+    }
+
 }

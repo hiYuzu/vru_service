@@ -45,24 +45,23 @@ public class ShaUtil {
 	 * @return 返回40位SHA码
 	 * @throws Exception
 	 */
-	public static String shaEncode(String inStr) throws Exception {
-		MessageDigest sha = null;
+	public static String shaEncode(String inStr){
+		StringBuffer hexValue = new StringBuffer();
 		try {
-			sha = MessageDigest.getInstance("SHA");
+			MessageDigest sha = MessageDigest.getInstance("SHA");
+			byte[] byteArray = inStr.getBytes("UTF-8");
+			byte[] md5Bytes = sha.digest(byteArray);
+			for (int i = 0; i < md5Bytes.length; i++) {
+				int val = ((int) md5Bytes[i]) & 0xff;
+				if (val < 16) {
+					hexValue.append("0");
+				}
+				hexValue.append(Integer.toHexString(val));
+			}
 		} catch (Exception e) {
 			logger.error(LOG + "：加密失败，信息为：" + e.getMessage());
 			e.printStackTrace();
 			return "";
-		}
-		byte[] byteArray = inStr.getBytes("UTF-8");
-		byte[] md5Bytes = sha.digest(byteArray);
-		StringBuffer hexValue = new StringBuffer();
-		for (int i = 0; i < md5Bytes.length; i++) {
-			int val = ((int) md5Bytes[i]) & 0xff;
-			if (val < 16) {
-				hexValue.append("0");
-			}
-			hexValue.append(Integer.toHexString(val));
 		}
 		return hexValue.toString();
 	}
