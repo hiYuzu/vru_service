@@ -6,15 +6,15 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
 @SpringBootApplication
-public class EpServiceApplication extends SpringBootServletInitializer {
+public class VruServiceApplication extends SpringBootServletInitializer {
 
     public static void main(String[] args) {
-        SpringApplication.run(EpServiceApplication.class, args);
+        SpringApplication.run(VruServiceApplication.class, args);
     }
 
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
-        return builder.sources(EpServiceApplication.class);
+        return builder.sources(VruServiceApplication.class);
     }
 
 }
