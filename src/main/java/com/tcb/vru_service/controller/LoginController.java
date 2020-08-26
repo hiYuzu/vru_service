@@ -38,7 +38,7 @@ public class LoginController {
      * @return
      * @throws Exception
      */
-    @PostMapping(value = "login")
+    @PostMapping(value = "/vruApi/login")
     public ResultVO login(@RequestParam(value = "userCode") String userCode,
                           @RequestParam(value = "userPassword") String userPassword,
                           @RequestParam(value = "validCode") String validCode,
@@ -67,7 +67,7 @@ public class LoginController {
      * @param request
      * @return
      */
-    @PostMapping(value = "getUserInfo")
+    @PostMapping(value = "/getUserInfo")
     public ResultVO<Map<String, List<String>>> getUserInfo(HttpServletRequest request) {
         Object subject = request.getAttribute("subject");
         if (subject == null || !(subject instanceof String)) {
@@ -86,7 +86,7 @@ public class LoginController {
         return new ResultVO("OK");
     }
 
-    @RequestMapping("/getValidCode")
+    @RequestMapping("/vruApi/getValidCode")
     public String getValidCode(HttpServletRequest request) {
         String code = ShaUtil.shaEncode(String.valueOf(Math.random()));
         request.getSession(true).setAttribute("_validCode", code);
