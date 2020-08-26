@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tcb.vru_service.dao.ManufacturerDao">
+
+    <resultMap id="baseManufacturerResultMap" type="com.tcb.vru_service.pojo.BaseManufacturerDO">
+        <id column="manufacturer_id" property="manufacturerId" jdbcType="INTEGER" />
+        <result column="manufacturer_code" property="manufacturerCode" jdbcType="VARCHAR"/>
+        <result column="manufacturer_name" property="manufacturerName" jdbcType="VARCHAR"/>
+        <result column="manufacturer_address" property="manufacturerAddress" jdbcType="VARCHAR"/>
+        <result column="manufacturer_remark" property="manufacturerRemark" jdbcType="VARCHAR"/>
+        <result column="operate_user" property="operateUser" jdbcType="INTEGER"/>
+        <result column="operate_time" property="operateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!-- 查询生产厂商个数 -->
+    <select id="countManufacturer" resultType="java.lang.Integer">
+        SELECT COUNT(1)
+        FROM base_manufacturer bm
+        <if test="manufacturerDO != null">
+            <where>
+                <if test="manufacturerDO.manufacturerId != null">
+                    bm.manufacturer_id = #{manufacturerDO.manufacturerId}
+                </if>
+                <if test="manufacturerDO.manufacturerName != null and manufacturerDO.manufacturerName != ''">
+                    AND bm.manufacturer_name LIKE CONCAT('%',CONCAT(#{manufacturerDO.manufacturerName},'%'))
+                </if>
+            </where>
+        </if>
+    </select>
+
+    <!-- 查询生产厂商数据 -->
+    <select id="listManufacturer" resultMap="baseManufacturerResultMap">
+        SELECT
+            manufacturer_id,
+            manufacturer_code,
+            manufacturer_name,
+            manufacturer_address,
+            manufacturer_remark,
+            operate_user,
+            operate_time
+        FROM base_manufacturer bm
+        <if test="manufacturerDO != null">
+            <where>
+                <if test="manufacturerDO.manufacturerId != null">
+                    bm.manufacturer_id = #{manufacturerDO.manufacturerId}
+                </if>
+                <if test="manufacturerDO.manufacturerName != null and manufacturerDO.manufacturerName != ''">
+                    AND bm.manufacturer_name LIKE CONCAT('%',CONCAT(#{manufacturerDO.manufacturerName},'%'))
+                </if>
+            </where>
+            <if test="manufacturerDO.rowIndex != null and manufacturerDO.rowCount != null">
+                LIMIT #{manufacturerDO.rowIndex},#{manufacturerDO.rowCount}
+            </if>
+        </if>
+    </select>
+
+    <!-- 插入生产厂商数据 -->
+    <insert id="insertManufacturer" parameterType="com.tcb.vru_service.pojo.BaseManufacturerDO">
+        INSERT INTO base_manufacturer(
+            manufacturer_code,
+            manufacturer_name,
+            manufacturer_address,
+            manufacturer_remark,
+            operate_user,
+            operate_time
+        )
+        VALUES(
+            #{manufacturerDO.manufacturerCode},
+            #{manufacturerDO.manufacturerName},
+            #{manufacturerDO.manufacturerAddress},
+            #{manufacturerDO.manufacturerRemark},
+            #{manufacturerDO.operateUser},
+            #{manufacturerDO.operateTime}
+        )
+    </insert>
+
+    <!-- 更新生产厂商数据 -->
+    <update id="updateManufacturer" parameterType="com.tcb.vru_service.pojo.BaseManufacturerDO">
+        UPDATE base_manufacturer
+        SET manufacturer_code = #{manufacturerDO.manufacturerCode},
+            manufacturer_name = #{manufacturerDO.manufacturerName},
+            manufacturer_address = #{manufacturerDO.manufacturerAddress},
+            manufacturer_remark = #{manufacturerDO.manufacturerRemark},
+            operate_user = #{manufacturerDO.operateUser},
+            operate_time = #{manufacturerDO.operateTime}
+        <where>
+            <choose>
+                <when test="manufacturerDO.manufacturerId != null">
+                    AND manufacturer_id = #{manufacturerDO.manufacturerId}
+                </when>
+                <otherwise>
+                    AND manufacturer_id IS NULL
+                </otherwise>
+            </choose>
+        </where>
+    </update>
+
+    <!-- 删除生产厂商数据 -->
+    <delete id="deleteListManufacturer" parameterType="java.util.List">
+        DELETE FROM base_manufacturer bm
+        WHERE bm.manufacturer_id IN
+        <foreach collection="listManufacturerId" item="item" open="(" separator="," close=")">
+            #{item,jdbcType = INTEGER}
+        </foreach>
+    </delete>
+
+</mapper>

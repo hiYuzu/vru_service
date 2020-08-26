@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tcb.vru_service.dao.AlarmSetDao">
+
+    <resultMap id="alarmSetResultMap" type="com.tcb.vru_service.pojo.AlarmSetDO">
+        <id column="alarm_set_id" property="alarmSetId" jdbcType="INTEGER" />
+        <result column="device_code" property="deviceCode" jdbcType="VARCHAR"/>
+        <result column="thing_code" property="thingCode" jdbcType="VARCHAR"/>
+        <result column="alarm_code" property="alarmCode" jdbcType="VARCHAR"/>
+        <result column="data_type" property="dataType" jdbcType="INTEGER"/>
+        <result column="min_value" property="minValue" jdbcType="DOUBLE"/>
+        <result column="max_value" property="maxValue" jdbcType="DOUBLE"/>
+        <result column="sms_flag" property="smsFlag" jdbcType="TINYINT"/>
+        <result column="enable_flag" property="enableFlag" jdbcType="TINYINT"/>
+        <result column="plan_id" property="planId" jdbcType="INTEGER"/>
+        <result column="begin_time" property="beginTime" jdbcType="TIMESTAMP"/>
+        <result column="end_time" property="endTime" jdbcType="TIMESTAMP"/>
+        <result column="level_no" property="levelNo" jdbcType="INTEGER"/>
+        <result column="data_flag" property="dataFlag" jdbcType="INTEGER"/>
+        <result column="operate_user" property="operateUser" jdbcType="INTEGER"/>
+        <result column="operate_time" property="operateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!-- 查询报警设置个数 -->
+    <select id="countAlarmSet" resultType="java.lang.Integer">
+        SELECT COUNT(1)
+        FROM alarm_set aset
+        <if test="alarmSetDO != null">
+            <where>
+                <if test="alarmSetDO.alarmSetId != null">
+                    aset.alarm_set_id = #{alarmSetDO.alarmSetId}
+                </if>
+                <if test="alarmSetDO.deviceCode != null and alarmSetDO.deviceCode != ''">
+                    AND aset.device_code = #{alarmSetDO.deviceCode}
+                </if>
+                <if test="alarmSetDO.thingCode != null and alarmSetDO.thingCode != ''">
+                    AND aset.thing_code = #{alarmSetDO.thingCode}
+                </if>
+                <if test="alarmSetDO.alarmCode != null and alarmSetDO.alarmCode != ''">
+                    AND aset.alarm_code = #{alarmSetDO.alarmCode}
+                </if>
+                <if test="alarmSetDO.dataType != null">
+                    AND aset.data_type = #{alarmSetDO.dataType}
+                </if>
+                <if test="alarmSetDO.beginTime != null">
+                    AND TIMESTAMPDIFF(SECOND,aset.begin_time,#{alarmSetDO.beginTime,jdbcType = TIMESTAMP}) >= 0
+                </if>
+                <if test="alarmSetDO.endTime != null">
+                    AND TIMESTAMPDIFF(SECOND,#{alarmSetDO.endTime,jdbcType = TIMESTAMP},aset.end_time) >= 0
+                </if>
+            </where>
+        </if>
+    </select>
+
+    <!-- 查询报警设置数据 -->
+    <select id="listAlarmSet" resultMap="alarmSetResultMap">
+        SELECT
+            alarm_set_id,
+            device_code,
+            thing_code,
+            alarm_code,
+            data_type,
+            min_value,
+            max_value,
+            sms_flag,
+            enable_flag,
+            plan_id,
+            begin_time,
+            end_time,
+            level_no,
+            data_flag,
+            operate_user,
+            operate_time
+        FROM alarm_set aset
+        <if test="alarmSetDO != null">
+            <where>
+                <if test="alarmSetDO.alarmSetId != null">
+                    aset.alarm_set_id = #{alarmSetDO.alarmSetId}
+                </if>
+                <if test="alarmSetDO.deviceCode != null and alarmSetDO.deviceCode != ''">
+                    AND aset.device_code = #{alarmSetDO.deviceCode}
+                </if>
+                <if test="alarmSetDO.thingCode != null and alarmSetDO.thingCode != ''">
+                    AND aset.thing_code = #{alarmSetDO.thingCode}
+                </if>
+                <if test="alarmSetDO.alarmCode != null and alarmSetDO.alarmCode != ''">
+                    AND aset.alarm_code = #{alarmSetDO.alarmCode}
+                </if>
+                <if test="alarmSetDO.dataType != null">
+                    AND aset.data_type = #{alarmSetDO.dataType}
+                </if>
+                <if test="alarmSetDO.beginTime != null">
+                    AND TIMESTAMPDIFF(SECOND,aset.begin_time,#{alarmSetDO.beginTime,jdbcType = TIMESTAMP}) >= 0
+                </if>
+                <if test="alarmSetDO.endTime != null">
+                    AND TIMESTAMPDIFF(SECOND,#{alarmSetDO.endTime,jdbcType = TIMESTAMP},aset.end_time) >= 0
+                </if>
+            </where>
+            <if test="alarmSetDO.rowIndex != null and alarmSetDO.rowCount != null">
+                LIMIT #{alarmSetDO.rowIndex},#{alarmSetDO.rowCount}
+            </if>
+        </if>
+    </select>
+
+    <!-- 插入报警设置数据 -->
+    <insert id="insertAlarmSet" parameterType="com.tcb.vru_service.pojo.AlarmSetDO">
+        INSERT INTO alarm_set(
+            device_code,
+            thing_code,
+            alarm_code,
+            data_type,
+            min_value,
+            max_value,
+            sms_flag,
+            enable_flag,
+            plan_id,
+            begin_time,
+            end_time,
+            level_no,
+            data_flag,
+            operate_user,
+            operate_time
+        )
+        VALUES(
+            #{alarmSetDO.deviceCode},
+            #{alarmSetDO.thingCode},
+            #{alarmSetDO.alarmCode},
+            #{alarmSetDO.dataType},
+            #{alarmSetDO.minValue},
+            #{alarmSetDO.maxValue},
+            #{alarmSetDO.smsFlag},
+            #{alarmSetDO.enableFlag},
+            #{alarmSetDO.planId},
+            #{alarmSetDO.beginTime},
+            #{alarmSetDO.endTime},
+            #{alarmSetDO.levelNo},
+            #{alarmSetDO.dataFlag},
+            #{alarmSetDO.operateUser},
+            #{alarmSetDO.operateTime}
+        )
+    </insert>
+
+    <!-- 更新报警设置数据 -->
+    <update id="updateAlarmSet" parameterType="com.tcb.vru_service.pojo.AlarmSetDO">
+        UPDATE alarm_set
+        SET device_code = #{alarmSetDO.deviceCode},
+            thing_code = #{alarmSetDO.thingCode},
+            alarm_code = #{alarmSetDO.alarmCode},
+            data_type = #{alarmSetDO.dataType},
+            min_value = #{alarmSetDO.minValue},
+            max_value = #{alarmSetDO.maxValue},
+            sms_flag = #{alarmSetDO.smsFlag},
+            enable_flag = #{alarmSetDO.enableFlag},
+            plan_id = #{alarmSetDO.planId},
+            begin_time = #{alarmSetDO.beginTime},
+            end_time = #{alarmSetDO.endTime},
+            level_no = #{alarmSetDO.levelNo},
+            data_flag = #{alarmSetDO.dataFlag},
+            operate_user = #{alarmSetDO.operateUser},
+            operate_time = #{alarmSetDO.operateTime}
+        <where>
+            <choose>
+                <when test="alarmSetDO.alarmSetId != null">
+                    AND alarm_set_id = #{alarmSetDO.alarmSetId}
+                </when>
+                <otherwise>
+                    AND alarm_set_id IS NULL
+                </otherwise>
+            </choose>
+        </where>
+    </update>
+
+    <!-- 删除报警设置数据 -->
+    <delete id="deleteListAlarmSet" parameterType="java.util.List">
+        DELETE FROM alarm_set aset
+        WHERE aset.alarm_set_id IN
+        <foreach collection="listAlarmSetId" item="item" open="(" separator="," close=")">
+            #{item,jdbcType = INTEGER}
+        </foreach>
+    </delete>
+
+</mapper>

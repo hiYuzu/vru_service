@@ -1,3 +1,9 @@
 .idea/
 .svn/
 target/
+*.md
+mvnw
+*.iml
+*.cmd
+
+

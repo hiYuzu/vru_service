@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tcb.vru_service.dao.AreaDao">
+
+    <resultMap id="baseAreaResultMap" type="com.tcb.vru_service.pojo.BaseAreaDO">
+        <id column="area_id" property="areaId" jdbcType="INTEGER" />
+        <result column="area_name" property="areaName" jdbcType="VARCHAR"/>
+        <result column="parent_area_id" property="parentAreaId" jdbcType="INTEGER"/>
+        <result column="area_path" property="areaPath" jdbcType="VARCHAR"/>
+        <result column="city_id" property="cityId" jdbcType="VARCHAR"/>
+        <result column="operate_user" property="operateUser" jdbcType="INTEGER"/>
+        <result column="operate_time" property="operateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!-- 查询区域个数 -->
+    <select id="countArea" resultType="java.lang.Integer">
+        SELECT COUNT(1)
+        FROM base_area ba
+        <if test="areaDO != null">
+            <where>
+                <if test="areaDO.areaId != null">
+                    ba.area_id = #{areaDO.areaId}
+                </if>
+                <if test="areaDO.areaName != null and areaDO.areaName != ''">
+                    AND ba.area_name LIKE CONCAT('%',CONCAT(#{areaDO.areaName},'%'))
+                </if>
+                <if test="areaDO.parentAreaId != null">
+                    AND ba.parent_area_id = #{areaDO.parentAreaId}
+                </if>
+            </where>
+        </if>
+    </select>
+
+    <!-- 查询区域数据 -->
+    <select id="listArea" resultMap="baseAreaResultMap">
+        SELECT
+            area_id,
+            area_name,
+            parent_area_id,
+            area_path,
+            city_id,
+            operate_user,
+            operate_time
+        FROM base_area ba
+        <if test="areaDO != null">
+            <where>
+                <if test="areaDO.areaId != null">
+                    ba.area_id = #{areaDO.areaId}
+                </if>
+                <if test="areaDO.areaName != null and areaDO.areaName != ''">
+                    AND ba.area_name LIKE CONCAT('%',CONCAT(#{areaDO.areaName},'%'))
+                </if>
+                <if test="areaDO.parentAreaId != null">
+                    AND ba.parent_area_id = #{areaDO.parentAreaId}
+                </if>
+            </where>
+            <if test="areaDO.rowIndex != null and areaDO.rowCount != null">
+                LIMIT #{areaDO.rowIndex},#{areaDO.rowCount}
+            </if>
+        </if>
+    </select>
+
+    <!-- 插入区域数据 -->
+    <insert id="insertArea" parameterType="com.tcb.vru_service.pojo.BaseAreaDO">
+        INSERT INTO base_area(
+            area_name,
+            parent_area_id,
+            area_path,
+            city_id,
+            operate_user,
+            operate_time
+        )
+        VALUES(
+            #{areaDO.areaName},
+            #{areaDO.parentAreaId},
+            #{areaDO.areaPath},
+            #{areaDO.cityId},
+            #{areaDO.operateUser},
+            #{areaDO.operateTime}
+        )
+    </insert>
+
+    <!-- 更新区域数据 -->
+    <update id="updateArea" parameterType="com.tcb.vru_service.pojo.BaseAreaDO">
+        UPDATE base_area
+        SET area_name = #{areaDO.areaName},
+            parent_area_id = #{areaDO.parentAreaId},
+            area_path = #{areaDO.areaPath},
+            city_id = #{areaDO.cityId},
+            operate_user = #{areaDO.operateUser},
+            operate_time = #{areaDO.operateTime}
+        <where>
+            <choose>
+                <when test="areaDO.areaId != null">
+                    AND area_id = #{areaDO.areaId}
+                </when>
+                <otherwise>
+                    AND area_id IS NULL
+                </otherwise>
+            </choose>
+        </where>
+    </update>
+
+    <!-- 删除区域数据 -->
+    <delete id="deleteListArea" parameterType="java.util.List">
+        DELETE FROM base_area ba
+        WHERE ba.area_id IN
+        <foreach collection="listAreaId" item="item" open="(" separator="," close=")">
+            #{item,jdbcType = INTEGER}
+        </foreach>
+    </delete>
+
+
+</mapper>

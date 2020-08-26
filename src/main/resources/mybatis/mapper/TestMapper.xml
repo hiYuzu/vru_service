@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tcb.vru_service.dao.TestDao">
+
+    <sql id="Base_Column_List">
+        device_id AS deviceId,device_code AS deviceCode,device_mn AS deviceMn
+    </sql>
+
+    <select id="getTestData" resultType="java.util.Map">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        base_device
+    </select>
+
+    <select id="getDeviceData" resultType="java.util.Map">
+        SELECT device_id,device_code,device_mn
+        FROM base_device
+    </select>
+
+    <select id="getAlarmData" resultType="java.util.Map">
+        SELECT alarm_id AS alarmId,alarm_code AS alarmCode,device_code AS deviceCode,alarm_info AS alarmInfo,alarm_time as alarmTime
+        FROM data_alarm
+        WHERE alarm_time BETWEEN #{beginTime} AND #{endTime}
+    </select>
+
+    <select id="getData" resultType="java.util.Map">
+        SELECT data_id AS dataId,
+        device_id AS deviceId,
+        thing_code AS thingCode,
+        thing_avg AS thingAvg,
+        begin_time as beginTime,
+        end_time AS endTime,
+        update_time AS updateTime
+        FROM data_storage ds
+        WHERE
+        ds.device_id IN
+        <foreach collection="idList" item="item" open="(" separator="," close=")">
+            #{item,jdbcType = INTEGER}
+        </foreach>
+        AND begin_time BETWEEN #{beginTime} AND #{endTime}
+    </select>
+
+
+</mapper>

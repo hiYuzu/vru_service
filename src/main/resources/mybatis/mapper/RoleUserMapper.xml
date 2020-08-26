@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tcb.vru_service.dao.RoleUserDao">
+
+    <select id="selectRoleCodeByUserCode" resultType="java.lang.String">
+        SELECT DISTINCT sru.role_code
+          FROM system_role_user sru
+         WHERE sru.user_code = #{userCode}
+    </select>
+
+</mapper>

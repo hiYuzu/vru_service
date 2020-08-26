@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tcb.vru_service.dao.UserDao">
+
+    <resultMap id="systemUserResultMap" type="com.tcb.vru_service.pojo.SystemUserDO">
+        <id column="user_id" property="userId" jdbcType="INTEGER"/>
+        <result column="user_code" property="userCode" jdbcType="VARCHAR"/>
+        <result column="user_name" property="userName" jdbcType="VARCHAR"/>
+        <result column="user_password" property="userPassword" jdbcType="VARCHAR"/>
+        <result column="user_phone" property="userPhone" jdbcType="VARCHAR"/>
+        <result column="user_email" property="userEmail" jdbcType="VARCHAR"/>
+        <result column="organization_id" property="organizationId" jdbcType="INTEGER"/>
+        <result column="user_stop" property="userStop" jdbcType="TINYINT"/>
+        <result column="login_time" property="loginTime" jdbcType="TIMESTAMP"/>
+        <result column="operate_user" property="operateUser" jdbcType="INTEGER"/>
+        <result column="operate_time" property="operateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!-- 查询用户个数 -->
+    <select id="countUser" resultType="java.lang.Integer">
+        SELECT COUNT(1)
+        FROM `system_user` su
+        <if test="userDO != null">
+            <where>
+                <if test="userDO.userId != null">
+                    su.user_id = #{userDO.userId}
+                </if>
+                <if test="userDO.userCode != null and userDO.userCode != ''">
+                    AND su.user_code = #{userDO.userCode}
+                </if>
+                <if test="userDO.userPassword != null and userDO.userPassword != ''">
+                    AND su.user_password = #{userDO.userPassword}
+                </if>
+                <if test="userDO.userStop != null">
+                    AND su.user_stop = #{userDO.userStop}
+                </if>
+                <if test="userDO.userName != null and userDO.userName != ''">
+                    AND su.user_name LIKE CONCAT('%',CONCAT(#{userDO.userName},'%'))
+                </if>
+            </where>
+        </if>
+    </select>
+
+    <!-- 查询用户数据 -->
+    <select id="listUser" resultMap="systemUserResultMap">
+        SELECT
+        user_id,
+        user_code,
+        user_name,
+        user_password,
+        user_phone,
+        user_email,
+        organization_id,
+        user_stop,
+        login_time,
+        operate_user,
+        operate_time
+        FROM `system_user` su
+        <if test="userDO != null">
+            <where>
+                <if test="userDO.userId != null">
+                    su.user_id = #{userDO.userId}
+                </if>
+                <if test="userDO.userCode != null and userDO.userCode != ''">
+                    AND su.user_code = #{userDO.userCode}
+                </if>
+                <if test="userDO.userPassword != null and userDO.userPassword != ''">
+                    AND su.user_password = #{userDO.userPassword}
+                </if>
+                <if test="userDO.userStop != null">
+                    AND su.user_stop = #{userDO.userStop}
+                </if>
+                <if test="userDO.userName != null and userDO.userName != ''">
+                    AND su.user_name LIKE CONCAT('%',CONCAT(#{userDO.userName},'%'))
+                </if>
+            </where>
+            <if test="userDO.rowIndex != null and userDO.rowCount != null">
+                LIMIT #{userDO.rowIndex},#{userDO.rowCount}
+            </if>
+        </if>
+    </select>
+
+    <!-- 插入用户数据 -->
+    <insert id="insertUser" parameterType="com.tcb.vru_service.pojo.SystemUserDO">
+        INSERT INTO `system_user`(
+            user_code,
+            user_name,
+            user_password,
+            user_phone,
+            user_email,
+            organization_id,
+            user_stop,
+            login_time,
+            operate_user,
+            operate_time
+        )
+        VALUES(
+            #{userDO.userCode},
+            #{userDO.userName},
+            #{userDO.userPassword},
+            #{userDO.userPhone},
+            #{userDO.userEmail},
+            #{userDO.organizationId},
+            #{userDO.userStop},
+            #{userDO.loginTime},
+            #{userDO.operateUser},
+            #{userDO.operateTime}
+        )
+    </insert>
+
+    <!-- 更新用户数据 -->
+    <update id="updateUser" parameterType="com.tcb.vru_service.pojo.SystemUserDO">
+        UPDATE `system_user`
+        SET user_code = #{userDO.userCode},
+        user_name = #{userDO.userName},
+        user_password = #{userDO.userPassword},
+        user_phone = #{userDO.userPhone},
+        user_email = #{userDO.userEmail},
+        organization_id = #{userDO.organizationId},
+        user_stop = #{userDO.userStop},
+        login_time = #{userDO.loginTime},
+        operate_user = #{userDO.operateUser},
+        operate_time = #{userDO.operateTime}
+        <where>
+            <choose>
+                <when test="userDO.userId != null">
+                    AND user_id = #{userDO.userId}
+                </when>
+                <otherwise>
+                    AND user_id IS NULL
+                </otherwise>
+            </choose>
+        </where>
+    </update>
+
+    <!-- 删除用户数据 -->
+    <delete id="deleteListUser" parameterType="java.util.List">
+        DELETE FROM `system_user` su
+        WHERE su.user_id IN
+        <foreach collection="listUserId" item="item" open="(" separator="," close=")">
+            #{item,jdbcType = INTEGER}
+        </foreach>
+    </delete>
+
+    <!-- 查询账号和密码是否存在 -->
+    <select id="selectByNameAndPassword" resultType="java.lang.Integer">
+        SELECT count(su.user_id)
+        FROM `system_user` su
+        WHERE su.user_code=#{userCode}
+          AND su.user_password=#{userPassword}
+    </select>
+
+</mapper>

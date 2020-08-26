@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tcb.vru_service.dao.ResourceDao">
+
+    <resultMap id="systemResourceResultMap" type="com.tcb.vru_service.pojo.SystemResourceDO">
+        <id column="resource_id" property="resourceId" jdbcType="INTEGER"/>
+        <result column="resource_code" property="resourceCode" jdbcType="VARCHAR"/>
+        <result column="resource_name" property="resourceName" jdbcType="VARCHAR"/>
+        <result column="resource_title" property="resourceTitle" jdbcType="VARCHAR"/>
+        <result column="resource_parent_id" property="resourceParentId" jdbcType="INTEGER"/>
+        <result column="resource_type" property="resourceType" jdbcType="TINYINT"/>
+        <result column="resource_prop" property="resourceProp" jdbcType="VARCHAR"/>
+        <result column="resource_sort" property="resourceSort" jdbcType="INTEGER"/>
+        <result column="operate_user" property="operateUser" jdbcType="INTEGER"/>
+        <result column="operate_time" property="operateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+</mapper>

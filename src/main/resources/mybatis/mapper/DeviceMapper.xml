@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tcb.vru_service.dao.DeviceDao">
+
+    <resultMap id="baseDeviceResultMap" type="com.tcb.vru_service.pojo.BaseDeviceDO">
+        <id column="device_id" property="deviceId" jdbcType="INTEGER" />
+        <result column="device_code" property="deviceCode" jdbcType="VARCHAR"/>
+        <result column="device_mn" property="deviceMn" jdbcType="VARCHAR"/>
+        <result column="device_name" property="deviceName" jdbcType="VARCHAR"/>
+        <result column="field_id" property="fieldId" jdbcType="INTEGER"/>
+        <result column="manufacturer_id" property="manufacturerId" jdbcType="INTEGER"/>
+        <result column="institution_id" property="institutionId" jdbcType="INTEGER"/>
+        <result column="device_status" property="deviceStatus" jdbcType="VARCHAR"/>
+        <result column="device_ip" property="deviceIp" jdbcType="VARCHAR"/>
+        <result column="device_port" property="devicePort" jdbcType="INTEGER"/>
+        <result column="device_pwd" property="devicePwd" jdbcType="VARCHAR"/>
+        <result column="map_x" property="mapX" jdbcType="DOUBLE"/>
+        <result column="map_y" property="mapY" jdbcType="DOUBLE"/>
+        <result column="gps_x" property="gpsX" jdbcType="DOUBLE"/>
+        <result column="gps_y" property="gpsY" jdbcType="DOUBLE"/>
+        <result column="supervise_organization" property="superviseOrganization" jdbcType="INTEGER"/>
+        <result column="build_unit" property="buildUnit" jdbcType="VARCHAR"/>
+        <result column="device_manager" property="deviceManager" jdbcType="INTEGER"/>
+        <result column="device_address" property="deviceAddress" jdbcType="VARCHAR"/>
+        <result column="monitor_area" property="monitorArea" jdbcType="VARCHAR"/>
+        <result column="make_minute" property="makeMinute" jdbcType="TINYINT"/>
+        <result column="make_hour" property="makeHour" jdbcType="TINYINT"/>
+        <result column="make_day" property="makeDay" jdbcType="TINYINT"/>
+        <result column="reply_flag" property="replyFlag" jdbcType="VARCHAR"/>
+        <result column="reply_force" property="replyForce" jdbcType="TINYINT"/>
+        <result column="make_flow" property="makeFlow" jdbcType="TINYINT"/>
+        <result column="pipe_area" property="pipeArea" jdbcType="DOUBLE"/>
+        <result column="hour_count" property="hourCount" jdbcType="INTEGER"/>
+        <result column="gas_path" property="gasPath" jdbcType="VARCHAR"/>
+        <result column="switch_time" property="switchTime" jdbcType="TIMESTAMP"/>
+        <result column="system_version" property="systemVersion" jdbcType="VARCHAR"/>
+        <result column="operate_user" property="operateUser" jdbcType="INTEGER"/>
+        <result column="operate_time" property="operateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!-- 查询监测设备个数 -->
+    <select id="countDevice" resultType="java.lang.Integer">
+        SELECT COUNT(1)
+        FROM base_device bd
+        <if test="deviceDO != null">
+            <where>
+                <if test="deviceDO.deviceCode != null and deviceDO.deviceCode != ''">
+                    bd.device_code = #{deviceDO.deviceCode}
+                </if>
+                <if test="deviceDO.deviceMn != null and deviceDO.deviceMn != ''">
+                    AND bd.device_mn = #{deviceDO.deviceMn}
+                </if>
+                <if test="deviceDO.deviceName != null and deviceDO.deviceName != ''">
+                    AND bd.device_name LIKE CONCAT('%',CONCAT(#{deviceDO.deviceName},'%'))
+                </if>
+                <if test="deviceDO.fieldId != null">
+                    AND bd.field_id = #{deviceDO.fieldId}
+                </if>
+                <if test="deviceDO.institutionId != null">
+                    AND bd.institution_id = #{deviceDO.institutionId}
+                </if>
+            </where>
+        </if>
+    </select>
+
+    <!-- 查询监测因子数据 -->
+    <select id="listFiled" resultMap="baseDeviceResultMap">
+        SELECT
+            device_id,
+            device_code,
+            device_mn,
+            device_name,
+            field_id,
+            manufacturer_id,
+            institution_id,
+            device_status,
+            device_ip,
+            device_port,
+            device_pwd,
+            map_x,
+            map_y,
+            gps_x,
+            gps_y,
+            supervise_organization,
+            build_unit,
+            device_manager,
+            device_address,
+            monitor_area,
+            make_minute,
+            make_hour,
+            make_day,
+            reply_flag,
+            reply_force,
+            make_flow,
+            pipe_area,
+            hour_count,
+            gas_path,
+            switch_time,
+            system_version,
+            operate_user,
+            operate_time
+        FROM base_device bd
+        <if test="deviceDO != null">
+            <where>
+                <if test="deviceDO.deviceCode != null and deviceDO.deviceCode != ''">
+                    bd.device_code = #{deviceDO.deviceCode}
+                </if>
+                <if test="deviceDO.deviceMn != null and deviceDO.deviceMn != ''">
+                    AND bd.device_mn = #{deviceDO.deviceMn}
+                </if>
+                <if test="deviceDO.deviceName != null and deviceDO.deviceName != ''">
+                    AND bd.device_name LIKE CONCAT('%',CONCAT(#{deviceDO.deviceName},'%'))
+                </if>
+                <if test="deviceDO.fieldId != null">
+                    AND bd.field_id = #{deviceDO.fieldId}
+                </if>
+                <if test="deviceDO.institutionId != null">
+                    AND bd.institution_id = #{deviceDO.institutionId}
+                </if>
+            </where>
+            <if test="deviceDO.rowIndex != null and deviceDO.rowCount != null">
+                LIMIT #{deviceDO.rowIndex},#{deviceDO.rowCount}
+            </if>
+        </if>
+    </select>
+
+    <!-- 插入监测设备数据 -->
+    <insert id="insertDevice" parameterType="com.tcb.vru_service.pojo.BaseDeviceDO">
+        INSERT INTO base_device(
+            device_id,
+            device_code,
+            device_mn,
+            device_name,
+            field_id,
+            manufacturer_id,
+            institution_id,
+            device_status,
+            device_ip,
+            device_port,
+            device_pwd,
+            map_x,
+            map_y,
+            supervise_organization,
+            build_unit,
+            device_manager,
+            device_address,
+            monitor_area,
+            make_minute,
+            make_hour,
+            make_day,
+            reply_flag,
+            reply_force,
+            make_flow,
+            pipe_area,
+            hour_count,
+            system_version,
+            operate_user,
+            operate_time
+        )
+        VALUES(
+            #{deviceDO.deviceId},
+            #{deviceDO.deviceCode},
+            #{deviceDO.deviceMn},
+            #{deviceDO.deviceName},
+            #{deviceDO.fieldId},
+            #{deviceDO.manufacturerId},
+            #{deviceDO.institutionId},
+            #{deviceDO.deviceStatus},
+            #{deviceDO.deviceIp},
+            #{deviceDO.devicePort},
+            #{deviceDO.devicePwd},
+            #{deviceDO.mapX},
+            #{deviceDO.mapY},
+            #{deviceDO.superviseOrganization},
+            #{deviceDO.buildUnit},
+            #{deviceDO.deviceManager},
+            #{deviceDO.deviceAddress},
+            #{deviceDO.monitorArea},
+            #{deviceDO.makeMinute},
+            #{deviceDO.makeHour},
+            #{deviceDO.makeDay},
+            #{deviceDO.replyFlag},
+            #{deviceDO.replyForce},
+            #{deviceDO.makeFlow},
+            #{deviceDO.pipeArea},
+            #{deviceDO.hourCount},
+            #{deviceDO.systemVersion},
+            #{deviceDO.operateUser},
+            #{deviceDO.operateTime}
+        )
+    </insert>
+
+    <!-- 更新监测设备数据 -->
+    <update id="updateDevice" parameterType="com.tcb.vru_service.pojo.BaseDeviceDO">
+        UPDATE base_device
+        SET device_code = #{deviceDO.deviceCode},
+            device_mn = #{deviceDO.deviceMn},
+            device_name = #{deviceDO.deviceName},
+            field_id = #{deviceDO.fieldId},
+            manufacturer_id = #{deviceDO.manufacturerId},
+            institution_id = #{deviceDO.institutionId},
+            device_status = #{deviceDO.deviceStatus},
+            device_ip = #{deviceDO.deviceIp},
+            device_port = #{deviceDO.devicePort},
+            device_pwd = #{deviceDO.devicePwd},
+            map_x = #{deviceDO.mapX},
+            map_y = #{deviceDO.mapY},
+            supervise_organization = #{deviceDO.superviseOrganization},
+            build_unit = #{deviceDO.buildUnit},
+            device_manager = #{deviceDO.deviceManager},
+            device_address = #{deviceDO.deviceAddress},
+            monitor_area = #{deviceDO.monitorArea},
+            make_minute = #{deviceDO.makeMinute},
+            make_hour = #{deviceDO.makeHour},
+            make_day = #{deviceDO.makeDay},
+            reply_flag = #{deviceDO.replyFlag},
+            reply_force = #{deviceDO.replyForce},
+            make_flow = #{deviceDO.makeFlow},
+            pipe_area = #{deviceDO.pipeArea},
+            hour_count = #{deviceDO.hourCount},
+            system_version = #{deviceDO.systemVersion},
+            operate_user = #{deviceDO.operateUser},
+            operate_time = #{deviceDO.operateTime}
+        <where>
+            <choose>
+                <when test="deviceDO.deviceId != null">
+                    AND device_id = #{deviceDO.deviceId}
+                </when>
+                <otherwise>
+                    AND device_id IS NULL
+                </otherwise>
+            </choose>
+        </where>
+    </update>
+
+    <!-- 删除监测设备数据 -->
+    <delete id="deleteListDevice" parameterType="java.util.List">
+        DELETE FROM base_device bd
+        WHERE bd.device_id IN
+        <foreach collection="listDeviceId" item="item" open="(" separator="," close=")">
+            #{item,jdbcType = INTEGER}
+        </foreach>
+    </delete>
+
+
+</mapper>

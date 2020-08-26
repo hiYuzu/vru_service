@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tcb.vru_service.dao.StorageDao">
+
+    <resultMap id="dataStorageResultMap" type="com.tcb.vru_service.pojo.DataStorageDO">
+        <id column="data_id" property="dataId" jdbcType="INTEGER" />
+        <result column="device_id" property="deviceId" jdbcType="INTEGER"/>
+        <result column="thing_code" property="thingCode" jdbcType="VARCHAR"/>
+        <result column="thing_avg" property="thingAvg" jdbcType="DOUBLE"/>
+        <result column="thing_max" property="thingMax" jdbcType="DOUBLE"/>
+        <result column="thing_min" property="thingMin" jdbcType="DOUBLE"/>
+        <result column="thing_zsavg" property="thingZsAvg" jdbcType="DOUBLE"/>
+        <result column="thing_zsmax" property="thingZsMax" jdbcType="DOUBLE"/>
+        <result column="thing_zsmin" property="thingZsMin" jdbcType="DOUBLE"/>
+        <result column="thing_cou" property="thingCou" jdbcType="DOUBLE"/>
+        <result column="thing_zscou" property="thingZsCou" jdbcType="DOUBLE"/>
+        <result column="thing_flag" property="thingFlag" jdbcType="VARCHAR"/>
+        <result column="data_type" property="dataType" jdbcType="INTEGER"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="begin_time" property="beginTime" jdbcType="TIMESTAMP"/>
+        <result column="begin_time" property="endTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!-- 查询数据个数 -->
+    <select id="countStorage" resultType="java.lang.Integer">
+        SELECT COUNT(1)
+        FROM data_storage ds
+        WHERE ds.device_id IN
+        <foreach collection="listDataId" item="item" open="(" separator="," close=")">
+            #{item,jdbcType = INTEGER}
+        </foreach>
+        <if test="listThingCode.size()>0">
+            AND ds.thing_code IN
+            <foreach collection="listThingCode" item="item" open="(" separator="," close=")">
+                #{item,jdbcType = INTEGER}
+            </foreach>
+        </if>
+        <if test="dataType != null">
+            AND ds.data_type = #{dataType}
+        </if>
+        <if test="listThingFlag.size()>0">
+            AND ds.thing_flag IN
+            <foreach collection="listThingFlag" item="item" open="(" separator="," close=")">
+                #{item,jdbcType = INTEGER}
+            </foreach>
+        </if>
+        AND begin_time BETWEEN #{beginTime} AND #{endTime}
+    </select>
+
+    <!-- 查询数据 -->
+    <select id="listStorage" resultMap="dataStorageResultMap">
+        SELECT
+            data_id,
+            device_id,
+            thing_code,
+            thing_avg,
+            thing_max,
+            thing_min,
+            thing_zsavg,
+            thing_zsmax,
+            thing_zsmin,
+            thing_cou,
+            thing_zscou,
+            thing_flag,
+            data_type,
+            update_time,
+            begin_time,
+            end_time
+        FROM data_storage ds
+        WHERE ds.device_id IN
+        <foreach collection="listDataId" item="item" open="(" separator="," close=")">
+            #{item,jdbcType = INTEGER}
+        </foreach>
+        <if test="listThingCode.size()>0">
+            AND ds.thing_code IN
+            <foreach collection="listThingCode" item="item" open="(" separator="," close=")">
+                #{item,jdbcType = INTEGER}
+            </foreach>
+        </if>
+        <if test="dataType != null">
+            AND ds.data_type = #{dataType}
+        </if>
+        <if test="listThingFlag.size()>0">
+            AND ds.thing_flag IN
+            <foreach collection="listThingFlag" item="item" open="(" separator="," close=")">
+                #{item,jdbcType = INTEGER}
+            </foreach>
+        </if>
+        AND begin_time BETWEEN #{beginTime} AND #{endTime}
+        <if test="rowIndex != null and rowCount != null">
+            LIMIT #{rowIndex},#{rowCount}
+        </if>
+    </select>
+
+    <!-- 更新数据 -->
+    <update id="updateStorage">
+        UPDATE data_storage
+        SET thing_avg = #{thingValue}
+        WHERE data_id = #{dataId}
+        AND data_type = #{dataType}
+        AND begin_time = #{beginTime}
+    </update>
+
+
+</mapper>

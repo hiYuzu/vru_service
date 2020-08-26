@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tcb.vru_service.dao.RoleResourceDao">
+
+    <resultMap id="systemRoleResourceResultMap" type="com.tcb.vru_service.pojo.SystemRoleResourceDO">
+        <id column="role_resource_id" property="roleResourceId" jdbcType="INTEGER"></id>
+        <result column="operate_user" property="operateUser" jdbcType="INTEGER"/>
+        <result column="operate_time" property="operateTime" jdbcType="TIMESTAMP"/>
+        <association property="role" column="role_code" javaType="com.tcb.vru_service.pojo.SystemRoleDO"
+            resultMap="com.tcb.vru_service.dao.RoleDao.systemRoleResultMap">
+        </association>
+        <association property="resource" column="resource_code" javaType="com.tcb.vru_service.pojo.SystemResourceDO"
+            resultMap="com.tcb.vru_service.dao.ResourceDao.systemResourceResultMap">
+        </association>
+    </resultMap>
+
+    <!-- 通过roleCode查询资源数据 -->
+    <select id="selectResourceByRoleCode" resultMap="systemRoleResourceResultMap">
+        SELECT DISTINCT
+            srr.role_resource_id,
+            sro.role_id,
+            sro.role_code,
+            sro.role_name,
+            sre.resource_id,
+            sre.resource_code,
+            sre.resource_name,
+            sre.resource_title,
+            sre.resource_parent_id,
+            sre.resource_type,
+            sre.resource_prop,
+            srr.operate_user,
+            srr.operate_time
+        FROM system_role_resource srr
+        INNER JOIN system_role sro ON sro.role_code = srr.role_code
+        INNER JOIN system_resource sre ON sre.resource_code = srr.resource_code
+        <where>
+            <choose>
+                <when test="roleCodeList != null and roleCodeList.size()>0">
+                    srr.role_code IN
+                    <foreach collection="roleCodeList" item="item" open="(" separator="," close=")">
+                        #{item}
+                    </foreach>
+                </when>
+                <otherwise>
+                    srr.role_code IS NULL
+                </otherwise>
+            </choose>
+        </where>
+    </select>
+
+</mapper>

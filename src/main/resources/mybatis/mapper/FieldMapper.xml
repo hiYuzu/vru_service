@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tcb.vru_service.dao.FieldDao">
+
+    <resultMap id="utilFieldResultMap" type="com.tcb.vru_service.pojo.UtilFiledDO">
+        <id column="field_id" property="fieldId" jdbcType="INTEGER" />
+        <result column="field_code" property="fieldCode" jdbcType="VARCHAR"/>
+        <result column="field_name" property="fieldName" jdbcType="VARCHAR"/>
+        <result column="operate_user" property="operateUser" jdbcType="INTEGER"/>
+        <result column="operate_time" property="operateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!-- 查询监测领域个数 -->
+    <select id="countFiled" resultType="java.lang.Integer">
+        SELECT COUNT(1)
+        FROM util_field uf
+        <if test="filedDO != null">
+            <where>
+                <if test="filedDO.fieldCode != null and filedDO.fieldCode != ''">
+                    uf.field_code = #{filedDO.fieldCode}
+                </if>
+            </where>
+        </if>
+    </select>
+
+    <!-- 查询监测领域数据 -->
+    <select id="listFiled" resultMap="utilFieldResultMap">
+        SELECT
+            field_id,
+            field_code,
+            field_name,
+            operate_user,
+            operate_time
+        FROM util_field uf
+        <if test="filedDO != null">
+            <where>
+                <if test="filedDO.fieldCode != null and filedDO.fieldCode != ''">
+                    uf.field_code = #{filedDO.fieldCode}
+                </if>
+            </where>
+            <if test="filedDO.rowIndex != null and filedDO.rowCount != null">
+                LIMIT #{filedDO.rowIndex},#{filedDO.rowCount}
+            </if>
+        </if>
+    </select>
+
+    <!-- 插入监测领域数据 -->
+    <insert id="insertField" parameterType="com.tcb.vru_service.pojo.UtilFiledDO">
+        INSERT INTO util_field(
+            field_code,
+            field_name,
+            operate_user,
+            operate_time
+        )
+        VALUES(
+            #{filedDO.fieldCode},
+            #{filedDO.fieldName},
+            #{filedDO.operateUser},
+            #{filedDO.operateTime},
+        )
+    </insert>
+
+    <!-- 更新监测领域数据 -->
+    <update id="updateField" parameterType="com.tcb.vru_service.pojo.UtilFiledDO">
+        UPDATE util_field
+        SET field_code = #{filedDO.fieldCode},
+            field_name = #{filedDO.fieldName},
+            operate_user = #{filedDO.operateUser},
+            operate_time = #{filedDO.operateTime}
+        <where>
+            <choose>
+                <when test="filedDO.fieldId != null">
+                    AND field_id = #{filedDO.fieldId}
+                </when>
+                <otherwise>
+                    AND field_id IS NULL
+                </otherwise>
+            </choose>
+        </where>
+    </update>
+
+    <!-- 删除监测设备数据 -->
+    <delete id="deleteListField" parameterType="java.util.List">
+        DELETE FROM util_field uf
+        WHERE uf.field_id IN
+        <foreach collection="listFieldId" item="item" open="(" separator="," close=")">
+            #{item,jdbcType = INTEGER}
+        </foreach>
+    </delete>
+
+
+</mapper>

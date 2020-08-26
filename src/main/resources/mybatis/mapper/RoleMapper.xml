@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tcb.vru_service.dao.RoleDao">
+
+    <resultMap id="systemRoleResultMap" type="com.tcb.vru_service.pojo.SystemRoleDO">
+        <id column="role_id" property="roleId" jdbcType="INTEGER" />
+        <result column="role_code" property="roleCode" jdbcType="VARCHAR"/>
+        <result column="role_name" property="roleName" jdbcType="VARCHAR"/>
+        <result column="operate_user" property="operateUser" jdbcType="INTEGER"/>
+        <result column="operate_time" property="operateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!-- 查询角色个数 -->
+    <select id="countRole" resultType="java.lang.Integer">
+        SELECT COUNT(1)
+        FROM system_role sr
+        <if test="roleDO != null">
+            <where>
+                <if test="roleDO.roleId != null">
+                    sr.role_id = #{roleDO.roleId}
+                </if>
+                <if test="roleDO.roleCode != null and roleDO.roleCode != ''">
+                    AND sr.role_code = #{roleDO.roleCode}
+                </if>
+                <if test="roleDO.roleName != null and roleDO.roleName != ''">
+                    AND sr.role_name LIKE CONCAT('%',CONCAT(#{roleDO.roleName},'%'))
+                </if>
+            </where>
+        </if>
+    </select>
+
+    <!-- 查询角色数据 -->
+    <select id="listRole" resultMap="systemRoleResultMap">
+        SELECT
+            role_id,
+            role_code,
+            role_name,
+            operate_user,
+            operate_time
+        FROM system_role sr
+        <if test="userDO != null">
+            <where>
+                <if test="roleDO.roleId != null">
+                    sr.role_id = #{roleDO.roleId}
+                </if>
+                <if test="roleDO.roleCode != null and roleDO.roleCode != ''">
+                    AND sr.role_code = #{roleDO.roleCode}
+                </if>
+                <if test="roleDO.roleName != null and roleDO.roleName != ''">
+                    AND sr.role_name LIKE CONCAT('%',CONCAT(#{roleDO.roleName},'%'))
+                </if>
+            </where>
+            <if test="roleDO.rowIndex != null and roleDO.rowCount != null">
+                LIMIT #{roleDO.rowIndex},#{roleDO.rowCount}
+            </if>
+        </if>
+    </select>
+
+    <!-- 插入角色数据 -->
+    <insert id="insertRole" parameterType="com.tcb.vru_service.pojo.SystemRoleDO">
+        INSERT INTO system_role(
+            role_code,
+            role_name,
+            operate_user,
+            operate_time
+        )
+        VALUES(
+            #{userDO.roleCode},
+            #{userDO.roleName},
+            #{userDO.operateUser},
+            #{userDO.operateTime}
+        )
+    </insert>
+
+    <!-- 更新角色数据 -->
+    <update id="updateRole" parameterType="com.tcb.vru_service.pojo.SystemRoleDO">
+        UPDATE system_role
+        SET role_code = #{roleDO.roleCode},
+            role_name = #{roleDO.roleName},
+            operate_user = #{roleDO.operateUser},
+            operate_time = #{roleDO.operateTime}
+        <where>
+            <choose>
+                <when test="roleDO.roleId != null">
+                    AND role_id = #{roleDO.roleId}
+                </when>
+                <otherwise>
+                    AND role_id IS NULL
+                </otherwise>
+            </choose>
+        </where>
+    </update>
+
+    <!-- 删除角色数据 -->
+    <delete id="deleteListRole" parameterType="java.util.List">
+        DELETE FROM system_role sr
+        WHERE sr.role_id IN
+        <foreach collection="listRoleId" item="item" open="(" separator="," close=")">
+            #{item,jdbcType = INTEGER}
+        </foreach>
+    </delete>
+
+</mapper>

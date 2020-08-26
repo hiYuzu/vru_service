@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tcb.vru_service.dao.OrganizationDao">
+
+    <resultMap id="baseOrganizationResultMap" type="com.tcb.vru_service.pojo.BaseOrganizationDO">
+        <id column="organization_id" property="organizationId" jdbcType="INTEGER" />
+        <result column="organization_name" property="organizationName" jdbcType="VARCHAR"/>
+        <result column="parent_organization_id" property="parentOrganizationId" jdbcType="INTEGER"/>
+        <result column="organization_type" property="organizationType" jdbcType="VARCHAR"/>
+        <result column="organization_address" property="organizationAddress" jdbcType="VARCHAR"/>
+        <result column="organization_path" property="organizationPath" jdbcType="VARCHAR"/>
+        <result column="organization_telephone" property="organizationTelephone" jdbcType="VARCHAR"/>
+        <result column="organization_fax" property="organizationFax" jdbcType="VARCHAR"/>
+        <result column="organization_contacter" property="organizationContacter" jdbcType="VARCHAR"/>
+        <result column="operate_user" property="operateUser" jdbcType="INTEGER"/>
+        <result column="operate_time" property="operateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!-- 查询组织个数 -->
+    <select id="countOrganization" resultType="java.lang.Integer">
+        SELECT COUNT(1)
+        FROM base_organization bo
+        <if test="organizationDO != null">
+            <where>
+                <if test="organizationDO.organizationId != null">
+                    bo.organization_id = #{organizationDO.organizationId}
+                </if>
+                <if test="organizationDO.parentOrganizationId != null">
+                    AND bo.parent_organization_id = #{organizationDO.parentOrganizationId}
+                </if>
+                <if test="organizationDO.organizationName != null and organizationDO.organizationName != ''">
+                    AND bo.organization_name LIKE CONCAT('%',CONCAT(#{organizationDO.organizationName},'%'))
+                </if>
+            </where>
+        </if>
+    </select>
+
+    <!-- 查询组织数据 -->
+    <select id="listOrganization" resultMap="baseOrganizationResultMap">
+        SELECT
+            organization_id,
+            organization_name,
+            parent_organization_id,
+            organization_type,
+            organization_address,
+            organization_path,
+            organization_telephone,
+            organization_fax,
+            organization_contacter,
+            operate_user,
+            operate_time
+        FROM base_organization bo
+        <if test="organizationDO != null">
+            <where>
+                <if test="organizationDO.organizationId != null">
+                    bo.organization_id = #{organizationDO.organizationId}
+                </if>
+                <if test="organizationDO.parentOrganizationId != null">
+                    AND bo.parent_organization_id = #{organizationDO.parentOrganizationId}
+                </if>
+                <if test="organizationDO.organizationName != null and organizationDO.organizationName != ''">
+                    AND bo.organization_name LIKE CONCAT('%',CONCAT(#{organizationDO.organizationName},'%'))
+                </if>
+            </where>
+            <if test="organizationDO.rowIndex != null and organizationDO.rowCount != null">
+                LIMIT #{organizationDO.rowIndex},#{organizationDO.rowCount}
+            </if>
+        </if>
+    </select>
+
+    <!-- 插入组织数据 -->
+    <insert id="insertOrganization" parameterType="com.tcb.vru_service.pojo.BaseOrganizationDO">
+        INSERT INTO base_organization(
+            organization_name,
+            parent_organization_id,
+            organization_type,
+            organization_address,
+            organization_path,
+            organization_telephone,
+            organization_fax,
+            organization_contacter,
+            operate_user,
+            operate_time
+        )
+        VALUES(
+            #{organizationDO.organizationName},
+            #{organizationDO.parentOrganizationId},
+            #{organizationDO.organizationType},
+            #{organizationDO.organizationAddress},
+            #{organizationDO.organizationPath},
+            #{organizationDO.organizationTelephone},
+            #{organizationDO.organizationFax},
+            #{organizationDO.organizationContacter},
+            #{organizationDO.operateUser},
+            #{organizationDO.operateTime}
+        )
+    </insert>
+
+    <!-- 更新组织数据 -->
+    <update id="updateOrganization" parameterType="com.tcb.vru_service.pojo.BaseOrganizationDO">
+        UPDATE base_organization
+        SET organization_name = #{organizationDO.organizationName},
+            parent_organization_id = #{organizationDO.parentOrganizationId},
+            organization_type = #{organizationDO.organizationType},
+            organization_address = #{organizationDO.organizationAddress},
+            organization_path = #{organizationDO.organizationPath},
+            organization_telephone = #{organizationDO.organizationTelephone},
+            organization_fax = #{organizationDO.organizationFax},
+            organization_contacter = #{organizationDO.organizationContacter},
+            operate_user = #{organizationDO.operateUser},
+            operate_time = #{organizationDO.operateTime}
+        <where>
+            <choose>
+                <when test="organizationDO.organizationId != null">
+                    AND organization_id = #{organizationDO.organizationId}
+                </when>
+                <otherwise>
+                    AND organization_id IS NULL
+                </otherwise>
+            </choose>
+        </where>
+    </update>
+
+    <!-- 删除组织数据 -->
+    <delete id="deleteListOrganization" parameterType="java.util.List">
+        DELETE FROM base_organization bo
+        WHERE bo.organization_id IN
+        <foreach collection="listOrganizationId" item="item" open="(" separator="," close=")">
+            #{item,jdbcType = INTEGER}
+        </foreach>
+    </delete>
+
+</mapper>

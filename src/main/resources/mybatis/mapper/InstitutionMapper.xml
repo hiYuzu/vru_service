@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tcb.vru_service.dao.InstitutionDao">
+
+    <resultMap id="baseInstitutionResultMap" type="com.tcb.vru_service.pojo.BaseInstitutionDO">
+        <id column="institution_id" property="institutionId" jdbcType="INTEGER" />
+        <result column="institution_name" property="institutionName" jdbcType="VARCHAR"/>
+        <result column="institution_address" property="institutionAddress" jdbcType="VARCHAR"/>
+        <result column="area_id" property="areaId" jdbcType="INTEGER"/>
+        <result column="institution_permit" property="institutionPermit" jdbcType="VARCHAR"/>
+        <result column="institution_permit_url" property="institutionPermitUrl" jdbcType="VARCHAR"/>
+        <result column="institution_contact" property="institutionContact" jdbcType="VARCHAR"/>
+        <result column="institution_type" property="institutionType" jdbcType="VARCHAR"/>
+        <result column="operate_user" property="operateUser" jdbcType="INTEGER"/>
+        <result column="operate_time" property="operateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!-- 查询监测机构个数 -->
+    <select id="countInstitution" resultType="java.lang.Integer">
+        SELECT COUNT(1)
+        FROM base_institution bi
+        <if test="institutionDO != null">
+            <where>
+                <if test="institutionDO.institutionId != null">
+                    bi.institution_id = #{institutionDO.institutionId}
+                </if>
+                <if test="institutionDO.areaId != null">
+                    AND bi.area_id = #{institutionDO.areaId}
+                </if>
+                <if test="institutionDO.institutionName != null and institutionDO.institutionName != ''">
+                    AND bi.institution_name LIKE CONCAT('%',CONCAT(#{institutionDO.institutionName},'%'))
+                </if>
+                <if test="institutionDO.institutionType != null and institutionDO.institutionType != ''">
+                    AND bi.institution_type = #{institutionDO.institutionType}
+                </if>
+            </where>
+        </if>
+    </select>
+
+    <!-- 查询监测机构数据 -->
+    <select id="listInstitution" resultMap="baseInstitutionResultMap">
+        SELECT
+            institution_id,
+            institution_name,
+            institution_address,
+            area_id,
+            institution_permit,
+            institution_permit_url,
+            institution_contact,
+            institution_type,
+            operate_user,
+            operate_time
+        FROM base_institution bi
+        <if test="institutionDO != null">
+            <where>
+                <if test="institutionDO.institutionId != null">
+                    bi.institution_id = #{institutionDO.institutionId}
+                </if>
+                <if test="institutionDO.areaId != null">
+                    AND bi.area_id = #{institutionDO.areaId}
+                </if>
+                <if test="institutionDO.institutionName != null and institutionDO.institutionName != ''">
+                    AND bi.institution_name LIKE CONCAT('%',CONCAT(#{institutionDO.institutionName},'%'))
+                </if>
+                <if test="institutionDO.institutionType != null and institutionDO.institutionType != ''">
+                    AND bi.institution_type = #{institutionDO.institutionType}
+                </if>
+            </where>
+            <if test="institutionDO.rowIndex != null and institutionDO.rowCount != null">
+                LIMIT #{institutionDO.rowIndex},#{institutionDO.rowCount}
+            </if>
+        </if>
+    </select>
+
+    <!-- 插入监测机构数据 -->
+    <insert id="insertInstitution" parameterType="com.tcb.vru_service.pojo.BaseInstitutionDO">
+        INSERT INTO base_institution(
+            institution_name,
+            institution_address,
+            area_id,
+            institution_permit,
+            institution_permit_url,
+            institution_contact,
+            institution_type,
+            operate_user,
+            operate_time
+        )
+        VALUES(
+            #{institutionDO.institutionName},
+            #{institutionDO.institutionAddress},
+            #{institutionDO.areaId},
+            #{institutionDO.institutionPermit},
+            #{institutionDO.institutionPermitUrl},
+            #{institutionDO.institutionContact},
+            #{institutionDO.institutionType},
+            #{institutionDO.operateUser},
+            #{institutionDO.operateTime}
+        )
+    </insert>
+
+    <!-- 更新监测机构数据 -->
+    <update id="updateInstitution" parameterType="com.tcb.vru_service.pojo.BaseInstitutionDO">
+        UPDATE base_institution
+        SET institution_name = #{institutionDO.institutionName},
+            institution_address = #{institutionDO.institutionAddress},
+            area_id = #{institutionDO.areaId},
+            institution_permit = #{institutionDO.institutionPermit},
+            institution_permit_url = #{institutionDO.institutionPermitUrl},
+            institution_contact = #{institutionDO.institutionContact},
+            institution_type = #{institutionDO.institutionType},
+            operate_user = #{institutionDO.operateUser},
+            operate_time = #{institutionDO.operateTime}
+        <where>
+            <choose>
+                <when test="institutionDO.institutionId != null">
+                    AND institution_id = #{institutionDO.institutionId}
+                </when>
+                <otherwise>
+                    AND institution_id IS NULL
+                </otherwise>
+            </choose>
+        </where>
+    </update>
+
+    <!-- 删除监测机构数据 -->
+    <delete id="deleteListInstitution" parameterType="java.util.List">
+        DELETE FROM base_institution bi
+        WHERE bi.institution_id IN
+        <foreach collection="listInstitutionId" item="item" open="(" separator="," close=")">
+            #{item,jdbcType = INTEGER}
+        </foreach>
+    </delete>
+
+
+</mapper>

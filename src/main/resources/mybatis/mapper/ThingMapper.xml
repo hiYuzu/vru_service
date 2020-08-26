@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tcb.vru_service.dao.ThingDao">
+
+    <resultMap id="baseThingResultMap" type="com.tcb.vru_service.pojo.BaseThingDO">
+        <id column="thing_id" property="thingId" jdbcType="INTEGER" />
+        <result column="thing_code" property="thingCode" jdbcType="VARCHAR"/>
+        <result column="thing_name" property="thingName" jdbcType="VARCHAR"/>
+        <result column="thing_unit" property="thingUnit" jdbcType="VARCHAR"/>
+        <result column="thing_order" property="thingOrder" jdbcType="INTEGER"/>
+        <result column="field_id" property="fieldId" jdbcType="INTEGER"/>
+        <result column="operate_user" property="operateUser" jdbcType="INTEGER"/>
+        <result column="operate_time" property="operateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!-- 查询监测因子个数 -->
+    <select id="countThing" resultType="java.lang.Integer">
+        SELECT COUNT(1)
+        FROM base_thing bt
+        <if test="thingDO != null">
+            <where>
+                <if test="thingDO.thingCode != null and thingDO.thingCode != ''">
+                    bt.thing_code = #{thingDO.thingCode}
+                </if>
+                <if test="thingDO.fieldId != null and thingDO.fieldId != ''">
+                    AND bt.field_id = #{thingDO.fieldId}
+                </if>
+            </where>
+        </if>
+    </select>
+
+    <!-- 查询监测因子数据 -->
+    <select id="listFiled" resultMap="baseThingResultMap">
+        SELECT
+            thing_id,
+            thing_code,
+            thing_name,
+            thing_unit,
+            thing_order,
+            field_id,
+            operate_user,
+            operate_time
+        FROM base_thing bt
+        <if test="thingDO != null">
+            <where>
+                <if test="thingDO.thingCode != null and thingDO.thingCode != ''">
+                    bt.thing_code = #{thingDO.thingCode}
+                </if>
+                <if test="thingDO.fieldId != null and thingDO.fieldId != ''">
+                    AND bt.field_id = #{thingDO.fieldId}
+                </if>
+            </where>
+            <if test="thingDO.rowIndex != null and thingDO.rowCount != null">
+                LIMIT #{thingDO.rowIndex},#{thingDO.rowCount}
+            </if>
+        </if>
+    </select>
+
+    <!-- 插入监测因子数据 -->
+    <insert id="insertThing" parameterType="com.tcb.vru_service.pojo.BaseThingDO">
+        INSERT INTO base_thing(
+            thing_code,
+            thing_name,
+            thing_unit,
+            thing_order,
+            field_id,
+            operate_user,
+            operate_time
+        )
+        VALUES(
+            #{thingDO.thingCode},
+            #{thingDO.thingName},
+            #{thingDO.thingUnit},
+            #{thingDO.thingOrder},
+            #{thingDO.fieldId},
+            #{thingDO.operateUser},
+            #{thingDO.operateTime}
+        )
+    </insert>
+
+    <!-- 更新监测因子数据 -->
+    <update id="updateThing" parameterType="com.tcb.vru_service.pojo.BaseThingDO">
+        UPDATE base_thing
+        SET thing_code = #{thingDO.thingCode},
+            thing_name = #{thingDO.thingName},
+            thing_unit = #{thingDO.thingUnit},
+            thing_order = #{thingDO.thingOrder},
+            field_id = #{thingDO.fieldId},
+            operate_user = #{thingDO.operateUser},
+            operate_time = #{thingDO.operateTime}
+        <where>
+            <choose>
+                <when test="thingDO.thingId != null">
+                    AND thing_id = #{thingDO.thingId}
+                </when>
+                <otherwise>
+                    AND thing_id IS NULL
+                </otherwise>
+            </choose>
+        </where>
+    </update>
+
+    <!-- 删除监测因子数据 -->
+    <delete id="deleteListThing" parameterType="java.util.List">
+        DELETE FROM base_thing bt
+        WHERE bt.thing_id IN
+        <foreach collection="listThingId" item="item" open="(" separator="," close=")">
+            #{item,jdbcType = INTEGER}
+        </foreach>
+    </delete>
+
+</mapper>
