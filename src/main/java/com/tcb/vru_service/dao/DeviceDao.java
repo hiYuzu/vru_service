@@ -26,7 +26,7 @@ public interface DeviceDao {
      * @param deviceDO
      * @return
      */
-    List<BaseDeviceDO> listDevice(@Param("deviceDO") BaseDeviceDO deviceDO);
+    List<BaseDeviceDO> listFiled(@Param("deviceDO") BaseDeviceDO deviceDO);
 
     /**
      * 插入监测设备数据

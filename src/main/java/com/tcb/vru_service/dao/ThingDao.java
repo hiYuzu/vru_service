@@ -14,6 +14,7 @@ public interface ThingDao {
 
     /**
      * 查询监测因子个数
+     *
      * @param thingDO
      * @return
      */
@@ -21,13 +22,17 @@ public interface ThingDao {
 
     /**
      * 查询监测因子数据
+     *
      * @param thingDO
      * @return
      */
     List<BaseThingDO> listThing(@Param("thingDO") BaseThingDO thingDO);
 
+    List<BaseThingDO> getThingByDeviceId(@Param("deviceId") Integer deviceId);
+
     /**
      * 插入监测因子数据
+     *
      * @param thingDO
      * @return
      */
@@ -35,6 +40,7 @@ public interface ThingDao {
 
     /**
      * 更新监测因子数据
+     *
      * @param thingDO
      * @return
      */
@@ -42,6 +48,7 @@ public interface ThingDao {
 
     /**
      * 删除监测因子数据
+     *
      * @param listThingId
      * @return
      */

@@ -3,7 +3,7 @@
 <mapper namespace="com.tcb.vru_service.dao.ThingDao">
 
     <resultMap id="baseThingResultMap" type="com.tcb.vru_service.pojo.BaseThingDO">
-        <id column="thing_id" property="thingId" jdbcType="INTEGER" />
+        <id column="thing_id" property="thingId" jdbcType="INTEGER"/>
         <result column="thing_code" property="thingCode" jdbcType="VARCHAR"/>
         <result column="thing_name" property="thingName" jdbcType="VARCHAR"/>
         <result column="thing_unit" property="thingUnit" jdbcType="VARCHAR"/>
@@ -30,16 +30,16 @@
     </select>
 
     <!-- 查询监测因子数据 -->
-    <select id="listFiled" resultMap="baseThingResultMap">
+    <select id="listThing" resultMap="baseThingResultMap">
         SELECT
-            thing_id,
-            thing_code,
-            thing_name,
-            thing_unit,
-            thing_order,
-            field_id,
-            operate_user,
-            operate_time
+        thing_id,
+        thing_code,
+        thing_name,
+        thing_unit,
+        thing_order,
+        field_id,
+        operate_user,
+        operate_time
         FROM base_thing bt
         <if test="thingDO != null">
             <where>
@@ -82,12 +82,12 @@
     <update id="updateThing" parameterType="com.tcb.vru_service.pojo.BaseThingDO">
         UPDATE base_thing
         SET thing_code = #{thingDO.thingCode},
-            thing_name = #{thingDO.thingName},
-            thing_unit = #{thingDO.thingUnit},
-            thing_order = #{thingDO.thingOrder},
-            field_id = #{thingDO.fieldId},
-            operate_user = #{thingDO.operateUser},
-            operate_time = #{thingDO.operateTime}
+        thing_name = #{thingDO.thingName},
+        thing_unit = #{thingDO.thingUnit},
+        thing_order = #{thingDO.thingOrder},
+        field_id = #{thingDO.fieldId},
+        operate_user = #{thingDO.operateUser},
+        operate_time = #{thingDO.operateTime}
         <where>
             <choose>
                 <when test="thingDO.thingId != null">
@@ -109,4 +109,13 @@
         </foreach>
     </delete>
 
+    <select id="getThingByDeviceId" resultMap="baseThingResultMap">
+        SELECT
+        bt.thing_code,
+        bt.thing_name
+        FROM base_thing bt , base_device_thing dt
+        where
+         bt.thing_id=dt.thing_id and
+         dt.device_id=#{deviceId}
+    </select>
 </mapper>

@@ -15,7 +15,7 @@ public class BaseDeviceDO extends BaseDO {
     private String deviceName;
     private Integer fieldId;
     private Integer manufacturerId;
-    private Integer institutionId;
+    private Long institutionId;
     private String deviceStatus;
     private String deviceIp;
     private Integer devicePort;
@@ -89,11 +89,11 @@ public class BaseDeviceDO extends BaseDO {
         this.manufacturerId = manufacturerId;
     }
 
-    public Integer getInstitutionId() {
+    public Long getInstitutionId() {
         return institutionId;
     }
 
-    public void setInstitutionId(Integer institutionId) {
+    public void setInstitutionId(Long institutionId) {
         this.institutionId = institutionId;
     }
 
