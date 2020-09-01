@@ -10,7 +10,7 @@ import java.sql.Timestamp;
 public class DataStorageDO extends BaseDO {
 
     private Long dataId;
-    private Integer deviceId;
+    private Long deviceId;
     private String thingCode;
     private Double thingAvg;
     private Double thingMax;
@@ -34,11 +34,11 @@ public class DataStorageDO extends BaseDO {
         this.dataId = dataId;
     }
 
-    public Integer getDeviceId() {
+    public Long getDeviceId() {
         return deviceId;
     }
 
-    public void setDeviceId(Integer deviceId) {
+    public void setDeviceId(Long deviceId) {
         this.deviceId = deviceId;
     }
 

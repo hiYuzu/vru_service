@@ -3,7 +3,7 @@
 <mapper namespace="com.tcb.vru_service.dao.DeviceDao">
 
     <resultMap id="baseDeviceResultMap" type="com.tcb.vru_service.pojo.BaseDeviceDO">
-        <id column="device_id" property="deviceId" jdbcType="INTEGER" />
+        <id column="device_id" property="deviceId" jdbcType="BIGINT" />
         <result column="device_code" property="deviceCode" jdbcType="VARCHAR"/>
         <result column="device_mn" property="deviceMn" jdbcType="VARCHAR"/>
         <result column="device_name" property="deviceName" jdbcType="VARCHAR"/>

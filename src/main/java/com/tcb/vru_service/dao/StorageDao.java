@@ -1,6 +1,7 @@
 package com.tcb.vru_service.dao;
 
 import com.tcb.vru_service.pojo.DataStorageDO;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.sql.Timestamp;
@@ -9,6 +10,7 @@ import java.util.List;
 /**
  * 数据DAO
  */
+@Mapper
 public interface StorageDao {
 
     /**
@@ -22,7 +24,7 @@ public interface StorageDao {
      * @param endTime
      * @return
      */
-    List<DataStorageDO> countStorage(@Param("listDataId") List<Integer> listDataId,
+    int countStorage(@Param("listDataId") List<Integer> listDataId,
                                      @Param("listThingCode") List<String> listThingCode,
                                      @Param("dataType") Integer dataType,
                                      @Param("listThingFlag") List<String> listThingFlag,
@@ -42,7 +44,7 @@ public interface StorageDao {
      * @param rowCount
      * @return
      */
-    List<DataStorageDO> listStorage(@Param("listDataId") List<Integer> listDataId,
+    List<DataStorageDO> listStorage(@Param("listDataId") List<Long> listDataId,
                                     @Param("listThingCode") List<String> listThingCode,
                                     @Param("dataType") Integer dataType,
                                     @Param("listThingFlag") List<String> listThingFlag,

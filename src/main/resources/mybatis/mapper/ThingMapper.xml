@@ -12,6 +12,10 @@
         <result column="operate_user" property="operateUser" jdbcType="INTEGER"/>
         <result column="operate_time" property="operateTime" jdbcType="TIMESTAMP"/>
     </resultMap>
+    <resultMap id="baseDeviceThingResultMap" type="com.tcb.vru_service.pojo.BaseDeviceThingDO">
+        <result column="thing_id" property="thingId" jdbcType="INTEGER"/>
+        <result column="device_id" property="deviceId" jdbcType="BIGINT"/>
+    </resultMap>
 
     <!-- 查询监测因子个数 -->
     <select id="countThing" resultType="java.lang.Integer">
@@ -117,5 +121,11 @@
         where
          bt.thing_id=dt.thing_id and
          dt.device_id=#{deviceId}
+    </select>
+    <select id="getDeviceThingData" resultMap="baseDeviceThingResultMap">
+        SELECT
+        device_id,
+        thing_id
+        FROM  base_device_thing dt
     </select>
 </mapper>

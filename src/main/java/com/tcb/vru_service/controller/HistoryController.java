@@ -19,10 +19,15 @@ public class HistoryController {
     @Resource
     private IHistoryService historyService;
 
-    @PostMapping(value = "queryHead")
-    public ResultVO queryHead(String institutionId,
-                              String deviceId) {
-        Object result = historyService.queryHead(institutionId, deviceId);
+    @PostMapping(value = "historyHeadInit")
+    public ResultVO historyHeadInit() {
+        Object result = historyService.historyHeadInit();
+        return new ResultVO(result);
+    }
+
+    @PostMapping(value = "historyQuery")
+    public ResultVO historyQuery(String[] deviceIds, String[] thingCodes, Integer dataType, String[] time) {
+        Object result = historyService.historyQuery(deviceIds, thingCodes, dataType, time);
         return new ResultVO(result);
     }
 }
