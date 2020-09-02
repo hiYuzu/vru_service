@@ -20,26 +20,13 @@ public class BaseDeviceDO extends BaseDO {
     private String deviceIp;
     private Integer devicePort;
     private String devicePwd;
-    private Double mapX;
-    private Double mapY;
-    private Double gpsX;
-    private Double gpsY;
-    private Integer superviseOrganization;
     private String buildUnit;
     private Integer deviceManager;
     private String deviceAddress;
-    private String monitorArea;
     private Boolean makeMinute;
     private Boolean makeHour;
     private Boolean makeDay;
-    private String replyFlag;
-    private Boolean replyForce;
-    private Boolean makeFlow;
-    private Double pipeArea;
     private Integer hourCount;
-    private String gasPath;
-    private Timestamp switchTime;
-    private String systemVersion;
 
     public Integer getDeviceId() {
         return deviceId;
@@ -129,46 +116,6 @@ public class BaseDeviceDO extends BaseDO {
         this.devicePwd = devicePwd;
     }
 
-    public Double getMapX() {
-        return mapX;
-    }
-
-    public void setMapX(Double mapX) {
-        this.mapX = mapX;
-    }
-
-    public Double getMapY() {
-        return mapY;
-    }
-
-    public void setMapY(Double mapY) {
-        this.mapY = mapY;
-    }
-
-    public Double getGpsX() {
-        return gpsX;
-    }
-
-    public void setGpsX(Double gpsX) {
-        this.gpsX = gpsX;
-    }
-
-    public Double getGpsY() {
-        return gpsY;
-    }
-
-    public void setGpsY(Double gpsY) {
-        this.gpsY = gpsY;
-    }
-
-    public Integer getSuperviseOrganization() {
-        return superviseOrganization;
-    }
-
-    public void setSuperviseOrganization(Integer superviseOrganization) {
-        this.superviseOrganization = superviseOrganization;
-    }
-
     public String getBuildUnit() {
         return buildUnit;
     }
@@ -191,14 +138,6 @@ public class BaseDeviceDO extends BaseDO {
 
     public void setDeviceAddress(String deviceAddress) {
         this.deviceAddress = deviceAddress;
-    }
-
-    public String getMonitorArea() {
-        return monitorArea;
-    }
-
-    public void setMonitorArea(String monitorArea) {
-        this.monitorArea = monitorArea;
     }
 
     public Boolean getMakeMinute() {
@@ -225,67 +164,11 @@ public class BaseDeviceDO extends BaseDO {
         this.makeDay = makeDay;
     }
 
-    public String getReplyFlag() {
-        return replyFlag;
-    }
-
-    public void setReplyFlag(String replyFlag) {
-        this.replyFlag = replyFlag;
-    }
-
-    public Boolean getReplyForce() {
-        return replyForce;
-    }
-
-    public void setReplyForce(Boolean replyForce) {
-        this.replyForce = replyForce;
-    }
-
-    public Boolean getMakeFlow() {
-        return makeFlow;
-    }
-
-    public void setMakeFlow(Boolean makeFlow) {
-        this.makeFlow = makeFlow;
-    }
-
-    public Double getPipeArea() {
-        return pipeArea;
-    }
-
-    public void setPipeArea(Double pipeArea) {
-        this.pipeArea = pipeArea;
-    }
-
     public Integer getHourCount() {
         return hourCount;
     }
 
     public void setHourCount(Integer hourCount) {
         this.hourCount = hourCount;
-    }
-
-    public String getGasPath() {
-        return gasPath;
-    }
-
-    public void setGasPath(String gasPath) {
-        this.gasPath = gasPath;
-    }
-
-    public Timestamp getSwitchTime() {
-        return switchTime;
-    }
-
-    public void setSwitchTime(Timestamp switchTime) {
-        this.switchTime = switchTime;
-    }
-
-    public String getSystemVersion() {
-        return systemVersion;
-    }
-
-    public void setSystemVersion(String systemVersion) {
-        this.systemVersion = systemVersion;
     }
 }

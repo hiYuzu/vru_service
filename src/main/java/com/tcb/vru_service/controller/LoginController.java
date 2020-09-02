@@ -2,7 +2,7 @@ package com.tcb.vru_service.controller;
 
 import com.laoxue.token.TokenProcess;
 import com.tcb.vru_service.response.ResultVO;
-import com.tcb.vru_service.service.IRoleResourceService;
+import com.tcb.vru_service.service.IRoleService;
 import com.tcb.vru_service.service.IUserService;
 import com.tcb.vru_service.util.ShaUtil;
 import org.springframework.util.StringUtils;
@@ -29,7 +29,7 @@ public class LoginController {
     private IUserService userService;
 
     @Resource
-    private IRoleResourceService roleResourceService;
+    private IRoleService roleService;
 
     /**
      * 登录
@@ -77,7 +77,7 @@ public class LoginController {
         if (StringUtils.isEmpty(userCode)) {
             return new ResultVO(false, "userCode is empty!");
         }
-        Map<String, List<String>> route =roleResourceService.getRoleResourceMap(String.valueOf(subject));
+        Map<String, List<String>> route = roleService.getRoleResourceMap(String.valueOf(subject));
         return new ResultVO(route);
     }
 

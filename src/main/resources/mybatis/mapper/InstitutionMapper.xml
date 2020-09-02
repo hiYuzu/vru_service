@@ -36,6 +36,12 @@
                 <if test="institutionDO.institutionType != null and institutionDO.institutionType != ''">
                     AND bi.institution_type = #{institutionDO.institutionType}
                 </if>
+                <if test="institutionIdList.size()>0">
+                    AND bi.institution_id IN
+                    <foreach collection="institutionIdList" item="item" open="(" separator="," close=")">
+                        #{item,jdbcType = INTEGER}
+                    </foreach>
+                </if>
             </where>
         </if>
     </select>
@@ -70,6 +76,12 @@
                 </if>
                 <if test="institutionDO.institutionType != null and institutionDO.institutionType != ''">
                     AND bi.institution_type = #{institutionDO.institutionType}
+                </if>
+                <if test="institutionIdList.size()>0">
+                    AND bi.institution_id IN
+                    <foreach collection="institutionIdList" item="item" open="(" separator="," close=")">
+                        #{item,jdbcType = INTEGER}
+                    </foreach>
                 </if>
             </where>
             <if test="institutionDO.rowIndex != null and institutionDO.rowCount != null">

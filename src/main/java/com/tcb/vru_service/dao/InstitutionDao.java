@@ -16,17 +16,23 @@ public interface InstitutionDao {
      * 查询监测机构个数
      *
      * @param institutionDO
+     * @param institutionIdList
      * @return
      */
-    int countInstitution(@Param("institutionDO") BaseInstitutionDO institutionDO);
+    int countInstitution(
+            @Param("institutionDO") BaseInstitutionDO institutionDO,
+            @Param("institutionIdList") List<Long> institutionIdList);
 
     /**
      * 查询监测机构数据
      *
      * @param institutionDO
+     * @param institutionIdList
      * @return
      */
-    List<BaseInstitutionDO> listInstitution(@Param("institutionDO") BaseInstitutionDO institutionDO);
+    List<BaseInstitutionDO> listInstitution(
+            @Param("institutionDO") BaseInstitutionDO institutionDO,
+            @Param("institutionIdList") List<Long> institutionIdList);
 
     /**
      * 插入监测机构数据

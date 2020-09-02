@@ -1,10 +1,13 @@
 package com.tcb.vru_service.service.impl;
 
+import com.tcb.vru_service.dao.RoleDeviceDao;
 import com.tcb.vru_service.dao.RoleResourceDao;
 import com.tcb.vru_service.dao.RoleUserDao;
+import com.tcb.vru_service.pojo.BaseDeviceDO;
 import com.tcb.vru_service.pojo.SystemResourceDO;
+import com.tcb.vru_service.pojo.SystemRoleDeviceDO;
 import com.tcb.vru_service.pojo.SystemRoleResourceDO;
-import com.tcb.vru_service.service.IRoleResourceService;
+import com.tcb.vru_service.service.IRoleService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -20,11 +23,14 @@ import java.util.Map;
  * @Date: Create in 2020/07/13 09:17
  * @Modify by WangLei
  */
-@Service("roleResourceService")
-public class RoleResourceServiceImpl implements IRoleResourceService {
+@Service("roleService")
+public class RoleServiceImpl implements IRoleService {
 
     @Resource
     private RoleResourceDao roleResourceDao;
+
+    @Resource
+    private RoleDeviceDao roleDeviceDao;
 
     @Resource
     private RoleUserDao roleUserDao;
@@ -53,5 +59,20 @@ public class RoleResourceServiceImpl implements IRoleResourceService {
             }
         }
         return roleResourceMap;
+    }
+
+    @Override
+    public List<BaseDeviceDO> getRoleDeviceList(String userCode) {
+        List<BaseDeviceDO> baseDeviceDOList = new ArrayList<>();
+        List<String> roleCodeList = roleUserDao.selectRoleCodeByUserCode(userCode);
+        List<SystemRoleDeviceDO> systemRoleDeviceDOList = roleDeviceDao.selectDeviceByRoleCode(roleCodeList);
+        if (systemRoleDeviceDOList != null && systemRoleDeviceDOList.size() > 0) {
+            for (SystemRoleDeviceDO temp : systemRoleDeviceDOList) {
+                if (temp.getDevice() != null) {
+                    baseDeviceDOList.add(temp.getDevice());
+                }
+            }
+        }
+        return baseDeviceDOList;
     }
 }

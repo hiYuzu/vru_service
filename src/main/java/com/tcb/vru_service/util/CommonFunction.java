@@ -1,8 +1,11 @@
 package com.tcb.vru_service.util;
 
+import com.tcb.vru_service.pojo.BaseDeviceDO;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @Author: WangLei
@@ -14,10 +17,11 @@ public class CommonFunction {
 
     /**
      * 获取登录用户编码信息
+     *
      * @param request
      * @return
      */
-    public static String getLoginUserCode(HttpServletRequest request){
+    public static String getLoginUserCode(HttpServletRequest request) {
         Object subject = request.getAttribute("subject");
         if (subject == null || !(subject instanceof String)) {
             return null;
@@ -25,9 +29,43 @@ public class CommonFunction {
         String userCode = (String) subject;
         if (StringUtils.isEmpty(userCode)) {
             return null;
-        }else{
+        } else {
             return userCode;
         }
+    }
+
+    /**
+     * 筛选设备ID
+     * @param baseDeviceDOList
+     * @return
+     */
+    public static List<Integer> getDeviceIdList(List<BaseDeviceDO> baseDeviceDOList) {
+        List<Integer> deviceIdList = new ArrayList<>();
+        if (baseDeviceDOList != null && baseDeviceDOList.size() > 0) {
+            for (BaseDeviceDO baseDeviceDO : baseDeviceDOList) {
+                if (baseDeviceDO != null && baseDeviceDO.getDeviceId() != null) {
+                    deviceIdList.add(baseDeviceDO.getDeviceId());
+                }
+            }
+        }
+        return deviceIdList;
+    }
+
+    /**
+     * 筛选监测就够ID
+     * @param baseDeviceDOList
+     * @return
+     */
+    public static List<Long> getInstitutionIdList(List<BaseDeviceDO> baseDeviceDOList) {
+        List<Long> institutionIdList = new ArrayList<>();
+        if (baseDeviceDOList != null && baseDeviceDOList.size() > 0) {
+            for (BaseDeviceDO baseDeviceDO : baseDeviceDOList) {
+                if (baseDeviceDO != null && baseDeviceDO.getInstitutionId() != null) {
+                    institutionIdList.add(baseDeviceDO.getInstitutionId());
+                }
+            }
+        }
+        return institutionIdList;
     }
 
 }

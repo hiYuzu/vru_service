@@ -7,22 +7,32 @@ import com.tcb.vru_service.base.BaseDO;
  */
 public class SystemRoleDeviceDO extends BaseDO {
 
-    private String roleCode;
-    private String deviceCode;
+    private Integer roleDeviceId;
+    private SystemRoleDO role;
+    private BaseDeviceDO device;
 
-    public String getRoleCode() {
-        return roleCode;
+    public Integer getRoleDeviceId() {
+        return roleDeviceId;
     }
 
-    public void setRoleCode(String roleCode) {
-        this.roleCode = roleCode;
+    public void setRoleDeviceId(Integer roleDeviceId) {
+        this.roleDeviceId = roleDeviceId;
     }
 
-    public String getDeviceCode() {
-        return deviceCode;
+    public SystemRoleDO getRole() {
+        return role;
     }
 
-    public void setDeviceCode(String deviceCode) {
-        this.deviceCode = deviceCode;
+    public void setRole(SystemRoleDO role) {
+        this.role = role;
     }
+
+    public BaseDeviceDO getDevice() {
+        return device;
+    }
+
+    public void setDevice(BaseDeviceDO device) {
+        this.device = device;
+    }
+
 }

@@ -1,5 +1,7 @@
 package com.tcb.vru_service.service;
 
+import com.tcb.vru_service.pojo.BaseDeviceDO;
+
 import java.util.List;
 import java.util.Map;
 
@@ -9,7 +11,7 @@ import java.util.Map;
  * @Date: Create in 2020/07/13 09:17
  * @Modify by WangLei
  */
-public interface IRoleResourceService {
+public interface IRoleService {
 
     /**
      * 获取角色资源数据（通用用户名）
@@ -17,5 +19,12 @@ public interface IRoleResourceService {
      * @return
      */
     Map<String, List<String>> getRoleResourceMap(String userCode);
+
+    /**
+     * 获取角色设备数据（通用用户名）
+     * @param userCode
+     * @return
+     */
+    List<BaseDeviceDO> getRoleDeviceList(String userCode);
 
 }

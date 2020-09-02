@@ -12,10 +12,8 @@ import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,7 +41,7 @@ public class HistoryServiceImpl implements IHistoryService {
         List<Option<Integer>> deviceData = new ArrayList<>();
         List<Option<String>> thingData = new ArrayList<>();
 
-        List<BaseInstitutionDO> listInstitution = institutionDao.listInstitution(null);
+        List<BaseInstitutionDO> listInstitution = institutionDao.listInstitution(null,null);
         if (listInstitution.size() > 0) {
             institutionData =
                     listInstitution.stream().map(institution -> new Option<>(institution.getInstitutionId(), institution.getInstitutionName(), null)).collect(Collectors.toList());
@@ -96,7 +94,7 @@ public class HistoryServiceImpl implements IHistoryService {
     }
 
     private List<BaseDeviceDO> getDeviceData() {
-        return deviceDao.listFiled(null);
+        return deviceDao.listDevice(null);
     }
 
     private List<BaseThingDO> getThingData() {

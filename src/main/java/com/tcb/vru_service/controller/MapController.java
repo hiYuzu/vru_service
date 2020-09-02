@@ -26,7 +26,7 @@ public class MapController {
     @PostMapping(value = "getMapPoint")
     public ResultVO<List<PointVO>> getMapPoint(HttpServletRequest request){
         String userCode = CommonFunction.getLoginUserCode(request);
-        List<PointVO> pointVOList = mapService.getMapPoint("");//userCode
+        List<PointVO> pointVOList = mapService.getMapPoint(userCode);
         return new ResultVO(pointVOList);
     }
 
