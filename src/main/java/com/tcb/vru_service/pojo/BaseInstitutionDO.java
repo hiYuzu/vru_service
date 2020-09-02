@@ -8,6 +8,7 @@ import com.tcb.vru_service.base.BaseDO;
 public class BaseInstitutionDO extends BaseDO {
 
     private Long institutionId;
+    private String institutionCode;
     private String institutionName;
     private String institutionAddress;
     private Long areaId;
@@ -15,6 +16,8 @@ public class BaseInstitutionDO extends BaseDO {
     private String institutionPermitUrl;
     private String institutionContact;
     private String institutionType;
+    private Double mapX;
+    private Double mapY;
 
     public Long getInstitutionId() {
         return institutionId;
@@ -79,4 +82,29 @@ public class BaseInstitutionDO extends BaseDO {
     public void setInstitutionType(String institutionType) {
         this.institutionType = institutionType;
     }
+
+    public String getInstitutionCode() {
+        return institutionCode;
+    }
+
+    public void setInstitutionCode(String institutionCode) {
+        this.institutionCode = institutionCode;
+    }
+
+    public Double getMapX() {
+        return mapX;
+    }
+
+    public void setMapX(Double mapX) {
+        this.mapX = mapX;
+    }
+
+    public Double getMapY() {
+        return mapY;
+    }
+
+    public void setMapY(Double mapY) {
+        this.mapY = mapY;
+    }
+
 }
