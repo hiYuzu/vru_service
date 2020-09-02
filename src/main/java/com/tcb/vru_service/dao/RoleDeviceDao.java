@@ -1,6 +1,7 @@
 package com.tcb.vru_service.dao;
 
 import com.tcb.vru_service.pojo.SystemRoleDeviceDO;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -8,6 +9,7 @@ import java.util.List;
 /**
  * 角色设备DAO
  */
+@Mapper
 public interface RoleDeviceDao {
 
     /**
