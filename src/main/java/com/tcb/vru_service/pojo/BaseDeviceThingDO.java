@@ -5,14 +5,14 @@ package com.tcb.vru_service.pojo;
  */
 public class BaseDeviceThingDO {
 
-    private Integer deviceId;
+    private Long deviceId;
     private Integer thingId;
 
-    public Integer getDeviceId() {
+    public Long getDeviceId() {
         return deviceId;
     }
 
-    public void setDeviceId(Integer deviceId) {
+    public void setDeviceId(Long deviceId) {
         this.deviceId = deviceId;
     }
 

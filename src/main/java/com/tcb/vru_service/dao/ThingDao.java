@@ -1,5 +1,7 @@
 package com.tcb.vru_service.dao;
 
+import com.tcb.vru_service.pojo.BaseDeviceDO;
+import com.tcb.vru_service.pojo.BaseDeviceThingDO;
 import com.tcb.vru_service.pojo.BaseThingDO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -14,6 +16,7 @@ public interface ThingDao {
 
     /**
      * 查询监测因子个数
+     *
      * @param thingDO
      * @return
      */
@@ -21,13 +24,19 @@ public interface ThingDao {
 
     /**
      * 查询监测因子数据
+     *
      * @param thingDO
      * @return
      */
     List<BaseThingDO> listThing(@Param("thingDO") BaseThingDO thingDO);
 
+    List<BaseThingDO> getThingByDeviceId(@Param("deviceId") Integer deviceId);
+
+    List<BaseDeviceThingDO> getDeviceThingData();
+
     /**
      * 插入监测因子数据
+     *
      * @param thingDO
      * @return
      */
@@ -35,6 +44,7 @@ public interface ThingDao {
 
     /**
      * 更新监测因子数据
+     *
      * @param thingDO
      * @return
      */
@@ -42,6 +52,7 @@ public interface ThingDao {
 
     /**
      * 删除监测因子数据
+     *
      * @param listThingId
      * @return
      */

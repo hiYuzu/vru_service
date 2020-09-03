@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tcb.vru_service.dao.RoleDeviceDao">
+
+    <resultMap id="systemRoleDeviceResultMap" type="com.tcb.vru_service.pojo.SystemRoleDeviceDO">
+        <id column="role_device_id" property="roleDeviceId" jdbcType="INTEGER"></id>
+        <result column="operate_user" property="operateUser" jdbcType="INTEGER"/>
+        <result column="operate_time" property="operateTime" jdbcType="TIMESTAMP"/>
+        <association property="role" column="role_code" javaType="com.tcb.vru_service.pojo.SystemRoleDO"
+            resultMap="com.tcb.vru_service.dao.RoleDao.systemRoleResultMap">
+        </association>
+        <association property="device" column="device_code" javaType="com.tcb.vru_service.pojo.BaseDeviceDO"
+            resultMap="com.tcb.vru_service.dao.DeviceDao.baseDeviceResultMap">
+        </association>
+    </resultMap>
+
+    <!-- 通过roleCode查询设备数据 -->
+    <select id="selectDeviceByRoleCode" resultMap="systemRoleDeviceResultMap">
+        SELECT DISTINCT
+            srd.role_device_id,
+            sr.role_id,
+            sr.role_code,
+            sr.role_name,
+            bd.device_id,
+            bd.device_code,
+            bd.device_mn,
+            bd.device_name,
+            bd.field_id,
+            bd.manufacturer_id,
+            bd.institution_id,
+            srd.operate_user,
+            srd.operate_time
+        FROM system_role_device srd
+        INNER JOIN system_role sr ON sr.role_code = srd.role_code
+        INNER JOIN base_device bd ON bd.device_code = srd.device_code
+        <where>
+            <choose>
+                <when test="roleCodeList != null and roleCodeList.size()>0">
+                    srd.role_code IN
+                    <foreach collection="roleCodeList" item="item" open="(" separator="," close=")">
+                        #{item}
+                    </foreach>
+                </when>
+                <otherwise>
+                    srd.role_code IS NULL
+                </otherwise>
+            </choose>
+        </where>
+    </select>
+
+</mapper>

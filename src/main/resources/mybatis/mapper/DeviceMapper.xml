@@ -14,26 +14,13 @@
         <result column="device_ip" property="deviceIp" jdbcType="VARCHAR"/>
         <result column="device_port" property="devicePort" jdbcType="INTEGER"/>
         <result column="device_pwd" property="devicePwd" jdbcType="VARCHAR"/>
-        <result column="map_x" property="mapX" jdbcType="DOUBLE"/>
-        <result column="map_y" property="mapY" jdbcType="DOUBLE"/>
-        <result column="gps_x" property="gpsX" jdbcType="DOUBLE"/>
-        <result column="gps_y" property="gpsY" jdbcType="DOUBLE"/>
-        <result column="supervise_organization" property="superviseOrganization" jdbcType="INTEGER"/>
         <result column="build_unit" property="buildUnit" jdbcType="VARCHAR"/>
         <result column="device_manager" property="deviceManager" jdbcType="INTEGER"/>
         <result column="device_address" property="deviceAddress" jdbcType="VARCHAR"/>
-        <result column="monitor_area" property="monitorArea" jdbcType="VARCHAR"/>
         <result column="make_minute" property="makeMinute" jdbcType="TINYINT"/>
         <result column="make_hour" property="makeHour" jdbcType="TINYINT"/>
         <result column="make_day" property="makeDay" jdbcType="TINYINT"/>
-        <result column="reply_flag" property="replyFlag" jdbcType="VARCHAR"/>
-        <result column="reply_force" property="replyForce" jdbcType="TINYINT"/>
-        <result column="make_flow" property="makeFlow" jdbcType="TINYINT"/>
-        <result column="pipe_area" property="pipeArea" jdbcType="DOUBLE"/>
         <result column="hour_count" property="hourCount" jdbcType="INTEGER"/>
-        <result column="gas_path" property="gasPath" jdbcType="VARCHAR"/>
-        <result column="switch_time" property="switchTime" jdbcType="TIMESTAMP"/>
-        <result column="system_version" property="systemVersion" jdbcType="VARCHAR"/>
         <result column="operate_user" property="operateUser" jdbcType="INTEGER"/>
         <result column="operate_time" property="operateTime" jdbcType="TIMESTAMP"/>
     </resultMap>
@@ -79,8 +66,8 @@
         </if>
     </select>
 
-    <!-- 查询监测因子数据 -->
-    <select id="listFiled" resultMap="baseDeviceResultMap">
+    <!-- 查询监测设备数据 -->
+    <select id="listDevice" resultMap="baseDeviceResultMap">
         SELECT
             device_id,
             device_code,
@@ -93,26 +80,13 @@
             device_ip,
             device_port,
             device_pwd,
-            map_x,
-            map_y,
-            gps_x,
-            gps_y,
-            supervise_organization,
             build_unit,
             device_manager,
             device_address,
-            monitor_area,
             make_minute,
             make_hour,
             make_day,
-            reply_flag,
-            reply_force,
-            make_flow,
-            pipe_area,
             hour_count,
-            gas_path,
-            switch_time,
-            system_version,
             operate_user,
             operate_time
         FROM base_device bd
@@ -154,9 +128,6 @@
             device_ip,
             device_port,
             device_pwd,
-            map_x,
-            map_y,
-            supervise_organization,
             build_unit,
             device_manager,
             device_address,
@@ -164,12 +135,7 @@
             make_minute,
             make_hour,
             make_day,
-            reply_flag,
-            reply_force,
-            make_flow,
-            pipe_area,
             hour_count,
-            system_version,
             operate_user,
             operate_time
         )
@@ -185,9 +151,6 @@
             #{deviceDO.deviceIp},
             #{deviceDO.devicePort},
             #{deviceDO.devicePwd},
-            #{deviceDO.mapX},
-            #{deviceDO.mapY},
-            #{deviceDO.superviseOrganization},
             #{deviceDO.buildUnit},
             #{deviceDO.deviceManager},
             #{deviceDO.deviceAddress},
@@ -195,12 +158,7 @@
             #{deviceDO.makeMinute},
             #{deviceDO.makeHour},
             #{deviceDO.makeDay},
-            #{deviceDO.replyFlag},
-            #{deviceDO.replyForce},
-            #{deviceDO.makeFlow},
-            #{deviceDO.pipeArea},
             #{deviceDO.hourCount},
-            #{deviceDO.systemVersion},
             #{deviceDO.operateUser},
             #{deviceDO.operateTime}
         )
@@ -219,22 +177,13 @@
             device_ip = #{deviceDO.deviceIp},
             device_port = #{deviceDO.devicePort},
             device_pwd = #{deviceDO.devicePwd},
-            map_x = #{deviceDO.mapX},
-            map_y = #{deviceDO.mapY},
-            supervise_organization = #{deviceDO.superviseOrganization},
             build_unit = #{deviceDO.buildUnit},
             device_manager = #{deviceDO.deviceManager},
             device_address = #{deviceDO.deviceAddress},
-            monitor_area = #{deviceDO.monitorArea},
             make_minute = #{deviceDO.makeMinute},
             make_hour = #{deviceDO.makeHour},
             make_day = #{deviceDO.makeDay},
-            reply_flag = #{deviceDO.replyFlag},
-            reply_force = #{deviceDO.replyForce},
-            make_flow = #{deviceDO.makeFlow},
-            pipe_area = #{deviceDO.pipeArea},
             hour_count = #{deviceDO.hourCount},
-            system_version = #{deviceDO.systemVersion},
             operate_user = #{deviceDO.operateUser},
             operate_time = #{deviceDO.operateTime}
         <where>
