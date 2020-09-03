@@ -5,12 +5,22 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 监测设备DAO
  */
 @Mapper
 public interface DeviceDao {
+
+
+    /**
+     * 获取权限设备基本信息（code+name）
+     * @param institutionId
+     * @param userCode
+     * @return
+     */
+    List<Map> getAuthorityDeviceHead(@Param("institutionId") String institutionId, @Param("userCode") String userCode);
 
     /**
      * 查询监测机构下权限设备
