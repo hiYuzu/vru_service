@@ -13,16 +13,6 @@ import java.util.List;
 public interface DeviceDao {
 
     /**
-     * 查询监测机构下权限设备
-     *
-     * @param institutionId
-     * @param userCode
-     * @return
-     */
-    List<BaseDeviceDO> selectDeviceByInstitution(@Param("institutionId") Long institutionId,
-                                                 @Param("userCode") String userCode);
-
-    /**
      * 查询监测设备个数
      *
      * @param deviceDO

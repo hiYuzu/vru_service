@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tcb.vru_service.dao.AlarmDao">
+
+    <resultMap id="dataAlarmMap" type="com.tcb.vru_service.model.DataAlarmVO">
+        <result column="institution_name" property="institution" jdbcType="VARCHAR"/>
+        <result column="device_name" property="deviceName" jdbcType="VARCHAR"/>
+        <result column="institution_address" property="institutionAddress" jdbcType="VARCHAR"/>
+        <result column="dictionary_name" property="alarmName" jdbcType="VARCHAR"/>
+        <result column="level_name" property="levelName" jdbcType="VARCHAR"/>
+        <result column="level_info" property="alarmInfo" jdbcType="VARCHAR"/>
+        <result column="alarm_time" property="alarmTime" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <resultMap id="alarmDictionaryMap" type="java.util.Map">
+        <result column="dictionary_code" property="value" jdbcType="VARCHAR"/>
+        <result column="dictionary_name" property="label" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="getAlarmDictionary" resultMap="alarmDictionaryMap">
+        SELECT
+        dictionary_code,
+        dictionary_name
+        FROM
+        util_dictionary ud
+        WHERE ud.dictionary_type = "alarm_code"
+    </select>
+
+    <!-- 查询报警设置个数 -->
+    <select id="getAlarmDataCount" resultType="java.lang.Integer">
+        SELECT COUNT(1)
+        FROM data_alarm da
+        <if test="dataAlarmDO != null">
+            <where>
+                <if test="dataAlarmDO.deviceCode != null and dataAlarmDO.deviceCode != ''">
+                    AND da.device_code = #{dataAlarmDO.deviceCode}
+                </if>
+                <if test="dataAlarmDO.alarmCode != null and dataAlarmDO.alarmCode != ''">
+                    AND da.alarm_code = #{dataAlarmDO.alarmCode}
+                </if>
+                <if test="dataAlarmDO.beginTime != null and dataAlarmDO.endTime != null">
+                    AND alarm_time BETWEEN #{dataAlarmDO.beginTime} AND #{dataAlarmDO.endTime}
+                </if>
+            </where>
+        </if>
+    </select>
+
+    <!-- 查询报警设置数据 -->
+    <select id="getAlarmShowData" resultMap="dataAlarmMap">
+        SELECT
+        institution_name,
+        device_name,
+        institution_address,
+        dictionary_name,
+        level_name,
+        alarm_info,
+        alarm_time
+        FROM data_alarm da
+        LEFT JOIN vru_core.alarm_level AS al ON da.level_no = al.level_no
+        LEFT JOIN vru_core.base_device AS bd ON da.device_code = bd.device_code
+        LEFT JOIN vru_core.base_institution AS bi ON bd.institution_id = bi.institution_id
+        LEFT JOIN vru_core.util_dictionary AS ud ON da.alarm_code = ud.dictionary_code
+        <if test="dataAlarmDO != null">
+            <where>
+                <if test="dataAlarmDO.deviceCode != null and dataAlarmDO.deviceCode != ''">
+                    AND da.device_code = #{dataAlarmDO.deviceCode}
+                </if>
+                <if test="dataAlarmDO.alarmCode != null and dataAlarmDO.alarmCode != ''">
+                    AND da.alarm_code = #{dataAlarmDO.alarmCode}
+                </if>
+                <if test="dataAlarmDO.beginTime != null and dataAlarmDO.endTime != null">
+                    AND alarm_time BETWEEN #{dataAlarmDO.beginTime} AND #{dataAlarmDO.endTime}
+                </if>
+            </where>
+            <if test="dataAlarmDO.rowIndex != null and dataAlarmDO.rowCount != null">
+                LIMIT #{dataAlarmDO.rowIndex}, #{dataAlarmDO.rowCount}
+            </if>
+        </if>
+    </select>
+</mapper>

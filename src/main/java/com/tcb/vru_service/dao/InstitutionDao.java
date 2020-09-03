@@ -5,12 +5,20 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 监测机构DAO
  */
 @Mapper
 public interface InstitutionDao {
+
+    /**
+     * 获取发油库
+     * @param userCode
+     * @return
+     */
+    List<Map> getInstitutionHead();
 
     /**
      * 查询监测机构个数

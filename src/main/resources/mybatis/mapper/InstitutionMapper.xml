@@ -18,6 +18,18 @@
         <result column="operate_time" property="operateTime" jdbcType="TIMESTAMP"/>
     </resultMap>
 
+    <resultMap id="InstitutionBaseInfo" type="java.util.Map">
+        <result column="institution_id" property="value" jdbcType="VARCHAR"/>
+        <result column="institution_name" property="label" jdbcType="VARCHAR"/>
+    </resultMap>
+    <!--获取权限设备基本信息-->
+    <select id="getInstitutionHead" resultMap="InstitutionBaseInfo">
+        SELECT
+        institution_id,
+        institution_name
+        FROM base_institution bi
+    </select>
+
     <!-- 查询监测机构个数 -->
     <select id="countInstitution" resultType="java.lang.Integer">
         SELECT COUNT(1)
