@@ -18,7 +18,21 @@
         <result column="data_type" property="dataType" jdbcType="INTEGER"/>
         <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
         <result column="begin_time" property="beginTime" jdbcType="TIMESTAMP"/>
-        <result column="begin_time" property="endTime" jdbcType="TIMESTAMP"/>
+        <result column="end_time" property="endTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <resultMap id="dataStorageOilResultMap" type="com.tcb.vru_service.pojo.DataStorageOilDO">
+        <id column="data_id" property="dataId" jdbcType="INTEGER" />
+        <result column="device_id" property="deviceId" jdbcType="INTEGER"/>
+        <result column="data_fysj" property="dataFysj" jdbcType="VARCHAR"/>
+        <result column="data_yplx" property="dataYplx" jdbcType="VARCHAR"/>
+        <result column="data_yply" property="dataYply" jdbcType="VARCHAR"/>
+        <result column="data_ypqc" property="dataYpqc" jdbcType="VARCHAR"/>
+        <result column="data_fytj" property="dataFytj" jdbcType="DOUBLE"/>
+        <result column="data_hqtj" property="dataHqtj" jdbcType="DOUBLE"/>
+        <result column="data_fyqyb" property="dataFyqyb" jdbcType="DOUBLE"/>
+        <result column="data_sjxtyl" property="dataSjxtyl" jdbcType="DOUBLE"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <!-- 查询数据个数 -->
@@ -26,7 +40,7 @@
         SELECT COUNT(1)
         FROM data_storage ds
         WHERE ds.device_id IN
-        <foreach collection="listDataId" item="item" open="(" separator="," close=")">
+        <foreach collection="listDeviceId" item="item" open="(" separator="," close=")">
             #{item,jdbcType = INTEGER}
         </foreach>
         <if test="listThingCode.size()>0">
@@ -68,7 +82,7 @@
             end_time
         FROM data_storage ds
         WHERE ds.device_id IN
-        <foreach collection="listDataId" item="item" open="(" separator="," close=")">
+        <foreach collection="listDeviceId" item="item" open="(" separator="," close=")">
             #{item,jdbcType = INTEGER}
         </foreach>
         <if test="listThingCode.size()>0">
@@ -100,6 +114,39 @@
         AND data_type = #{dataType}
         AND begin_time = #{beginTime}
     </update>
+
+    <!-- 查询发油信息 -->
+    <select id="listStorageOil" resultMap="dataStorageOilResultMap">
+        SELECT
+            dso.data_id,
+            dso.device_id,
+            dso.data_fysj,
+            dso.data_yplx,
+            dso.data_yply,
+            dso.data_ypqc,
+            dso.data_fytj,
+            dso.data_hqtj,
+            dso.data_fyqyb,
+            dso.data_sjxtyl,
+            dso.update_time
+        FROM data_storage_oil dso
+        <where>
+            <if test="institutionId != null">
+                dso.device_id IN (SELECT device_id FROM base_device WHERE dso.institution_id=#{institutionId})
+            </if>
+            <if test="beginTime != null">
+                AND TIMESTAMPDIFF(SECOND,#{beginTime,jdbcType = TIMESTAMP},dso.data_fysj) &gt;= 0
+            </if>
+            <if test="endTime != null">
+                AND TIMESTAMPDIFF(SECOND,dso.data_fysj,#{endTime,jdbcType = TIMESTAMP}) &gt;= 0
+            </if>
+            <if test="dataStorageOilDO != null">
+                <if test="dataStorageOilDO.deviceId != null">
+                    AND dso.device_id = #{dataStorageOilDO.deviceId}
+                </if>
+            </if>
+        </where>
+    </select>
 
 
 </mapper>

@@ -1,6 +1,7 @@
 package com.tcb.vru_service.dao;
 
 import com.tcb.vru_service.pojo.DataStorageDO;
+import com.tcb.vru_service.pojo.DataStorageOilDO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -16,7 +17,7 @@ public interface StorageDao {
     /**
      * 查询数据个数
      *
-     * @param listDataId
+     * @param listDeviceId
      * @param listThingCode
      * @param dataType
      * @param listThingFlag
@@ -24,17 +25,17 @@ public interface StorageDao {
      * @param endTime
      * @return
      */
-    int countStorage(@Param("listDataId") List<Integer> listDataId,
-                                     @Param("listThingCode") List<String> listThingCode,
-                                     @Param("dataType") Integer dataType,
-                                     @Param("listThingFlag") List<String> listThingFlag,
-                                     @Param("beginTime") Timestamp beginTime,
-                                     @Param("endTime") Timestamp endTime);
+    int countStorage(@Param("listDeviceId") List<Integer> listDeviceId,
+                     @Param("listThingCode") List<String> listThingCode,
+                     @Param("dataType") Integer dataType,
+                     @Param("listThingFlag") List<String> listThingFlag,
+                     @Param("beginTime") Timestamp beginTime,
+                     @Param("endTime") Timestamp endTime);
 
     /**
      * 查询数据
      *
-     * @param listDataId
+     * @param listDeviceId
      * @param listThingCode
      * @param dataType
      * @param listThingFlag
@@ -44,7 +45,7 @@ public interface StorageDao {
      * @param rowCount
      * @return
      */
-    List<DataStorageDO> listStorage(@Param("listDataId") List<Long> listDataId,
+    List<DataStorageDO> listStorage(@Param("listDeviceId") List<Integer> listDeviceId,
                                     @Param("listThingCode") List<String> listThingCode,
                                     @Param("dataType") Integer dataType,
                                     @Param("listThingFlag") List<String> listThingFlag,
@@ -62,9 +63,23 @@ public interface StorageDao {
      * @param thingValue
      * @return
      */
-    int updateStorage(@Param("dataId") Integer dataId,
+    int updateStorage(@Param("dataId") Long dataId,
                       @Param("dataType") Integer dataType,
                       @Param("beginTime") Timestamp beginTime,
                       @Param("thingValue") Double thingValue);
+
+    /**
+     * 查询发油信息
+     *
+     * @param dataStorageOilDO
+     * @param institutionId
+     * @param beginTime
+     * @param endTime
+     * @return
+     */
+    List<DataStorageOilDO> listStorageOil(@Param("dataStorageOilDO") DataStorageOilDO dataStorageOilDO,
+                                          @Param("institutionId") Long institutionId,
+                                          @Param("beginTime") Timestamp beginTime,
+                                          @Param("endTime") Timestamp endTime);
 
 }

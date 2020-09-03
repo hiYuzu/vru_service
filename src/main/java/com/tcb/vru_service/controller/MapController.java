@@ -30,5 +30,19 @@ public class MapController {
         return new ResultVO(pointVOList);
     }
 
+    /**
+     * 获取监控数据（污染物数据，预警报警数据，发油信息）
+     * @param institutionId
+     * @return
+     */
+    @PostMapping(value = "getInstitutionData")
+    public ResultVO getInstitutionData(String institutionId){
+        if(!StringUtils.isEmpty(institutionId)){
+            //TODO 污染物数据，预警报警数据，发油信息总计三种监控数据
+
+        }
+        return null;
+    }
+
 
 }

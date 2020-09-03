@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 @Service
 public class HistoryServiceImpl implements IHistoryService {
     @Resource
-    private InstitutionDao institutionDao;
+    private InstitutionDao InstitutionDao;
     @Resource
     private DeviceDao deviceDao;
     @Resource
@@ -41,7 +41,7 @@ public class HistoryServiceImpl implements IHistoryService {
         List<Option<Integer>> deviceData = new ArrayList<>();
         List<Option<String>> thingData = new ArrayList<>();
 
-        List<BaseInstitutionDO> listInstitution = institutionDao.listInstitution(null,null);
+        List<BaseInstitutionDO> listInstitution = InstitutionDao.listInstitution(null,null);
         if (listInstitution.size() > 0) {
             institutionData =
                     listInstitution.stream().map(institution -> new Option<>(institution.getInstitutionId(), institution.getInstitutionName(), null)).collect(Collectors.toList());

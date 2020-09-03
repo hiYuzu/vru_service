@@ -39,12 +39,18 @@ public class CommonFunction {
      * @param baseDeviceDOList
      * @return
      */
-    public static List<Integer> getDeviceIdList(List<BaseDeviceDO> baseDeviceDOList) {
+    public static List<Integer> getDeviceIdList(List<BaseDeviceDO> baseDeviceDOList,Integer fieldId) {
         List<Integer> deviceIdList = new ArrayList<>();
         if (baseDeviceDOList != null && baseDeviceDOList.size() > 0) {
             for (BaseDeviceDO baseDeviceDO : baseDeviceDOList) {
                 if (baseDeviceDO != null && baseDeviceDO.getDeviceId() != null) {
-                    deviceIdList.add(baseDeviceDO.getDeviceId());
+                    if(fieldId != null){
+                        if(baseDeviceDO.getFieldId() == fieldId){
+                            deviceIdList.add(baseDeviceDO.getDeviceId());
+                        }
+                    }else{
+                        deviceIdList.add(baseDeviceDO.getDeviceId());
+                    }
                 }
             }
         }

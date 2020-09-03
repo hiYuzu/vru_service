@@ -1,6 +1,5 @@
 package com.tcb.vru_service.dao;
 
-import com.tcb.vru_service.pojo.BaseDeviceDO;
 import com.tcb.vru_service.pojo.BaseDeviceThingDO;
 import com.tcb.vru_service.pojo.BaseThingDO;
 import org.apache.ibatis.annotations.Mapper;
@@ -13,6 +12,13 @@ import java.util.List;
  */
 @Mapper
 public interface ThingDao {
+
+    /**
+     * 根据监测物质编码查询名称
+     * @param thingCode
+     * @return
+     */
+    String selectThingNameByCode(@Param("thingCode") String thingCode);
 
     /**
      * 查询监测因子个数

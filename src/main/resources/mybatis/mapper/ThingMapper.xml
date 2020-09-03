@@ -17,6 +17,14 @@
         <result column="device_id" property="deviceId" jdbcType="BIGINT"/>
     </resultMap>
 
+    <!-- 根据监测物质编码查询名称 -->
+    <select id="selectThingNameByCode" resultType="java.lang.String">
+        SELECT thing_name
+          FROM base_thing
+         WHERE thing_code = #{thingCode}
+         LIMIT 0,1
+    </select>
+
     <!-- 查询监测因子个数 -->
     <select id="countThing" resultType="java.lang.Integer">
         SELECT COUNT(1)

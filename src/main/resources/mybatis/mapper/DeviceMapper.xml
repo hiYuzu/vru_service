@@ -25,6 +25,26 @@
         <result column="operate_time" property="operateTime" jdbcType="TIMESTAMP"/>
     </resultMap>
 
+    <!-- 查询监测机构下权限设备 -->
+    <select id="selectDeviceByInstitution" resultMap="baseDeviceResultMap">
+        SELECT DISTINCT
+            bd.device_id,
+            bd.device_code,
+            bd.device_mn,
+            bd.device_name,
+            bd.field_id,
+            manufacturer_id,
+            institution_id
+        FROM base_device bd
+        WHERE bd.institution_id = #{institutionId}
+        AND bd.device_code IN (
+                                SELECT device_code
+                                FROM system_role_device srd
+                                INNER JOIN system_role_user sru ON srd.role_code = sru.role_code
+                                WHERE sru.user_code = #{userCode}
+                               )
+    </select>
+
     <!-- 查询监测设备个数 -->
     <select id="countDevice" resultType="java.lang.Integer">
         SELECT COUNT(1)
