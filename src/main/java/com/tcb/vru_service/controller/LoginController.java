@@ -39,18 +39,18 @@ public class LoginController {
      * @throws Exception
      */
     @PostMapping(value = "/vruApi/login")
-    public ResultVO login(@RequestParam(value = "username") String userCode,
-                          @RequestParam(value = "password") String userPassword,
-                          /*@RequestParam(value = "validCode") String validCode,*/
+    public ResultVO login(@RequestParam(value = "userCode") String userCode,
+                          @RequestParam(value = "userPassword") String userPassword,
+                          @RequestParam(value = "validCode") String validCode,
                           HttpServletRequest request) throws Exception {
-        /*Object object = request.getSession(true).getAttribute("_validCode");
+        Object object = request.getSession(true).getAttribute("_validCode");
         if (object == null) {
             return new ResultVO(false, "login error !");
         }
         String yzm = object.toString().toLowerCase();
         if (!yzm.equals(validCode.toLowerCase())) {
             return new ResultVO(false, "验证信息错误，请刷新登陆页后尝试!");
-        }*/
+        }
         if (StringUtils.isEmpty(userCode) || StringUtils.isEmpty(userPassword)) {
             return new ResultVO(false, "用户名或密码不能为空!");
         }
