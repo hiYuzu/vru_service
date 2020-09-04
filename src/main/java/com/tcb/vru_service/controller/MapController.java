@@ -1,15 +1,18 @@
 package com.tcb.vru_service.controller;
 
+import com.tcb.vru_service.model.PointDataVO;
 import com.tcb.vru_service.model.PointVO;
 import com.tcb.vru_service.response.ResultVO;
 import com.tcb.vru_service.service.IMapService;
 import com.tcb.vru_service.util.CommonFunction;
+import com.tcb.vru_service.util.DateUtil;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.sql.Timestamp;
 import java.util.List;
 
 @RestController
@@ -20,11 +23,12 @@ public class MapController {
 
     /**
      * 获取坐标点信息
+     *
      * @param request
      * @return
      */
     @PostMapping(value = "getMapPoint")
-    public ResultVO<List<PointVO>> getMapPoint(HttpServletRequest request){
+    public ResultVO<List<PointVO>> getMapPoint(HttpServletRequest request) {
         String userCode = CommonFunction.getLoginUserCode(request);
         List<PointVO> pointVOList = mapService.getMapPoint(userCode);
         return new ResultVO(pointVOList);
@@ -32,16 +36,27 @@ public class MapController {
 
     /**
      * 获取监控数据（污染物数据，预警报警数据，发油信息）
+     *
      * @param institutionId
      * @return
      */
     @PostMapping(value = "getInstitutionData")
-    public ResultVO getInstitutionData(String institutionId){
-        if(!StringUtils.isEmpty(institutionId)){
-            //TODO 污染物数据，预警报警数据，发油信息总计三种监控数据
-
+    public ResultVO<PointDataVO> getInstitutionData(String institutionId, String beginTime, String endTime, HttpServletRequest request) {
+        ResultVO<PointDataVO> resultVO;
+        if (!StringUtils.isEmpty(institutionId) && !StringUtils.isEmpty(beginTime) && !StringUtils.isEmpty(endTime)) {
+            String userCode = CommonFunction.getLoginUserCode(request);
+            Timestamp beginTimestamp = DateUtil.StringToTimestamp(beginTime, DateUtil.DATA_TIME_SECOND);
+            Timestamp endTimestamp = DateUtil.StringToTimestamp(endTime, DateUtil.DATA_TIME_SECOND);
+            PointDataVO pointDataVO = mapService.getPointData(Long.valueOf(institutionId), userCode, beginTimestamp, endTimestamp);
+            if (pointDataVO != null) {
+                resultVO = new ResultVO(pointDataVO);
+            } else {
+                resultVO = new ResultVO(false, "获取监测信息失败！");
+            }
+        } else {
+            resultVO = new ResultVO(false, "查询参数不能为空！");
         }
-        return null;
+        return resultVO;
     }
 
 
