@@ -43,7 +43,7 @@
         <foreach collection="listDeviceId" item="item" open="(" separator="," close=")">
             #{item,jdbcType = INTEGER}
         </foreach>
-        <if test="listThingCode.size()>0">
+        <if test="listThingCode != null and listThingCode.size()>0">
             AND ds.thing_code IN
             <foreach collection="listThingCode" item="item" open="(" separator="," close=")">
                 #{item,jdbcType = INTEGER}
@@ -52,7 +52,7 @@
         <if test="dataType != null">
             AND ds.data_type = #{dataType}
         </if>
-        <if test="listThingFlag.size()>0">
+        <if test="listThingFlag!= null and listThingFlag.size()>0">
             AND ds.thing_flag IN
             <foreach collection="listThingFlag" item="item" open="(" separator="," close=")">
                 #{item,jdbcType = INTEGER}
@@ -85,7 +85,7 @@
         <foreach collection="listDeviceId" item="item" open="(" separator="," close=")">
             #{item,jdbcType = INTEGER}
         </foreach>
-        <if test="listThingCode.size()>0">
+        <if test="listThingCode != null and listThingCode.size()>0">
             AND ds.thing_code IN
             <foreach collection="listThingCode" item="item" open="(" separator="," close=")">
                 #{item,jdbcType = INTEGER}
@@ -94,7 +94,7 @@
         <if test="dataType != null">
             AND ds.data_type = #{dataType}
         </if>
-        <if test="listThingFlag.size()>0">
+        <if test="listThingFlag != null and listThingFlag.size()>0">
             AND ds.thing_flag IN
             <foreach collection="listThingFlag" item="item" open="(" separator="," close=")">
                 #{item,jdbcType = INTEGER}
@@ -131,8 +131,11 @@
             dso.update_time
         FROM data_storage_oil dso
         <where>
-            <if test="institutionId != null">
-                dso.device_id IN (SELECT device_id FROM base_device WHERE dso.institution_id=#{institutionId})
+            <if test="listDeviceId != null and listDeviceId.size()>0">
+                dso.device_id IN
+                <foreach collection="listDeviceId" item="item" open="(" separator="," close=")">
+                    #{item,jdbcType = INTEGER}
+                </foreach>
             </if>
             <if test="beginTime != null">
                 AND TIMESTAMPDIFF(SECOND,#{beginTime,jdbcType = TIMESTAMP},dso.data_fysj) &gt;= 0

@@ -72,13 +72,13 @@ public interface StorageDao {
      * 查询发油信息
      *
      * @param dataStorageOilDO
-     * @param institutionId
+     * @param listDeviceId
      * @param beginTime
      * @param endTime
      * @return
      */
     List<DataStorageOilDO> listStorageOil(@Param("dataStorageOilDO") DataStorageOilDO dataStorageOilDO,
-                                          @Param("institutionId") Long institutionId,
+                                          @Param("listDeviceId") List<Integer> listDeviceId,
                                           @Param("beginTime") Timestamp beginTime,
                                           @Param("endTime") Timestamp endTime);
 

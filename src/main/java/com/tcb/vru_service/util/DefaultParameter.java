@@ -33,4 +33,9 @@ public class DefaultParameter {
      */
     public static final int RECENT_DAYS = 30;
 
+    /**
+     * 毫秒小时数值
+     */
+    public static final int MILLISECOND_ONE_HOUR = 1000 * 60 * 60;
+
 }
