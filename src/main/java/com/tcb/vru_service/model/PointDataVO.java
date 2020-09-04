@@ -12,16 +12,16 @@ import java.util.TreeMap;
  */
 public class PointDataVO {
 
-    private TreeMap<String, LinkedHashMap<String, Double>> monitorData;
+    private TreeMap<String, LinkedHashMap<String, Double>> monitorVOMap;
     private List<DataStorageOilVO> oilVOList;
     private List<PointDataAlarmVO> alarmVOList;
 
-    public TreeMap<String, LinkedHashMap<String, Double>> getMonitorData() {
-        return monitorData;
+    public TreeMap<String, LinkedHashMap<String, Double>> getMonitorVOMap() {
+        return monitorVOMap;
     }
 
-    public void setMonitorData(TreeMap<String, LinkedHashMap<String, Double>> monitorData) {
-        this.monitorData = monitorData;
+    public void setMonitorVOMap(TreeMap<String, LinkedHashMap<String, Double>> monitorVOMap) {
+        this.monitorVOMap = monitorVOMap;
     }
 
     public List<DataStorageOilVO> getOilVOList() {

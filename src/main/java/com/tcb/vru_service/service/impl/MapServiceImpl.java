@@ -112,14 +112,14 @@ public class MapServiceImpl implements IMapService {
                 }
             }
         }
-        pointDataVO.setMonitorData(treeMonitorMap);
+        pointDataVO.setMonitorVOMap(treeMonitorMap);
         //2.报警信息监测数据
         List<PointDataAlarmVO> alarmVOList = new ArrayList<>();
         //TODO 需要整合报警模块代码后进行数据复制
         pointDataVO.setAlarmVOList(alarmVOList);
         //3.发油监测数据
         List<DataStorageOilVO> dataStorageOilVOList = new ArrayList<>();
-        List<DataStorageOilDO> storageOilDOList = storageDao.listStorageOil(null, institutionId, beginTime, endTime);
+        List<DataStorageOilDO> storageOilDOList = storageDao.listStorageOil(null, deviceIdList, beginTime, endTime);
         if (storageOilDOList != null && storageOilDOList.size() > 0) {
             for (DataStorageOilDO temp : storageOilDOList) {
                 DataStorageOilVO dataStorageOilVO = new DataStorageOilVO();
