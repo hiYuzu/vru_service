@@ -27,7 +27,7 @@ public interface DeviceDao {
      * @param deviceCodes
      * @return
      */
-    List<Map<String, String>> onOffLineStatistic(@Param("deviceCodes") List<String> deviceCodes);
+    List<Map> onOffLineStatistic(@Param("deviceCodes") List<String> deviceCodes);
 
     /**
      * 查询监测机构下权限设备

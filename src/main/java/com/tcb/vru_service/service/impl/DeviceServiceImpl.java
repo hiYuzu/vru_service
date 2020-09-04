@@ -34,12 +34,15 @@ public class DeviceServiceImpl implements IDeviceService {
         for (Map device : devices) {
             deviceCodes.add((String) device.get("value"));
         }
-        List<Map<String, String>> mapList = deviceDao.onOffLineStatistic(deviceCodes);
+        List<Map> mapList = deviceDao.onOffLineStatistic(deviceCodes);
         Map<String, Integer> result = new HashMap<>(6);
+        result.put("N", 0);
+        result.put("D", 0);
+        result.put("O", 0);
         int resultCount = 0;
-        for (Map<String, String> map : mapList) {
-            int count = Integer.parseInt(map.get("statusCount"));
-            result.put(map.get("deviceStatus"), count);
+        for (Map map : mapList) {
+            int count = (int) map.get("statusCount");
+            result.put((String) map.get("deviceStatus"), count);
             resultCount += count;
         }
         result.put("others", deviceCodes.size() - resultCount);
