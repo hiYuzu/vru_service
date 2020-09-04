@@ -23,6 +23,13 @@ public interface DeviceDao {
     List<Map> getAuthorityDeviceHead(@Param("institutionId") String institutionId, @Param("userCode") String userCode);
 
     /**
+     * 统计设备状态
+     * @param deviceCodes
+     * @return
+     */
+    List<Map<String, String>> onOffLineStatistic(@Param("deviceCodes") List<String> deviceCodes);
+
+    /**
      * 查询监测机构下权限设备
      *
      * @param institutionId

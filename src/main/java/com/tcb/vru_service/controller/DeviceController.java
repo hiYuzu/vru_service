@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author hiYuzu
@@ -22,5 +23,13 @@ public class DeviceController {
     public ResultVO<List> getAuthorityDeviceHead(String institutionId, HttpServletRequest request) {
         String userCode = String.valueOf(request.getAttribute("subject"));
         return new ResultVO<>(deviceService.getAuthorityDeviceHead(institutionId, userCode));
+    }
+
+
+    @PostMapping("/onOffLineStatistic")
+    public ResultVO<Map<String, Integer>> onOffLineStatistic(HttpServletRequest request) {
+        String userCode = String.valueOf(request.getAttribute("subject"));
+        List<Map> devices = deviceService.getAuthorityDeviceHead(null, userCode);
+        return new ResultVO<>(deviceService.onOffLineStatistic(devices));
     }
 }
