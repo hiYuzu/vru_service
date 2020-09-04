@@ -17,4 +17,11 @@ public interface IDeviceService {
      */
     List<Map> getAuthorityDeviceHead(String institutionId, String userCode);
 
+    /**
+     * 统计设备状态
+     * @param devices list map
+     * @return
+     */
+    Map<String, Integer> onOffLineStatistic(List<Map> devices);
+
 }

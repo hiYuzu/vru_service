@@ -58,7 +58,24 @@
         FROM system_role_device srd
         LEFT JOIN base_device bd ON srd.device_code = bd.device_code
         WHERE srd.role_code = #{userCode}
-        AND bd.institution_id = #{institutionId}
+        <if test="institutionId != null">
+            AND bd.institution_id = #{institutionId}
+        </if>
+    </select>
+
+    <!-- 统计设备状态 -->
+    <select id="onOffLineStatistic" resultType="java.util.Map">
+        SELECT
+        device_status AS deviceStatus,
+        COUNT(*) AS statusCount
+        FROM
+        base_device
+        WHERE device_code IN
+        <foreach collection="deviceCodes" item="item" open="(" separator="," close=")">
+            #{item, jdbcType = INTEGER}
+        </foreach>
+        GROUP BY
+        device_status
     </select>
 
     <!-- 查询监测设备个数 -->
