@@ -117,8 +117,8 @@ public class MapServiceImpl implements IMapService {
         List<PointDataAlarmVO> alarmVOList = new ArrayList<>();
         //TODO 需要整合报警模块代码后进行数据复制
         for (int i = 0; i < 20; i++) {
+            PointDataAlarmVO pointDataAlarmVO = new PointDataAlarmVO();
             if (i % 2 == 0) {
-                PointDataAlarmVO pointDataAlarmVO = new PointDataAlarmVO();
                 pointDataAlarmVO.setAlarmId("11111111213123");
                 pointDataAlarmVO.setAlarmCode("GLR");
                 pointDataAlarmVO.setAlarmName("气液比");
@@ -126,8 +126,7 @@ public class MapServiceImpl implements IMapService {
                 pointDataAlarmVO.setLevelNo("1");
                 pointDataAlarmVO.setDeviceCode("testdevice1");
                 pointDataAlarmVO.setDeviceCode("油气回收设备");
-            }else if(i % 3 == 0){
-                PointDataAlarmVO pointDataAlarmVO = new PointDataAlarmVO();
+            } else if (i % 3 == 0) {
                 pointDataAlarmVO.setAlarmId("222222222334454");
                 pointDataAlarmVO.setAlarmCode("NMHC");
                 pointDataAlarmVO.setAlarmName("NMHC浓度");
@@ -135,8 +134,7 @@ public class MapServiceImpl implements IMapService {
                 pointDataAlarmVO.setLevelNo("2");
                 pointDataAlarmVO.setDeviceCode("testdevice1");
                 pointDataAlarmVO.setDeviceCode("油气回收设备");
-            }else if(i % 5 == 0){
-                PointDataAlarmVO pointDataAlarmVO = new PointDataAlarmVO();
+            } else if (i % 5 == 0) {
                 pointDataAlarmVO.setAlarmId("4444444444444344");
                 pointDataAlarmVO.setAlarmCode("PRE");
                 pointDataAlarmVO.setAlarmName("压力");
@@ -144,8 +142,7 @@ public class MapServiceImpl implements IMapService {
                 pointDataAlarmVO.setLevelNo("1");
                 pointDataAlarmVO.setDeviceCode("testdevice1");
                 pointDataAlarmVO.setDeviceCode("油气回收设备");
-            }else if(i % 7 == 0){
-                PointDataAlarmVO pointDataAlarmVO = new PointDataAlarmVO();
+            } else if (i % 7 == 0) {
                 pointDataAlarmVO.setAlarmId("666676767676");
                 pointDataAlarmVO.setAlarmCode("GLR");
                 pointDataAlarmVO.setAlarmName("气液比");
@@ -153,8 +150,7 @@ public class MapServiceImpl implements IMapService {
                 pointDataAlarmVO.setLevelNo("2");
                 pointDataAlarmVO.setDeviceCode("testdevice1");
                 pointDataAlarmVO.setDeviceCode("油气回收设备");
-            }else if(i % 9 == 0){
-                PointDataAlarmVO pointDataAlarmVO = new PointDataAlarmVO();
+            } else if (i % 9 == 0) {
                 pointDataAlarmVO.setAlarmId("888888888888567");
                 pointDataAlarmVO.setAlarmCode("PRE");
                 pointDataAlarmVO.setAlarmName("压力");
@@ -162,6 +158,9 @@ public class MapServiceImpl implements IMapService {
                 pointDataAlarmVO.setLevelNo("2");
                 pointDataAlarmVO.setDeviceCode("testdevice1");
                 pointDataAlarmVO.setDeviceCode("油气回收设备");
+            }
+            if (!StringUtils.isEmpty(pointDataAlarmVO.getAlarmId())) {
+                alarmVOList.add(pointDataAlarmVO);
             }
         }
         pointDataVO.setAlarmVOList(alarmVOList);
