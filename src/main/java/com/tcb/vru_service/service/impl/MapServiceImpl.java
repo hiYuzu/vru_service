@@ -125,7 +125,7 @@ public class MapServiceImpl implements IMapService {
                 pointDataAlarmVO.setAlarmInfo("气液比小于0.9预警");
                 pointDataAlarmVO.setLevelNo("1");
                 pointDataAlarmVO.setDeviceCode("testdevice1");
-                pointDataAlarmVO.setDeviceCode("油气回收设备");
+                pointDataAlarmVO.setDeviceName("油气回收设备");
             } else if (i % 3 == 0) {
                 pointDataAlarmVO.setAlarmId("222222222334454");
                 pointDataAlarmVO.setAlarmCode("NMHC");
@@ -133,7 +133,7 @@ public class MapServiceImpl implements IMapService {
                 pointDataAlarmVO.setAlarmInfo("NMHC浓度报警");
                 pointDataAlarmVO.setLevelNo("2");
                 pointDataAlarmVO.setDeviceCode("testdevice1");
-                pointDataAlarmVO.setDeviceCode("油气回收设备");
+                pointDataAlarmVO.setDeviceName("油气回收设备");
             } else if (i % 5 == 0) {
                 pointDataAlarmVO.setAlarmId("4444444444444344");
                 pointDataAlarmVO.setAlarmCode("PRE");
@@ -141,7 +141,7 @@ public class MapServiceImpl implements IMapService {
                 pointDataAlarmVO.setAlarmInfo("压力预警");
                 pointDataAlarmVO.setLevelNo("1");
                 pointDataAlarmVO.setDeviceCode("testdevice1");
-                pointDataAlarmVO.setDeviceCode("油气回收设备");
+                pointDataAlarmVO.setDeviceName("油气回收设备");
             } else if (i % 7 == 0) {
                 pointDataAlarmVO.setAlarmId("666676767676");
                 pointDataAlarmVO.setAlarmCode("GLR");
@@ -149,7 +149,7 @@ public class MapServiceImpl implements IMapService {
                 pointDataAlarmVO.setAlarmInfo("气液比小于0.9报警警");
                 pointDataAlarmVO.setLevelNo("2");
                 pointDataAlarmVO.setDeviceCode("testdevice1");
-                pointDataAlarmVO.setDeviceCode("油气回收设备");
+                pointDataAlarmVO.setDeviceName("油气回收设备");
             } else if (i % 9 == 0) {
                 pointDataAlarmVO.setAlarmId("888888888888567");
                 pointDataAlarmVO.setAlarmCode("PRE");
@@ -157,7 +157,7 @@ public class MapServiceImpl implements IMapService {
                 pointDataAlarmVO.setAlarmInfo("压力报警");
                 pointDataAlarmVO.setLevelNo("2");
                 pointDataAlarmVO.setDeviceCode("testdevice1");
-                pointDataAlarmVO.setDeviceCode("油气回收设备");
+                pointDataAlarmVO.setDeviceName("油气回收设备");
             }
             if (!StringUtils.isEmpty(pointDataAlarmVO.getAlarmId())) {
                 alarmVOList.add(pointDataAlarmVO);
