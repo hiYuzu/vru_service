@@ -10,7 +10,9 @@ public class PointDataAlarmVO {
 
     private String alarmId;
     private String alarmCode;
+    private String alarmName;
     private String deviceCode;
+    private String deviceName;
     private String alarmInfo;
     private String alarmTime;
     private String levelNo;
@@ -31,12 +33,28 @@ public class PointDataAlarmVO {
         this.alarmCode = alarmCode;
     }
 
+    public String getAlarmName() {
+        return alarmName;
+    }
+
+    public void setAlarmName(String alarmName) {
+        this.alarmName = alarmName;
+    }
+
     public String getDeviceCode() {
         return deviceCode;
     }
 
     public void setDeviceCode(String deviceCode) {
         this.deviceCode = deviceCode;
+    }
+
+    public String getDeviceName() {
+        return deviceName;
+    }
+
+    public void setDeviceName(String deviceName) {
+        this.deviceName = deviceName;
     }
 
     public String getAlarmInfo() {
@@ -62,4 +80,5 @@ public class PointDataAlarmVO {
     public void setLevelNo(String levelNo) {
         this.levelNo = levelNo;
     }
+
 }

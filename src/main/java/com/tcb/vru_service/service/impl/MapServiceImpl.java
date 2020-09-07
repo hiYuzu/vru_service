@@ -116,6 +116,54 @@ public class MapServiceImpl implements IMapService {
         //2.报警信息监测数据
         List<PointDataAlarmVO> alarmVOList = new ArrayList<>();
         //TODO 需要整合报警模块代码后进行数据复制
+        for (int i = 0; i < 20; i++) {
+            if (i % 2 == 0) {
+                PointDataAlarmVO pointDataAlarmVO = new PointDataAlarmVO();
+                pointDataAlarmVO.setAlarmId("11111111213123");
+                pointDataAlarmVO.setAlarmCode("GLR");
+                pointDataAlarmVO.setAlarmName("气液比");
+                pointDataAlarmVO.setAlarmInfo("气液比小于0.9预警");
+                pointDataAlarmVO.setLevelNo("1");
+                pointDataAlarmVO.setDeviceCode("testdevice1");
+                pointDataAlarmVO.setDeviceCode("油气回收设备");
+            }else if(i % 3 == 0){
+                PointDataAlarmVO pointDataAlarmVO = new PointDataAlarmVO();
+                pointDataAlarmVO.setAlarmId("222222222334454");
+                pointDataAlarmVO.setAlarmCode("NMHC");
+                pointDataAlarmVO.setAlarmName("NMHC浓度");
+                pointDataAlarmVO.setAlarmInfo("NMHC浓度报警");
+                pointDataAlarmVO.setLevelNo("2");
+                pointDataAlarmVO.setDeviceCode("testdevice1");
+                pointDataAlarmVO.setDeviceCode("油气回收设备");
+            }else if(i % 5 == 0){
+                PointDataAlarmVO pointDataAlarmVO = new PointDataAlarmVO();
+                pointDataAlarmVO.setAlarmId("4444444444444344");
+                pointDataAlarmVO.setAlarmCode("PRE");
+                pointDataAlarmVO.setAlarmName("压力");
+                pointDataAlarmVO.setAlarmInfo("压力预警");
+                pointDataAlarmVO.setLevelNo("1");
+                pointDataAlarmVO.setDeviceCode("testdevice1");
+                pointDataAlarmVO.setDeviceCode("油气回收设备");
+            }else if(i % 7 == 0){
+                PointDataAlarmVO pointDataAlarmVO = new PointDataAlarmVO();
+                pointDataAlarmVO.setAlarmId("666676767676");
+                pointDataAlarmVO.setAlarmCode("GLR");
+                pointDataAlarmVO.setAlarmName("气液比");
+                pointDataAlarmVO.setAlarmInfo("气液比小于0.9报警警");
+                pointDataAlarmVO.setLevelNo("2");
+                pointDataAlarmVO.setDeviceCode("testdevice1");
+                pointDataAlarmVO.setDeviceCode("油气回收设备");
+            }else if(i % 9 == 0){
+                PointDataAlarmVO pointDataAlarmVO = new PointDataAlarmVO();
+                pointDataAlarmVO.setAlarmId("888888888888567");
+                pointDataAlarmVO.setAlarmCode("PRE");
+                pointDataAlarmVO.setAlarmName("压力");
+                pointDataAlarmVO.setAlarmInfo("压力报警");
+                pointDataAlarmVO.setLevelNo("2");
+                pointDataAlarmVO.setDeviceCode("testdevice1");
+                pointDataAlarmVO.setDeviceCode("油气回收设备");
+            }
+        }
         pointDataVO.setAlarmVOList(alarmVOList);
         //3.发油监测数据
         List<DataStorageOilVO> dataStorageOilVOList = new ArrayList<>();

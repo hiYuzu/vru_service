@@ -10,6 +10,7 @@ public class DataAlarmVO {
     private String deviceName;
     private String institutionAddress;
     private String alarmName;
+    private String levelNo;
     private String levelName;
     private String alarmInfo;
     private String alarmTime;
@@ -44,6 +45,14 @@ public class DataAlarmVO {
 
     public void setAlarmName(String alarmName) {
         this.alarmName = alarmName;
+    }
+
+    public String getLevelNo() {
+        return levelNo;
+    }
+
+    public void setLevelNo(String levelNo) {
+        this.levelNo = levelNo;
     }
 
     public String getLevelName() {
