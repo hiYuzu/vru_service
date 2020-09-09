@@ -4,11 +4,16 @@ import com.tcb.vru_service.model.DataAlarmVO;
 import com.tcb.vru_service.pojo.DataAlarmDO;
 import com.tcb.vru_service.response.ResultVO;
 import com.tcb.vru_service.service.IDataAlarmService;
+import com.tcb.vru_service.service.IDeviceService;
 import com.tcb.vru_service.service.IInstitutionService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author hiYuzu
@@ -21,6 +26,8 @@ public class AlarmController {
     private IDataAlarmService dataAlarmService;
     @Resource
     private IInstitutionService institutionService;
+    @Resource
+    private IDeviceService deviceService;
 
     @PostMapping("/getAlarmShowDataCount")
     public ResultVO<Integer> getAlarmShowDataCount(DataAlarmDO dataAlarmDO) {
@@ -41,5 +48,16 @@ public class AlarmController {
     @PostMapping("/getInstitutionHead")
     public ResultVO<List> getInstitutionHead() {
         return new ResultVO<>(institutionService.getInstitutionHead());
+    }
+
+    @PostMapping("/alarmRank")
+    public ResultVO<Map> alarmRank(String levelNo, Integer timeRange, HttpServletRequest request) {
+        String userCode = String.valueOf(request.getAttribute("subject"));
+        List<Map> devices = deviceService.getAuthorityDeviceHead(null, userCode);
+        ArrayList<String> deviceCodes = new ArrayList();
+        for (Map device : devices) {
+            deviceCodes.add((String) device.get("value"));
+        }
+        return new ResultVO<>(dataAlarmService.alarmRank(levelNo, timeRange, deviceCodes));
     }
 }

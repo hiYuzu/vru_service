@@ -77,7 +77,7 @@
         base_device
         WHERE device_code IN
         <foreach collection="deviceCodes" item="item" open="(" separator="," close=")">
-            #{item, jdbcType = INTEGER}
+            #{item}
         </foreach>
         GROUP BY
         device_status

@@ -48,7 +48,7 @@ public class DateUtil {
      * @author 王垒, 2016年4月1日上午9:29:05
      * @since env_gateway 1.0.0
      */
-    public static Timestamp GetSystemDateTime(int millionSecond) {
+    public static Timestamp GetSystemDateTime(long millionSecond) {
         return new Timestamp(Calendar.getInstance().getTimeInMillis() - millionSecond);
     }
 

@@ -5,6 +5,7 @@ import com.tcb.vru_service.pojo.DataAlarmDO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -24,13 +25,14 @@ public interface AlarmDao {
 
 
     /**
-     * 获取报警信息
-     * @param dataAlarmDO
+     * 获取预警报警次数排名信息
+     * @param levelNo
+     * @param beginTime
+     * @param endTime
+     * @param deviceCodes
      * @return
      */
-    /*
-    List<DataAlarmDO> getAlarmData(@Param("dataAlarmDO") DataAlarmDO dataAlarmDO);
-    */
+    List<Map<String, Object>> alarmRank(@Param("levelNo") String levelNo, @Param("beginTime") String beginTime, @Param("endTime") String endTime, @Param("deviceCodes") ArrayList<String> deviceCodes);
 
     /**
      * 获取仅用于展示的报警信息

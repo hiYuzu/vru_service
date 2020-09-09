@@ -3,6 +3,7 @@ package com.tcb.vru_service.service;
 import com.tcb.vru_service.model.DataAlarmVO;
 import com.tcb.vru_service.pojo.DataAlarmDO;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -20,13 +21,13 @@ public interface IDataAlarmService {
     Integer getAlarmDataCount(DataAlarmDO dataAlarmDO);
 
     /**
-     * 获取表data_alarm报警信息
-     * @param dataAlarmDO
+     * 获取预警报警次数排名信息
+     * @param levelNo
+     * @param timeRange
+     * @param deviceCodes
      * @return
      */
-    /*
-    List<DataAlarmDO> getAlarmData(DataAlarmDO dataAlarmDO);
-    */
+    Map<String, List> alarmRank(String levelNo, int timeRange, ArrayList<String> deviceCodes);
 
     /**
      * 获取仅用于展示的报警信息
