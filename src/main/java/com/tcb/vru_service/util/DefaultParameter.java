@@ -11,7 +11,6 @@ package com.tcb.vru_service.util;
  * @author 王垒
  * @version 1.0, 2020年04月22日上午13:18:28
  * @since vru_service 1.0.0
- *
  */
 public class DefaultParameter {
 
@@ -37,5 +36,25 @@ public class DefaultParameter {
      * 毫秒小时数值
      */
     public static final int MILLISECOND_ONE_HOUR = 1000 * 60 * 60;
+
+    /**
+     * 图表时间字段名称
+     */
+    public static final String CHART_TIME = "chart_time";
+
+    /**
+     * 图表监测因子字段名称
+     */
+    public static final String CHART_THING = "chart_thing";
+
+    /**
+     * 图表预警字段名称
+     */
+    public static final String CHART_WARN = "chart_warn";
+
+    /**
+     * 图表报警字段名称
+     */
+    public static final String CHART_ALARM = "chart_alarm";
 
 }

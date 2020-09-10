@@ -16,6 +16,7 @@ import com.tcb.vru_service.service.IMapService;
 import com.tcb.vru_service.service.IRoleService;
 import com.tcb.vru_service.util.CommonFunction;
 import com.tcb.vru_service.util.DateUtil;
+import com.tcb.vru_service.util.DefaultParameter;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -89,7 +90,8 @@ public class MapServiceImpl implements IMapService {
                     }
                     return o2.toString().compareTo(o1.toString());
                 }
-        );
+        );//列表
+        List<String> listName = new ArrayList<>();
         List<Integer> deviceIdList = CommonFunction.getDeviceIdList(baseDeviceDOList, 1);
         if (deviceIdList != null && deviceIdList.size() > 0) {
             List<DataStorageDO> dataStorageDOList = storageDao.listStorage(deviceIdList, null, 2061, null, beginTime, endTime, null, null);
@@ -109,12 +111,61 @@ public class MapServiceImpl implements IMapService {
                         hashMapList.put(thingName, thingValue);
                         treeMonitorMap.put(frequentTime, hashMapList);
                     }
+                    listName.add(thingName);
                 }
+                pointDataVO.setMonitorVOMap(treeMonitorMap);
+                LinkedHashMap<String, List<String>> monitorVOChart = new LinkedHashMap<>();//图表
+                // 排序处理
+                TreeMap<String, List<DataStorageDO>> treeMonitor = new TreeMap<>();
+                for (DataStorageDO temp : dataStorageDOList) {
+                    String frequentTime = DateUtil.TimestampToString(temp.getBeginTime(), DateUtil.DATA_TIME_SECOND);
+                    if (treeMonitor.containsKey(frequentTime)) {
+                        treeMonitor.get(frequentTime).add(temp);
+                    } else {
+                        List<DataStorageDO> listTemp = new ArrayList<>();
+                        listTemp.add(temp);
+                        treeMonitor.put(frequentTime, listTemp);
+                    }
+                }
+                for (Map.Entry<String, List<DataStorageDO>> tempTreeMonitor : treeMonitor.entrySet()) {
+                    String frequentTime = tempTreeMonitor.getKey();
+                    // 时间
+                    if (monitorVOChart.containsKey(DefaultParameter.CHART_TIME)) {
+                        monitorVOChart.get(DefaultParameter.CHART_TIME).add(frequentTime);
+                    } else {
+                        List<String> listTime = new ArrayList<>();
+                        listTime.add(frequentTime);
+                        monitorVOChart.put(DefaultParameter.CHART_TIME, listTime);
+                    }
+                    // 监测因子
+                    for (String temp : listName) {
+                        String thingName;
+                        String monitorValue = null;
+                        for (DataStorageDO tempMonitor : tempTreeMonitor.getValue()) {
+                            thingName = thingDao.selectThingNameByCode(tempMonitor.getThingCode());
+                            if (temp.equals(thingName)) {
+                                monitorValue = String.valueOf(tempMonitor.getThingAvg());
+                                break;
+                            }
+                        }
+                        if (monitorVOChart.containsKey(temp)) {
+                            monitorVOChart.get(temp).add(monitorValue);
+
+                        } else {
+                            List<String> listThing = new ArrayList<String>();
+                            listThing.add(monitorValue);
+                            monitorVOChart.put(temp, listThing);
+                        }
+                    }
+                }
+                if (!monitorVOChart.containsKey(DefaultParameter.CHART_THING)) {
+                    monitorVOChart.put(DefaultParameter.CHART_THING, listName);
+                }
+                pointDataVO.setMonitorVOChart(monitorVOChart);
             }
         }
-        pointDataVO.setMonitorVOMap(treeMonitorMap);
         //2.报警信息监测数据
-        List<PointDataAlarmVO> alarmVOList = new ArrayList<>();
+        List<PointDataAlarmVO> alarmVOList = new ArrayList<>();//列表
         //TODO 需要整合报警模块代码后进行数据复制
         for (int i = 0; i < 20; i++) {
             PointDataAlarmVO pointDataAlarmVO = new PointDataAlarmVO();
@@ -162,6 +213,29 @@ public class MapServiceImpl implements IMapService {
             if (!StringUtils.isEmpty(pointDataAlarmVO.getAlarmId())) {
                 alarmVOList.add(pointDataAlarmVO);
             }
+            LinkedHashMap<String, Integer> alarmVOChart = new LinkedHashMap<>();//图表
+            int warnCount = 0;
+            int alarmCount = 0;
+            for (PointDataAlarmVO temp : alarmVOList) {
+                String levelNo = temp.getLevelNo();
+                if (!StringUtils.isEmpty(levelNo)) {
+                    int levelNoInt = Integer.valueOf(levelNo);
+                    if (levelNoInt == 1) {
+                        warnCount++;
+                    } else if (levelNoInt == 2) {
+                        alarmCount++;
+                    } else {
+                        continue;
+                    }
+                }
+            }
+            if (!alarmVOChart.containsKey(DefaultParameter.CHART_WARN)) {
+                alarmVOChart.put(DefaultParameter.CHART_WARN, alarmCount);
+            }
+            if (!alarmVOChart.containsKey(DefaultParameter.CHART_ALARM)) {
+                alarmVOChart.put(DefaultParameter.CHART_ALARM, warnCount);
+            }
+            pointDataVO.setAlarmVOChart(alarmVOChart);
         }
         pointDataVO.setAlarmVOList(alarmVOList);
         //3.发油监测数据
