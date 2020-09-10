@@ -111,7 +111,9 @@ public class MapServiceImpl implements IMapService {
                         hashMapList.put(thingName, thingValue);
                         treeMonitorMap.put(frequentTime, hashMapList);
                     }
-                    listName.add(thingName);
+                    if (!listName.contains(thingName)) {
+                        listName.add(thingName);
+                    }
                 }
                 pointDataVO.setMonitorVOMap(treeMonitorMap);
                 LinkedHashMap<String, List<String>> monitorVOChart = new LinkedHashMap<>();//图表
