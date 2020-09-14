@@ -60,7 +60,7 @@
           data_alarm da
 	      LEFT JOIN vru_core.base_device bd ON da.device_code = bd.device_code
         WHERE
-          level_no = 1
+          da.level_no = #{levelNo}
           AND alarm_time BETWEEN #{beginTime}
           AND #{endTime}
           AND da.device_code IN
