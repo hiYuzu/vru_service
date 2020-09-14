@@ -8,7 +8,7 @@
         <result column="institution_address" property="institutionAddress" jdbcType="VARCHAR"/>
         <result column="dictionary_name" property="alarmName" jdbcType="VARCHAR"/>
         <result column="level_name" property="levelName" jdbcType="VARCHAR"/>
-        <result column="level_info" property="alarmInfo" jdbcType="VARCHAR"/>
+        <result column="alarm_info" property="alarmInfo" jdbcType="VARCHAR"/>
         <result column="alarm_time" property="alarmTime" jdbcType="VARCHAR"/>
     </resultMap>
 
