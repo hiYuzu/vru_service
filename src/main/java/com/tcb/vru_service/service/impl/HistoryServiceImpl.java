@@ -74,14 +74,13 @@ public class HistoryServiceImpl implements IHistoryService {
         if (!StringUtils.isEmpty(endTime)) {
             endTimestamp = DateUtil.StringToTimestampSecond(endTime);
         }
-        List<Long> listDataId = new ArrayList<>();
+        List<Integer> listDataId = new ArrayList<>();
         for (int i = 0; i < deviceIds.length; i++) {
-            listDataId.add(Long.parseLong(deviceIds[i]));
+            listDataId.add(Integer.parseInt(deviceIds[i]));
         }
         List<String> listThingCode = new ArrayList<>();
         listThingCode.addAll(Arrays.asList(thingCodes));
-//        List<DataStorageDO> dataStorageDOS = storageDao.listStorage(listDataId, listThingCode, dataType, null, beginTimestamp, endTimestamp, null, null);
-        List<DataStorageDO> dataStorageDOS = new ArrayList<>();
+        List<DataStorageDO> dataStorageDOS = storageDao.listStorage(listDataId, listThingCode, dataType, null, beginTimestamp, endTimestamp, null, null);
         DataStorageDO dataStorageDO = new DataStorageDO();
         dataStorageDO.setDeviceId(1L);
         dataStorageDO.setThingCode("CKND");
