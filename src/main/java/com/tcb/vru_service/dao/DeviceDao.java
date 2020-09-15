@@ -80,4 +80,6 @@ public interface DeviceDao {
     int deleteListDevice(@Param("listDeviceId") List<Integer> listDeviceId);
 
 
+
+
 }

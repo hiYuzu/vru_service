@@ -124,4 +124,25 @@
             #{item}
         </foreach>
     </select>
+
+
+    <select id="getWithinAlarmCount" resultType="java.lang.Integer">
+        SELECT COUNT()
+        FROM data_alarm
+        WHERE alarm_time BETWEEN #{beginTime} AND #{endTime}
+        <if test="institutionIdList != null and institutionIdList.size()>0">
+            AND institution_code IN (SELECT institution_id FROM base_institution WHERE institution_code IN
+            <foreach collection="institutionIdList" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+            )
+        </if>
+        <if test="levelNo != null">
+            AND level_no = #{levelNo}
+        </if>
+        <if test="alarmCode != null and alarmCode != ''">
+            AND alarm_code = #{alarmCode}
+        </if>
+    </select>
+
 </mapper>

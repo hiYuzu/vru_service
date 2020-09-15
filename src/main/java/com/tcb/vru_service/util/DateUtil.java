@@ -2,6 +2,7 @@ package com.tcb.vru_service.util;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.StringUtils;
 
 import java.sql.Timestamp;
 import java.text.DateFormat;
@@ -37,6 +38,11 @@ public class DateUtil {
      * 协议时间戳字符串格式
      */
     public static final String PRO_TIME = "yyyyMMddHHmmss";
+
+    /**
+     * 标准日期时间类型(yyyy-MM-dd HH)
+     */
+    public static final String DATA_HOUR = "yyyy-MM-dd HH";
 
     /**
      * <p>
@@ -134,7 +140,7 @@ public class DateUtil {
         try {
             if (datetime != null && !datetime.isEmpty()) {
                 SimpleDateFormat sdf = new SimpleDateFormat(DATA_TIME_SECOND);
-                if(datetime.length() == 10){
+                if (datetime.length() == 10) {
                     datetime += " 00:00:00";
                 }
                 Date date = sdf.parse(datetime);
@@ -155,7 +161,7 @@ public class DateUtil {
      * @param days
      * @return
      * @author 王垒, 2017年8月8日下午2:39:22
-     * @since envdust 1.0.0
+     * @since vur_service 1.0.0
      */
     public static boolean isRecentlyData(Timestamp timestamp, int days) {
         boolean flag = false;
@@ -168,6 +174,41 @@ public class DateUtil {
             flag = (timestamp.after(recentTime) || timestamp.equals(recentTime));
         }
         return flag;
+    }
+
+    /**
+     * 日期缩减
+     * @param timestamp
+     * @param dataType
+     * @return
+     */
+    public static Timestamp getSubtractTime(Timestamp timestamp, String dataType) {
+        if (timestamp != null && !StringUtils.isEmpty(dataType)) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(timestamp);
+            switch (dataType) {
+                case "2011":
+                    calendar.add(Calendar.MINUTE, -1);
+                    break;
+                case "2031":
+                    calendar.add(Calendar.DATE, -1);
+                    break;
+                case "2051":
+                    calendar.add(Calendar.MINUTE, -10);
+                    break;
+                case "2061":
+                    calendar.add(Calendar.HOUR_OF_DAY, -1);
+                    break;
+                case "C001"://自定义月
+                    calendar.add(Calendar.MONTH, -1);
+                    break;
+                default:
+                    break;
+            }
+
+            timestamp = new Timestamp(calendar.getTimeInMillis());
+        }
+        return timestamp;
     }
 
 }

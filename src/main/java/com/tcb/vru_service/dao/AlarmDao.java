@@ -56,6 +56,7 @@ public interface AlarmDao {
 
     /**
      * 获取某类预警报警次数
+     *
      * @param alarmCode
      * @param levelNo
      * @param beginTime
@@ -65,5 +66,20 @@ public interface AlarmDao {
      */
     int getAlarmCodeCount(@Param("alarmCode") String alarmCode, @Param("levelNo") String levelNo, @Param("beginTime") String beginTime, @Param("endTime") String endTime, @Param("deviceCodes") ArrayList<String> deviceCodes);
 
+    /**
+     * 获取条件范围内报警预警个数
+     *
+     * @param institutionIdList
+     * @param beginTime
+     * @param endTime
+     * @param levelNo
+     * @param alarmCode
+     * @return
+     */
+    int getWithinAlarmCount(@Param("institutionIdList") List<Long> institutionIdList,
+                            @Param("beginTime") String beginTime,
+                            @Param("endTime") String endTime,
+                            @Param("levelNo") Integer levelNo,
+                            @Param("alarmCode") String alarmCode);
 
 }
