@@ -71,4 +71,14 @@ public class AlarmController {
         }
         return new ResultVO<>(dataAlarmService.getAlarmPercent(levelNo, beginTime, endTime, deviceCodes));
     }
+
+    @PostMapping("/getAlarmStatistic")
+    public ResultVO<Map<String, List>> getAlarmStatistic(String levelNo, String deviceCode, String beginTime, String endTime) {
+        //2020-06-01 00:00:00
+        Map<String, List> result = new HashMap<>(3);
+        ArrayList<String> arrayList = new ArrayList<>();
+        result.put("xAxisData", arrayList);
+        result.put("seriesData", arrayList);
+        return new ResultVO<>(result);
+    }
 }
