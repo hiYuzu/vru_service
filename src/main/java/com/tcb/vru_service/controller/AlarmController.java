@@ -51,13 +51,24 @@ public class AlarmController {
     }
 
     @PostMapping("/alarmRank")
-    public ResultVO<Map> alarmRank(String levelNo, Integer timeRange, HttpServletRequest request) {
+    public ResultVO<Map> alarmRank(String levelNo, String beginTime, String endTime, HttpServletRequest request) {
         String userCode = String.valueOf(request.getAttribute("subject"));
         List<Map> devices = deviceService.getAuthorityDeviceHead(null, userCode);
         ArrayList<String> deviceCodes = new ArrayList();
         for (Map device : devices) {
             deviceCodes.add((String) device.get("value"));
         }
-        return new ResultVO<>(dataAlarmService.alarmRank(levelNo, timeRange, deviceCodes));
+        return new ResultVO<>(dataAlarmService.alarmRank(levelNo, beginTime, endTime, deviceCodes));
+    }
+
+    @PostMapping("/getAlarmPercent")
+    public ResultVO<Map<String, Integer>> getAlarmPercent(String levelNo, String beginTime, String endTime, HttpServletRequest request) {
+        String userCode = String.valueOf(request.getAttribute("subject"));
+        List<Map> devices = deviceService.getAuthorityDeviceHead(null, userCode);
+        ArrayList<String> deviceCodes = new ArrayList();
+        for (Map device : devices) {
+            deviceCodes.add((String) device.get("value"));
+        }
+        return new ResultVO<>(dataAlarmService.getAlarmPercent(levelNo, beginTime, endTime, deviceCodes));
     }
 }

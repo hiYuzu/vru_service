@@ -2,6 +2,7 @@ package com.tcb.vru_service.dao;
 
 import com.tcb.vru_service.model.DataAlarmVO;
 import com.tcb.vru_service.pojo.DataAlarmDO;
+import com.tcb.vru_service.util.AlarmCodeEnum;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -18,6 +19,7 @@ import java.util.Map;
 public interface AlarmDao {
     /**
      * 查询报警个数
+     *
      * @param dataAlarmDO
      * @return
      */
@@ -26,6 +28,7 @@ public interface AlarmDao {
 
     /**
      * 获取预警报警次数排名信息
+     *
      * @param levelNo
      * @param beginTime
      * @param endTime
@@ -36,6 +39,7 @@ public interface AlarmDao {
 
     /**
      * 获取仅用于展示的报警信息
+     *
      * @param dataAlarmDO
      * @param rowIndex
      * @param rowCount
@@ -45,7 +49,21 @@ public interface AlarmDao {
 
     /**
      * 获取报警类型字典
+     *
      * @return
      */
     List<Map> getAlarmDictionary();
+
+    /**
+     * 获取某类预警报警次数
+     * @param alarmCode
+     * @param levelNo
+     * @param beginTime
+     * @param endTime
+     * @param deviceCodes
+     * @return
+     */
+    int getAlarmCodeCount(@Param("alarmCode") String alarmCode, @Param("levelNo") String levelNo, @Param("beginTime") String beginTime, @Param("endTime") String endTime, @Param("deviceCodes") ArrayList<String> deviceCodes);
+
+
 }

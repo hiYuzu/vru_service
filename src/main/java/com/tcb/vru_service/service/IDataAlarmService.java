@@ -23,11 +23,22 @@ public interface IDataAlarmService {
     /**
      * 获取预警报警次数排名信息
      * @param levelNo
-     * @param timeRange
+     * @param beginTime
+     * @param endTime
      * @param deviceCodes
      * @return
      */
-    Map<String, List> alarmRank(String levelNo, int timeRange, ArrayList<String> deviceCodes);
+    Map<String, List> alarmRank(String levelNo, String beginTime, String endTime, ArrayList<String> deviceCodes);
+
+    /**
+     * 查询预警报警类别占比
+     * @param levelNo
+     * @param beginTime
+     * @param endTime
+     * @param deviceCodes
+     * @return
+     */
+    Map<String, Integer> getAlarmPercent(String levelNo, String beginTime, String endTime, ArrayList<String> deviceCodes);
 
     /**
      * 获取仅用于展示的报警信息

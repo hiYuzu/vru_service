@@ -38,6 +38,9 @@
         FROM data_alarm da
         <if test="dataAlarmDO != null">
             <where>
+                <if test="levelNo != null">
+                    AND da.level_no = #{dataAlarmDo.levelNo}
+                </if>
                 <if test="dataAlarmDO.deviceCode != null and dataAlarmDO.deviceCode != ''">
                     AND da.device_code = #{dataAlarmDO.deviceCode}
                 </if>
@@ -106,5 +109,19 @@
                 LIMIT #{dataAlarmDO.rowIndex}, #{dataAlarmDO.rowCount}
             </if>
         </if>
+    </select>
+    
+    <select id="getAlarmCodeCount" resultType="java.lang.Integer">
+        SELECT
+        COUNT (*)
+        FROM
+        data_alarm
+        WHERE alarm_code = #{alarmCode}
+        AND level_no = #{levelNo}
+        AND alarm_time BETWEEN #{beginTime} AND #{endTime}
+        AND device_code IN
+        <foreach collection="deviceCodes" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
     </select>
 </mapper>

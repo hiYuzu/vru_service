@@ -4,6 +4,7 @@ import com.tcb.vru_service.dao.AlarmDao;
 import com.tcb.vru_service.model.DataAlarmVO;
 import com.tcb.vru_service.pojo.DataAlarmDO;
 import com.tcb.vru_service.service.IDataAlarmService;
+import com.tcb.vru_service.util.AlarmCodeEnum;
 import com.tcb.vru_service.util.DateUtil;
 import org.springframework.stereotype.Service;
 
@@ -37,9 +38,7 @@ public class DataAlarmServiceImpl implements IDataAlarmService {
     }
 
     @Override
-    public Map<String, List> alarmRank(String levelNo, int timeRange, ArrayList<String> deviceCodes) {
-        String endTime = DateUtil.GetSystemDateTime(DateUtil.DATA_TIME_SECOND);
-        String beginTime = DateUtil.TimestampToString(DateUtil.GetSystemDateTime((long) timeRange * 24 * 60 * 60 * 1000), DateUtil.DATA_TIME_SECOND);
+    public Map<String, List> alarmRank(String levelNo, String beginTime, String endTime, ArrayList<String> deviceCodes) {
         List<Map<String, Object>> list = alarmDao.alarmRank(levelNo, beginTime, endTime, deviceCodes);
         ArrayList<String> xAxisData = new ArrayList<>();
         ArrayList<Integer> seriesData = new ArrayList<>();
@@ -54,6 +53,17 @@ public class DataAlarmServiceImpl implements IDataAlarmService {
         Map<String, List> result = new HashMap<>(3);
         result.put("xAxisData", xAxisData);
         result.put("seriesData", seriesData);
+        return result;
+    }
+
+    @Override
+    public Map<String, Integer> getAlarmPercent(String levelNo, String beginTime, String endTime, ArrayList<String> deviceCodes) {
+        Map<String, Integer> result = new HashMap<>(5);
+
+        result.put(AlarmCodeEnum.GLR.toString(), alarmDao.getAlarmCodeCount(AlarmCodeEnum.GLR.toString(), levelNo, beginTime, endTime, deviceCodes));
+        result.put(AlarmCodeEnum.PRE.toString(), alarmDao.getAlarmCodeCount(AlarmCodeEnum.PRE.toString(), levelNo, beginTime, endTime, deviceCodes));
+        result.put(AlarmCodeEnum.NMHC.toString(), alarmDao.getAlarmCodeCount(AlarmCodeEnum.NMHC.toString(), levelNo, beginTime, endTime, deviceCodes));
+        result.put(AlarmCodeEnum.O.toString(), alarmDao.getAlarmCodeCount(AlarmCodeEnum.O.toString(), levelNo, beginTime, endTime, deviceCodes));
         return result;
     }
 }
