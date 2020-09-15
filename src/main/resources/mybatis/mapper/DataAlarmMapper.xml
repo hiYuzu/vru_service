@@ -38,8 +38,11 @@
         FROM data_alarm da
         <if test="dataAlarmDO != null">
             <where>
-                <if test="levelNo != null">
-                    AND da.level_no = #{dataAlarmDo.levelNo}
+                <if test="dataAlarmDO.levelNo != null">
+                    AND da.level_no = #{dataAlarmDO.levelNo}
+                </if>
+                <if test="dataAlarmDo.institutionCode != null">
+                    AND da.institution_code = #{dataAlarmDO.institutionCode}
                 </if>
                 <if test="dataAlarmDO.deviceCode != null and dataAlarmDO.deviceCode != ''">
                     AND da.device_code = #{dataAlarmDO.deviceCode}
@@ -113,7 +116,7 @@
     
     <select id="getAlarmCodeCount" resultType="java.lang.Integer">
         SELECT
-        COUNT (*)
+        COUNT(*)
         FROM
         data_alarm
         WHERE alarm_code = #{alarmCode}

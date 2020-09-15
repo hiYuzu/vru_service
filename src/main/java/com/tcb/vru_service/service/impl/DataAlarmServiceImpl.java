@@ -59,7 +59,6 @@ public class DataAlarmServiceImpl implements IDataAlarmService {
     @Override
     public Map<String, Integer> getAlarmPercent(String levelNo, String beginTime, String endTime, ArrayList<String> deviceCodes) {
         Map<String, Integer> result = new HashMap<>(5);
-
         result.put(AlarmCodeEnum.GLR.toString(), alarmDao.getAlarmCodeCount(AlarmCodeEnum.GLR.toString(), levelNo, beginTime, endTime, deviceCodes));
         result.put(AlarmCodeEnum.PRE.toString(), alarmDao.getAlarmCodeCount(AlarmCodeEnum.PRE.toString(), levelNo, beginTime, endTime, deviceCodes));
         result.put(AlarmCodeEnum.NMHC.toString(), alarmDao.getAlarmCodeCount(AlarmCodeEnum.NMHC.toString(), levelNo, beginTime, endTime, deviceCodes));

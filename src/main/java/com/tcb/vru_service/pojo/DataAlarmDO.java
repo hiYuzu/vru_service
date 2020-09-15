@@ -12,6 +12,7 @@ import java.sql.Timestamp;
 public class DataAlarmDO extends BaseDO {
     private Long alarmId;
     private String alarmCode;
+    private String institutionCode;
     private String deviceCode;
     private String alarmInfo;
     private String alarmAction;
@@ -199,5 +200,13 @@ public class DataAlarmDO extends BaseDO {
 
     public void setEndTime(String endTime) {
         this.endTime = endTime;
+    }
+
+    public String getInstitutionCode() {
+        return institutionCode;
+    }
+
+    public void setInstitutionCode(String institutionCode) {
+        this.institutionCode = institutionCode;
     }
 }
