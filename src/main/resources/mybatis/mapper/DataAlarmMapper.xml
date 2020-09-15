@@ -128,17 +128,16 @@
         </foreach>
     </select>
 
-
+    <!-- 获取条件范围内报警预警个数 -->
     <select id="getWithinAlarmCount" resultType="java.lang.Integer">
-        SELECT COUNT()
+        SELECT COUNT(alarm_id)
         FROM data_alarm
         WHERE alarm_time BETWEEN #{beginTime} AND #{endTime}
-        <if test="institutionIdList != null and institutionIdList.size()>0">
-            AND institution_code IN (SELECT institution_id FROM base_institution WHERE institution_code IN
-            <foreach collection="institutionIdList" item="item" open="(" separator="," close=")">
+        <if test="institutionCodeList != null and institutionCodeList.size()>0">
+            AND institution_code IN
+            <foreach collection="institutionCodeList" item="item" open="(" separator="," close=")">
                 #{item}
             </foreach>
-            )
         </if>
         <if test="levelNo != null">
             AND level_no = #{levelNo}

@@ -63,7 +63,8 @@ public class MapServiceImpl implements IMapService {
                             //实时数据查询
                             TreeMap<String, LinkedHashMap<String, Double>> monitorVOMap = new TreeMap<>();
                             List<Integer> deviceIdList = CommonFunction.getDeviceIdList(baseDeviceDOList, 1);
-                            List<DataStorageDO> dataStorageDOList = storageDao.listRecentValue(deviceIdList, null, 2011);
+                            List<String> deviceCodeList = deviceDao.selectDeviceCodeById(deviceIdList);
+                            List<DataStorageDO> dataStorageDOList = storageDao.listRecentValue(deviceCodeList, null, 2011);
                             if (dataStorageDOList != null && dataStorageDOList.size() > 0) {
                                 for (DataStorageDO storageTemp : dataStorageDOList) {
                                     if (storageTemp != null) {
@@ -93,12 +94,13 @@ public class MapServiceImpl implements IMapService {
                             Timestamp endTimestamp = DateUtil.GetSystemDateTime(0);
                             String beginTime = DateUtil.TimestampToString(beginTimestamp, DateUtil.DATA_HOUR) + ":00:00";
                             String endTime = DateUtil.TimestampToString(endTimestamp, DateUtil.DATA_HOUR) + ":59:59";
+                            List<String> institutionCodeList = institutionDao.selectInstitutionCodeById(institutionIdList);
                             int allWarnCount = 0;
                             int allAlarmCount = 0;
                             //气液比
                             PointAlarmCountVO alarmCountGLR = new PointAlarmCountVO();
-                            int warnCount = alarmDao.getWithinAlarmCount(institutionIdList, beginTime, endTime, 1, "GLR");
-                            int alarmCount = alarmDao.getWithinAlarmCount(institutionIdList, beginTime, endTime, 2, "GLR");
+                            int warnCount = alarmDao.getWithinAlarmCount(institutionCodeList, beginTime, endTime, 1, "GLR");
+                            int alarmCount = alarmDao.getWithinAlarmCount(institutionCodeList, beginTime, endTime, 2, "GLR");
                             alarmCountGLR.setAlarmCode("GLR");
                             alarmCountGLR.setAlarmName("气液比");
                             alarmCountGLR.setWarnCount(warnCount);
@@ -108,8 +110,8 @@ public class MapServiceImpl implements IMapService {
                             allAlarmCount += alarmCount;
                             //压力
                             PointAlarmCountVO alarmCountPRE = new PointAlarmCountVO();
-                            warnCount = alarmDao.getWithinAlarmCount(institutionIdList, beginTime, endTime, 1, "PRE");
-                            alarmCount = alarmDao.getWithinAlarmCount(institutionIdList, beginTime, endTime, 2, "PRE");
+                            warnCount = alarmDao.getWithinAlarmCount(institutionCodeList, beginTime, endTime, 1, "PRE");
+                            alarmCount = alarmDao.getWithinAlarmCount(institutionCodeList, beginTime, endTime, 2, "PRE");
                             alarmCountPRE.setAlarmCode("PRE");
                             alarmCountPRE.setAlarmName("压力");
                             alarmCountPRE.setWarnCount(warnCount);
@@ -119,8 +121,8 @@ public class MapServiceImpl implements IMapService {
                             allAlarmCount += alarmCount;
                             //NMHC浓度
                             PointAlarmCountVO alarmCountNMHC = new PointAlarmCountVO();
-                            warnCount = alarmDao.getWithinAlarmCount(institutionIdList, beginTime, endTime, 1, "NMHC");
-                            alarmCount = alarmDao.getWithinAlarmCount(institutionIdList, beginTime, endTime, 2, "NMHC");
+                            warnCount = alarmDao.getWithinAlarmCount(institutionCodeList, beginTime, endTime, 1, "NMHC");
+                            alarmCount = alarmDao.getWithinAlarmCount(institutionCodeList, beginTime, endTime, 2, "NMHC");
                             alarmCountNMHC.setAlarmCode("NMHC");
                             alarmCountNMHC.setAlarmName("NMHC浓度");
                             alarmCountNMHC.setWarnCount(warnCount);

@@ -155,17 +155,16 @@
     <select id="listRecentValue" resultMap="dataStorageResultMap">
         SELECT
             ddd.data_id,
-            bd.device_id,
+            ddd.device_code,
             ddd.thing_code,
             ddd.recent_data AS thing_avg,
             ddd.recent_zsdata AS thing_zsavg,
             ddd.data_type,
             ddd.data_time AS begin_time
         FROM data_device_data ddd
-        INNER JOIN base_device bd ON ddd.device_code = bd.device_code
-        WHERE bd.device_id IN
-        <foreach collection="listDeviceId" item="item" open="(" separator="," close=")">
-            #{item,jdbcType = INTEGER}
+        WHERE ddd.device_code IN
+        <foreach collection="listDeviceCode" item="item" open="(" separator="," close=")">
+            #{item}
         </foreach>
         <if test="listThingCode != null and listThingCode.size()>0">
             AND ddd.thing_code IN
@@ -174,9 +173,9 @@
             </foreach>
         </if>
         <if test="dataType != null">
-            AND ds.data_type = #{dataType}
+            AND ddd.data_type = #{dataType}
         </if>
-        ORDER BY begin_time DESC
+        ORDER BY ddd.data_time DESC
     </select>
 
 </mapper>

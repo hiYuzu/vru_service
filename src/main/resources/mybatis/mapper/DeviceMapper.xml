@@ -249,5 +249,14 @@
         </foreach>
     </delete>
 
+    <!-- 通过DeviceId获取DeviceCode -->
+    <select id="selectDeviceCodeById" resultType="java.lang.String">
+        SELECT DISTINCT device_code
+        FROM base_device
+        WHERE device_id IN
+        <foreach collection="listDeviceId" item="item" open="(" separator="," close=")">
+            #{item,jdbcType = INTEGER}
+        </foreach>
+    </select>
 
 </mapper>

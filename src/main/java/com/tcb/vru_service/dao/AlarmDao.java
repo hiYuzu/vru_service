@@ -69,14 +69,14 @@ public interface AlarmDao {
     /**
      * 获取条件范围内报警预警个数
      *
-     * @param institutionIdList
+     * @param institutionCodeList
      * @param beginTime
      * @param endTime
      * @param levelNo
      * @param alarmCode
      * @return
      */
-    int getWithinAlarmCount(@Param("institutionIdList") List<Long> institutionIdList,
+    int getWithinAlarmCount(@Param("institutionCodeList") List<String> institutionCodeList,
                             @Param("beginTime") String beginTime,
                             @Param("endTime") String endTime,
                             @Param("levelNo") Integer levelNo,

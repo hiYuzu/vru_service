@@ -85,12 +85,12 @@ public interface StorageDao {
     /**
      * 查询最近更新数据
      *
-     * @param listDeviceId
+     * @param listDeviceCode
      * @param listThingCode
      * @param dataType
      * @return
      */
-    List<DataStorageDO> listRecentValue(@Param("listDeviceId") List<Integer> listDeviceId,
+    List<DataStorageDO> listRecentValue(@Param("listDeviceCode") List<String> listDeviceCode,
                                         @Param("listThingCode") List<String> listThingCode,
                                         @Param("dataType") Integer dataType);
 
