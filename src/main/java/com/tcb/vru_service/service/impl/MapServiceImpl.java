@@ -282,10 +282,10 @@ public class MapServiceImpl implements IMapService {
             }
         }
         if (!alarmVOChart.containsKey(DefaultParameter.CHART_WARN)) {
-            alarmVOChart.put(DefaultParameter.CHART_WARN, alarmCount);
+            alarmVOChart.put(DefaultParameter.CHART_WARN, warnCount);
         }
         if (!alarmVOChart.containsKey(DefaultParameter.CHART_ALARM)) {
-            alarmVOChart.put(DefaultParameter.CHART_ALARM, warnCount);
+            alarmVOChart.put(DefaultParameter.CHART_ALARM, alarmCount);
         }
         pointDataVO.setAlarmVOChart(alarmVOChart);
         pointDataVO.setAlarmVOList(alarmVOList);
