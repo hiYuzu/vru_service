@@ -1,5 +1,9 @@
 package com.tcb.vru_service.model;
 
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.TreeMap;
+
 /**
  * @Author: WangLei
  * @Description: GIS坐标点VO
@@ -15,6 +19,8 @@ public class PointVO {
     private Double mapY;
     private Integer alarmCount;
     private Integer warnCount;
+    private TreeMap<String, LinkedHashMap<String, Double>> monitorVOMap;
+    private List<PointAlarmCountVO> alarmCountVOList;
 
     public String getPointId() {
         return pointId;
@@ -70,6 +76,22 @@ public class PointVO {
 
     public void setWarnCount(Integer warnCount) {
         this.warnCount = warnCount;
+    }
+
+    public TreeMap<String, LinkedHashMap<String, Double>> getMonitorVOMap() {
+        return monitorVOMap;
+    }
+
+    public void setMonitorVOMap(TreeMap<String, LinkedHashMap<String, Double>> monitorVOMap) {
+        this.monitorVOMap = monitorVOMap;
+    }
+
+    public List<PointAlarmCountVO> getAlarmCountVOList() {
+        return alarmCountVOList;
+    }
+
+    public void setAlarmCountVOList(List<PointAlarmCountVO> alarmCountVOList) {
+        this.alarmCountVOList = alarmCountVOList;
     }
 
 }

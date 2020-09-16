@@ -15,6 +15,7 @@ public interface InstitutionDao {
 
     /**
      * 获取发油库
+     *
      * @param userCode
      * @return
      */
@@ -64,6 +65,21 @@ public interface InstitutionDao {
      * @param listInstitutionId
      * @return
      */
-    int deleteListInstitution(@Param("listInstitutionId") List<Integer> listInstitutionId);
+    int deleteListInstitution(@Param("listInstitutionId") List<Long> listInstitutionId);
+
+    /**
+     * 通过机构Id获取机构Code(List)
+     *
+     * @param listInstitutionId
+     * @return
+     */
+    List<String> listInstitutionCodeById(@Param("listInstitutionId") List<Long> listInstitutionId);
+
+    /**
+     * 通过机构Id获取机构Code
+     * @param institutionId
+     * @return
+     */
+    String selectInstitutionCodeById(@Param("institutionId") Long institutionId);
 
 }

@@ -16,6 +16,7 @@ public interface DeviceDao {
 
     /**
      * 获取权限设备基本信息（code+name）
+     *
      * @param institutionId
      * @param userCode
      * @return
@@ -24,6 +25,7 @@ public interface DeviceDao {
 
     /**
      * 统计设备状态
+     *
      * @param deviceCodes
      * @return
      */
@@ -79,5 +81,19 @@ public interface DeviceDao {
      */
     int deleteListDevice(@Param("listDeviceId") List<Integer> listDeviceId);
 
+    /**
+     * 通过DeviceId获取DeviceCode
+     *
+     * @param listDeviceId
+     * @return
+     */
+    List<String> selectDeviceCodeById(@Param("listDeviceId") List<Integer> listDeviceId);
+
+    /**
+     * 通过deviceCode获取deviceName
+     * @param deviceCode
+     * @return
+     */
+    String selectDeviceNameByCode(@Param("deviceCode") String deviceCode);
 
 }

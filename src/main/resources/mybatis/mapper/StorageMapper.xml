@@ -151,5 +151,31 @@
         </where>
     </select>
 
+    <!-- 查询最近更新数据 -->
+    <select id="listRecentValue" resultMap="dataStorageResultMap">
+        SELECT
+            ddd.data_id,
+            ddd.device_code,
+            ddd.thing_code,
+            ddd.recent_data AS thing_avg,
+            ddd.recent_zsdata AS thing_zsavg,
+            ddd.data_type,
+            ddd.data_time AS begin_time
+        FROM data_device_data ddd
+        WHERE ddd.device_code IN
+        <foreach collection="listDeviceCode" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        <if test="listThingCode != null and listThingCode.size()>0">
+            AND ddd.thing_code IN
+            <foreach collection="listThingCode" item="item" open="(" separator="," close=")">
+                #{item,jdbcType = INTEGER}
+            </foreach>
+        </if>
+        <if test="dataType != null">
+            AND ddd.data_type = #{dataType}
+        </if>
+        ORDER BY ddd.data_time DESC
+    </select>
 
 </mapper>

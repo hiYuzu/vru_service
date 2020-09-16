@@ -6,6 +6,7 @@ import com.tcb.vru_service.util.AlarmCodeEnum;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -56,6 +57,7 @@ public interface AlarmDao {
 
     /**
      * 获取某类预警报警次数
+     *
      * @param alarmCode
      * @param levelNo
      * @param beginTime
@@ -66,6 +68,7 @@ public interface AlarmDao {
     int getAlarmCodeCount(@Param("alarmCode") String alarmCode, @Param("levelNo") String levelNo, @Param("beginTime") String beginTime, @Param("endTime") String endTime, @Param("deviceCodes") ArrayList<String> deviceCodes);
 
     /**
+<<<<<<< HEAD
      * 报警统计
      * @param levelNo
      * @param deviceCode
@@ -75,4 +78,40 @@ public interface AlarmDao {
      * @return
      */
     List<Map> getAlarmStatistic(@Param("levelNo") String levelNo, @Param("deviceCode") String deviceCode, @Param("beginTime") String beginTime, @Param("endTime") String endTime, @Param("alarmCode") String alarmCode);
+=======
+     * 获取条件范围内报警预警个数
+     *
+     * @param institutionCode
+     * @param beginTime
+     * @param endTime
+     * @param levelNo
+     * @param alarmCode
+     * @return
+     */
+    int getWithinAlarmCount(@Param("institutionCode") String institutionCode,
+                            @Param("beginTime") String beginTime,
+                            @Param("endTime") String endTime,
+                            @Param("levelNo") Integer levelNo,
+                            @Param("alarmCode") String alarmCode);
+
+    /**
+     * 获取报警数据
+     *
+     * @param institutionCodeList
+     * @param deviceCodeList
+     * @param alarmCodeList
+     * @param beginTime
+     * @param endTime
+     * @param levelNo
+     * @return
+     */
+    List<DataAlarmDO> listAlarm(@Param("institutionCodeList") List<String> institutionCodeList,
+                                @Param("deviceCodeList") List<String> deviceCodeList,
+                                @Param("alarmCodeList") String alarmCodeList,
+                                @Param("beginTime") Timestamp beginTime,
+                                @Param("endTime") Timestamp endTime,
+                                @Param("levelNo") Integer levelNo);
+
+
+>>>>>>> a30bbdc228da60f1b82bcc803d64d8b1709343b1
 }

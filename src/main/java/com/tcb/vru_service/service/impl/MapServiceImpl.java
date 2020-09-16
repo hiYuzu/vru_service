@@ -1,17 +1,8 @@
 package com.tcb.vru_service.service.impl;
 
-import com.tcb.vru_service.dao.DeviceDao;
-import com.tcb.vru_service.dao.InstitutionDao;
-import com.tcb.vru_service.dao.StorageDao;
-import com.tcb.vru_service.dao.ThingDao;
-import com.tcb.vru_service.model.PointDataAlarmVO;
-import com.tcb.vru_service.model.DataStorageOilVO;
-import com.tcb.vru_service.model.PointDataVO;
-import com.tcb.vru_service.model.PointVO;
-import com.tcb.vru_service.pojo.BaseDeviceDO;
-import com.tcb.vru_service.pojo.BaseInstitutionDO;
-import com.tcb.vru_service.pojo.DataStorageDO;
-import com.tcb.vru_service.pojo.DataStorageOilDO;
+import com.tcb.vru_service.dao.*;
+import com.tcb.vru_service.model.*;
+import com.tcb.vru_service.pojo.*;
 import com.tcb.vru_service.service.IMapService;
 import com.tcb.vru_service.service.IRoleService;
 import com.tcb.vru_service.util.CommonFunction;
@@ -48,6 +39,12 @@ public class MapServiceImpl implements IMapService {
     @Resource
     private StorageDao storageDao;
 
+    @Resource
+    private AlarmDao alarmDao;
+
+    @Resource
+    private DictionaryDao dictionaryDao;
+
     @Override
     public List<PointVO> getMapPoint(String userCode) {
         List<PointVO> pointVOList = new ArrayList<>();
@@ -66,9 +63,80 @@ public class MapServiceImpl implements IMapService {
                             pointVO.setPointName(temp.getInstitutionName());
                             pointVO.setMapX(temp.getMapX());
                             pointVO.setMapY(temp.getMapY());
-                            //TODO 报警查询
-                            pointVO.setAlarmCount(1);
-                            pointVO.setWarnCount(0);
+                            //实时数据查询
+                            TreeMap<String, LinkedHashMap<String, Double>> monitorVOMap = new TreeMap<>();
+                            List<Integer> deviceIdList = CommonFunction.getDeviceIdList(baseDeviceDOList, 1);
+                            List<String> deviceCodeList = deviceDao.selectDeviceCodeById(deviceIdList);
+                            List<DataStorageDO> dataStorageDOList = storageDao.listRecentValue(deviceCodeList, null, 2011);
+                            if (dataStorageDOList != null && dataStorageDOList.size() > 0) {
+                                for (DataStorageDO storageTemp : dataStorageDOList) {
+                                    if (storageTemp != null) {
+                                        String frequentTime = DateUtil.TimestampToString(storageTemp.getBeginTime(), DateUtil.DATA_TIME_SECOND);
+                                        String thingName = thingDao.selectThingNameByCode(storageTemp.getThingCode());
+                                        Double thingValue = storageTemp.getThingAvg();
+                                        if (monitorVOMap.containsKey(frequentTime)) {
+                                            if (monitorVOMap.get(frequentTime).containsKey(thingName)) {
+                                                continue;
+                                            } else {
+                                                monitorVOMap.get(frequentTime).put(thingName, thingValue);
+                                            }
+                                        } else {
+                                            if (monitorVOMap.size() == 0) {
+                                                LinkedHashMap<String, Double> hashMapList = new LinkedHashMap<>();
+                                                hashMapList.put(thingName, thingValue);
+                                                monitorVOMap.put(frequentTime, hashMapList);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            pointVO.setMonitorVOMap(monitorVOMap);
+                            //报警查询（24小时内小时数据）
+                            List<PointAlarmCountVO> alarmCountVOList = new ArrayList<>();
+                            Timestamp beginTimestamp = DateUtil.GetSystemDateTime(DefaultParameter.MILLISECOND_ONE_HOUR * 24);
+                            Timestamp endTimestamp = DateUtil.GetSystemDateTime(0);
+                            String beginTime = DateUtil.TimestampToString(beginTimestamp, DateUtil.DATA_TIME_SECOND);
+                            String endTime = DateUtil.TimestampToString(endTimestamp, DateUtil.DATA_TIME_SECOND);
+                            String institutionCode = institutionDao.selectInstitutionCodeById(temp.getInstitutionId());
+                            int allWarnCount = 0;
+                            int allAlarmCount = 0;
+                            //气液比
+                            PointAlarmCountVO alarmCountGLR = new PointAlarmCountVO();
+                            int warnCount = alarmDao.getWithinAlarmCount(institutionCode, beginTime, endTime, 1, "GLR");
+                            int alarmCount = alarmDao.getWithinAlarmCount(institutionCode, beginTime, endTime, 2, "GLR");
+                            alarmCountGLR.setAlarmCode("GLR");
+                            alarmCountGLR.setAlarmName("气液比");
+                            alarmCountGLR.setWarnCount(warnCount);
+                            alarmCountGLR.setAlarmCount(alarmCount);
+                            alarmCountVOList.add(alarmCountGLR);
+                            allWarnCount += warnCount;
+                            allAlarmCount += alarmCount;
+                            //压力
+                            PointAlarmCountVO alarmCountPRE = new PointAlarmCountVO();
+                            warnCount = alarmDao.getWithinAlarmCount(institutionCode, beginTime, endTime, 1, "PRE");
+                            alarmCount = alarmDao.getWithinAlarmCount(institutionCode, beginTime, endTime, 2, "PRE");
+                            alarmCountPRE.setAlarmCode("PRE");
+                            alarmCountPRE.setAlarmName("压力");
+                            alarmCountPRE.setWarnCount(warnCount);
+                            alarmCountPRE.setAlarmCount(alarmCount);
+                            alarmCountVOList.add(alarmCountPRE);
+                            allWarnCount += warnCount;
+                            allAlarmCount += alarmCount;
+                            //NMHC浓度
+                            PointAlarmCountVO alarmCountNMHC = new PointAlarmCountVO();
+                            warnCount = alarmDao.getWithinAlarmCount(institutionCode, beginTime, endTime, 1, "NMHC");
+                            alarmCount = alarmDao.getWithinAlarmCount(institutionCode, beginTime, endTime, 2, "NMHC");
+                            alarmCountNMHC.setAlarmCode("NMHC");
+                            alarmCountNMHC.setAlarmName("NMHC浓度");
+                            alarmCountNMHC.setWarnCount(warnCount);
+                            alarmCountNMHC.setAlarmCount(alarmCount);
+                            alarmCountVOList.add(alarmCountNMHC);
+                            allWarnCount += warnCount;
+                            allAlarmCount += alarmCount;
+                            //设置值
+                            pointVO.setAlarmCountVOList(alarmCountVOList);
+                            pointVO.setAlarmCount(allAlarmCount);
+                            pointVO.setWarnCount(allWarnCount);
                             pointVOList.add(pointVO);
                         }
                     }
@@ -168,77 +236,58 @@ public class MapServiceImpl implements IMapService {
         }
         //2.报警信息监测数据
         List<PointDataAlarmVO> alarmVOList = new ArrayList<>();//列表
-        //TODO 需要整合报警模块代码后进行数据复制
-        for (int i = 0; i < 20; i++) {
-            PointDataAlarmVO pointDataAlarmVO = new PointDataAlarmVO();
-            if (i % 2 == 0) {
-                pointDataAlarmVO.setAlarmId("11111111213123");
-                pointDataAlarmVO.setAlarmCode("GLR");
-                pointDataAlarmVO.setAlarmName("气液比");
-                pointDataAlarmVO.setAlarmInfo("气液比小于0.9预警");
-                pointDataAlarmVO.setLevelNo("1");
-                pointDataAlarmVO.setDeviceCode("testdevice1");
-                pointDataAlarmVO.setDeviceName("油气回收设备");
-            } else if (i % 3 == 0) {
-                pointDataAlarmVO.setAlarmId("222222222334454");
-                pointDataAlarmVO.setAlarmCode("NMHC");
-                pointDataAlarmVO.setAlarmName("NMHC浓度");
-                pointDataAlarmVO.setAlarmInfo("NMHC浓度报警");
-                pointDataAlarmVO.setLevelNo("2");
-                pointDataAlarmVO.setDeviceCode("testdevice1");
-                pointDataAlarmVO.setDeviceName("油气回收设备");
-            } else if (i % 5 == 0) {
-                pointDataAlarmVO.setAlarmId("4444444444444344");
-                pointDataAlarmVO.setAlarmCode("PRE");
-                pointDataAlarmVO.setAlarmName("压力");
-                pointDataAlarmVO.setAlarmInfo("压力预警");
-                pointDataAlarmVO.setLevelNo("1");
-                pointDataAlarmVO.setDeviceCode("testdevice1");
-                pointDataAlarmVO.setDeviceName("油气回收设备");
-            } else if (i % 7 == 0) {
-                pointDataAlarmVO.setAlarmId("666676767676");
-                pointDataAlarmVO.setAlarmCode("GLR");
-                pointDataAlarmVO.setAlarmName("气液比");
-                pointDataAlarmVO.setAlarmInfo("气液比小于0.9报警警");
-                pointDataAlarmVO.setLevelNo("2");
-                pointDataAlarmVO.setDeviceCode("testdevice1");
-                pointDataAlarmVO.setDeviceName("油气回收设备");
-            } else if (i % 9 == 0) {
-                pointDataAlarmVO.setAlarmId("888888888888567");
-                pointDataAlarmVO.setAlarmCode("PRE");
-                pointDataAlarmVO.setAlarmName("压力");
-                pointDataAlarmVO.setAlarmInfo("压力报警");
-                pointDataAlarmVO.setLevelNo("2");
-                pointDataAlarmVO.setDeviceCode("testdevice1");
-                pointDataAlarmVO.setDeviceName("油气回收设备");
-            }
-            if (!StringUtils.isEmpty(pointDataAlarmVO.getAlarmId())) {
-                alarmVOList.add(pointDataAlarmVO);
-            }
-            LinkedHashMap<String, Integer> alarmVOChart = new LinkedHashMap<>();//图表
-            int warnCount = 0;
-            int alarmCount = 0;
-            for (PointDataAlarmVO temp : alarmVOList) {
-                String levelNo = temp.getLevelNo();
-                if (!StringUtils.isEmpty(levelNo)) {
-                    int levelNoInt = Integer.valueOf(levelNo);
-                    if (levelNoInt == 1) {
-                        warnCount++;
-                    } else if (levelNoInt == 2) {
-                        alarmCount++;
-                    } else {
-                        continue;
-                    }
+        List<Long> institutionIdList = new ArrayList<>();
+        institutionIdList.add(institutionId);
+        List<String> institutionCodeList = institutionDao.listInstitutionCodeById(institutionIdList);
+        List<String> deviceCodeList = deviceDao.selectDeviceCodeById(deviceIdList);
+        List<DataAlarmDO> dataAlarmDOList = alarmDao.listAlarm(institutionCodeList, deviceCodeList, null, beginTime, endTime, null);
+        if (dataAlarmDOList != null && dataAlarmDOList.size() > 0) {
+            for (DataAlarmDO temp : dataAlarmDOList) {
+                PointDataAlarmVO pointDataAlarmVO = new PointDataAlarmVO();
+                String alarmId = String.valueOf(temp.getAlarmId());
+                String alarmCode = temp.getAlarmCode();
+                String alarmName = dictionaryDao.selectDictionaryNameByCode(alarmCode, "alarm_code");
+                String alarmInfo = temp.getAlarmInfo();
+                String levelNo = String.valueOf(temp.getLevelNo());
+                String deviceCode = temp.getDeviceCode();
+                String deviceName = deviceDao.selectDeviceNameByCode(deviceCode);
+                String alarmTime = DateUtil.TimestampToString(temp.getAlarmTime(), DateUtil.DATA_TIME_SECOND);
+                pointDataAlarmVO.setAlarmId(alarmId);
+                pointDataAlarmVO.setAlarmCode(alarmCode);
+                pointDataAlarmVO.setAlarmName(alarmName);
+                pointDataAlarmVO.setAlarmInfo(alarmInfo);
+                pointDataAlarmVO.setLevelNo(levelNo);
+                pointDataAlarmVO.setDeviceCode(deviceCode);
+                pointDataAlarmVO.setDeviceName(deviceName);
+                pointDataAlarmVO.setAlarmTime(alarmTime);
+                if (!StringUtils.isEmpty(pointDataAlarmVO.getAlarmId())) {
+                    alarmVOList.add(pointDataAlarmVO);
                 }
             }
-            if (!alarmVOChart.containsKey(DefaultParameter.CHART_WARN)) {
-                alarmVOChart.put(DefaultParameter.CHART_WARN, alarmCount);
-            }
-            if (!alarmVOChart.containsKey(DefaultParameter.CHART_ALARM)) {
-                alarmVOChart.put(DefaultParameter.CHART_ALARM, warnCount);
-            }
-            pointDataVO.setAlarmVOChart(alarmVOChart);
         }
+        LinkedHashMap<String, Integer> alarmVOChart = new LinkedHashMap<>();//图表
+        int warnCount = 0;
+        int alarmCount = 0;
+        for (PointDataAlarmVO temp : alarmVOList) {
+            String levelNo = temp.getLevelNo();
+            if (!StringUtils.isEmpty(levelNo)) {
+                int levelNoInt = Integer.valueOf(levelNo);
+                if (levelNoInt == 1) {
+                    warnCount++;
+                } else if (levelNoInt == 2) {
+                    alarmCount++;
+                } else {
+                    continue;
+                }
+            }
+        }
+        if (!alarmVOChart.containsKey(DefaultParameter.CHART_WARN)) {
+            alarmVOChart.put(DefaultParameter.CHART_WARN, alarmCount);
+        }
+        if (!alarmVOChart.containsKey(DefaultParameter.CHART_ALARM)) {
+            alarmVOChart.put(DefaultParameter.CHART_ALARM, warnCount);
+        }
+        pointDataVO.setAlarmVOChart(alarmVOChart);
         pointDataVO.setAlarmVOList(alarmVOList);
         //3.发油监测数据
         List<DataStorageOilVO> dataStorageOilVOList = new ArrayList<>();
