@@ -60,9 +60,10 @@ public class DataAlarmServiceImpl implements IDataAlarmService {
     @Override
     public Map<String, Integer> getAlarmPercent(String levelNo, String beginTime, String endTime, ArrayList<String> deviceCodes) {
         Map<String, Integer> result = new HashMap<>(5);
-        result.put(AlarmCodeEnum.GLR.toString(), alarmDao.getAlarmCodeCount(AlarmCodeEnum.GLR.toString(), levelNo, beginTime, endTime, deviceCodes));
-        result.put(AlarmCodeEnum.PRE.toString(), alarmDao.getAlarmCodeCount(AlarmCodeEnum.PRE.toString(), levelNo, beginTime, endTime, deviceCodes));
-        result.put(AlarmCodeEnum.NMHC.toString(), alarmDao.getAlarmCodeCount(AlarmCodeEnum.NMHC.toString(), levelNo, beginTime, endTime, deviceCodes));
+        result.put(AlarmCodeEnum.QYB.toString(), alarmDao.getAlarmCodeCount(AlarmCodeEnum.QYB.toString(), levelNo, beginTime, endTime, deviceCodes));
+        result.put(AlarmCodeEnum.YL.toString(), alarmDao.getAlarmCodeCount(AlarmCodeEnum.YL.toString(), levelNo, beginTime, endTime, deviceCodes));
+        result.put(AlarmCodeEnum.ND.toString(), alarmDao.getAlarmCodeCount(AlarmCodeEnum.ND.toString(), levelNo, beginTime, endTime, deviceCodes));
+        result.put(AlarmCodeEnum.LLB.toString(), alarmDao.getAlarmCodeCount(AlarmCodeEnum.LLB.toString(), levelNo, beginTime, endTime, deviceCodes));
         result.put(AlarmCodeEnum.O.toString(), alarmDao.getAlarmCodeCount(AlarmCodeEnum.O.toString(), levelNo, beginTime, endTime, deviceCodes));
         return result;
     }
@@ -77,60 +78,76 @@ public class DataAlarmServiceImpl implements IDataAlarmService {
             xAxisData.add(DateUtil.TimestampToString(DateUtil.StringToTimestampSecond(temp.get("alarmTime").toString()), "MM/dd"));
         }
 
-        List<Map> glrList = alarmDao.getAlarmStatistic(levelNo, deviceCode, beginTime, endTime, AlarmCodeEnum.GLR.toString());
-        ArrayList<Integer> glrData = new ArrayList<>();
-        List<Map> preList = alarmDao.getAlarmStatistic(levelNo, deviceCode, beginTime, endTime, AlarmCodeEnum.PRE.toString());
-        ArrayList<Integer> preData = new ArrayList<>();
-        List<Map> nmhcList = alarmDao.getAlarmStatistic(levelNo, deviceCode, beginTime, endTime, AlarmCodeEnum.NMHC.toString());
-        ArrayList<Integer> nmhcData = new ArrayList<>();
+        List<Map> qybList = alarmDao.getAlarmStatistic(levelNo, deviceCode, beginTime, endTime, AlarmCodeEnum.QYB.toString());
+        ArrayList<Integer> qybData = new ArrayList<>();
+        List<Map> ylList = alarmDao.getAlarmStatistic(levelNo, deviceCode, beginTime, endTime, AlarmCodeEnum.YL.toString());
+        ArrayList<Integer> ylData = new ArrayList<>();
+        List<Map> ndList = alarmDao.getAlarmStatistic(levelNo, deviceCode, beginTime, endTime, AlarmCodeEnum.ND.toString());
+        ArrayList<Integer> ndData = new ArrayList<>();
+        List<Map> llbList = alarmDao.getAlarmStatistic(levelNo, deviceCode, beginTime, endTime, AlarmCodeEnum.LLB.toString());
+        ArrayList<Integer> llbData = new ArrayList<>();
 
-        int glrIndex = 0;
-        int preIndex = 0;
-        int nmhcIndex = 0;
+        int qybIndex = 0;
+        int ylIndex = 0;
+        int ndIndex = 0;
+        int llbIndex = 0;
         for (Map temp : allResult) {
             String alarmTime = DateUtil.TimestampToString(DateUtil.StringToTimestampSecond(temp.get("alarmTime").toString()), DateUtil.DATA_DAY);
 
-            if (alarmTime != null && glrList.size() > 0 && alarmTime.equals(DateUtil.TimestampToString(DateUtil.StringToTimestampSecond(glrList.get(glrIndex).get("alarmTime").toString()), DateUtil.DATA_DAY))) {
-                glrData.add((Integer)(glrList.get(glrIndex).get("alarmCount")));
-                glrIndex++;
+            if (alarmTime != null && qybList.size() > 0 && alarmTime.equals(DateUtil.TimestampToString(DateUtil.StringToTimestampSecond(qybList.get(qybIndex).get("alarmTime").toString()), DateUtil.DATA_DAY))) {
+                qybData.add((Integer)(qybList.get(qybIndex).get("alarmCount")));
+                qybIndex++;
             }
             else {
-                glrData.add(0);
+                qybData.add(0);
             }
 
-            if (alarmTime != null && preList.size() > 0 && alarmTime.equals(DateUtil.TimestampToString(DateUtil.StringToTimestampSecond(preList.get(preIndex).get("alarmTime").toString()), DateUtil.DATA_DAY))) {
-                preData.add((Integer)(preList.get(preIndex).get("alarmCount")));
-                preIndex++;
+            if (alarmTime != null && ylList.size() > 0 && alarmTime.equals(DateUtil.TimestampToString(DateUtil.StringToTimestampSecond(ylList.get(ylIndex).get("alarmTime").toString()), DateUtil.DATA_DAY))) {
+                ylData.add((Integer)(ylList.get(ylIndex).get("alarmCount")));
+                ylIndex++;
             }
             else {
-                preData.add(0);
+                ylData.add(0);
             }
 
-            if (alarmTime != null && nmhcList.size() > 0 && alarmTime.equals(DateUtil.TimestampToString(DateUtil.StringToTimestampSecond(nmhcList.get(nmhcIndex).get("alarmTime").toString()), DateUtil.DATA_DAY))) {
-                nmhcData.add((Integer)(nmhcList.get(nmhcIndex).get("alarmCount")));
-                nmhcIndex++;
+            if (alarmTime != null && ndList.size() > 0 && alarmTime.equals(DateUtil.TimestampToString(DateUtil.StringToTimestampSecond(ndList.get(ndIndex).get("alarmTime").toString()), DateUtil.DATA_DAY))) {
+                ndData.add((Integer)(ndList.get(ndIndex).get("alarmCount")));
+                ndIndex++;
             }
             else {
-                nmhcData.add(0);
+                ndData.add(0);
+            }
+
+            if (alarmTime != null && llbList.size() > 0 && alarmTime.equals(DateUtil.TimestampToString(DateUtil.StringToTimestampSecond(llbList.get(llbIndex).get("alarmTime").toString()), DateUtil.DATA_DAY))) {
+                llbData.add((Integer)(llbList.get(ndIndex).get("alarmCount")));
+                llbIndex++;
+            }
+            else {
+                llbData.add(0);
             }
         }
 
         List<Map<String, Object>> seriesData = new ArrayList<>();
-        Map<String, Object> glrMap = new HashMap<>(5);
-        Map<String, Object> preMap = new HashMap<>(5);
-        Map<String, Object> nmhcMap = new HashMap<>(5);
-        glrMap.put("name", "气液比");
-        glrMap.put("type", "bar");
-        glrMap.put("data", glrData);
-        preMap.put("name", "压力");
-        preMap.put("type", "bar");
-        preMap.put("data", preData);
-        nmhcMap.put("name", "NMHC浓度");
-        nmhcMap.put("type", "bar");
-        nmhcMap.put("data", nmhcData);
-        seriesData.add(glrMap);
-        seriesData.add(preMap);
-        seriesData.add(nmhcMap);
+        Map<String, Object> qybMap = new HashMap<>(5);
+        Map<String, Object> ylMap = new HashMap<>(5);
+        Map<String, Object> ndMap = new HashMap<>(5);
+        Map<String, Object> llbMap = new HashMap<>(5);
+        qybMap.put("name", "发油气液比");
+        qybMap.put("type", "bar");
+        qybMap.put("data", qybData);
+        ylMap.put("name", "系统压力值");
+        ylMap.put("type", "bar");
+        ylMap.put("data", ylData);
+        ndMap.put("name", "出口浓度值");
+        ndMap.put("type", "bar");
+        ndMap.put("data", ndData);
+        llbMap.put("name", "进出流量比");
+        llbMap.put("type", "bar");
+        llbMap.put("data", llbData);
+        seriesData.add(qybMap);
+        seriesData.add(ylMap);
+        seriesData.add(ndMap);
+        seriesData.add(llbMap);
 
         Map<String, List> result = new HashMap<>(3);
         result.put("xAxisData", xAxisData);

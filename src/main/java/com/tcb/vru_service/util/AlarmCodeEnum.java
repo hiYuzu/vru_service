@@ -6,9 +6,10 @@ package com.tcb.vru_service.util;
  * @date 2020/9/15 10:53
  */
 public enum AlarmCodeEnum {
-    // 气液比，压力，NMHC浓度，断开连接
-    GLR,
-    PRE,
-    NMHC,
+    // 发油气液比，进出流量比，出口浓度值，系统压力值，断开连接
+    QYB,
+    LLB,
+    ND,
+    YL,
     O
 }
