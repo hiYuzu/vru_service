@@ -5,6 +5,7 @@ import com.tcb.vru_service.model.*;
 import com.tcb.vru_service.pojo.*;
 import com.tcb.vru_service.service.IMapService;
 import com.tcb.vru_service.service.IRoleService;
+import com.tcb.vru_service.util.AlarmCodeEnum;
 import com.tcb.vru_service.util.CommonFunction;
 import com.tcb.vru_service.util.DateUtil;
 import com.tcb.vru_service.util.DefaultParameter;
@@ -102,9 +103,9 @@ public class MapServiceImpl implements IMapService {
                             int allAlarmCount = 0;
                             //进出口流量比
                             PointAlarmCountVO alarmCountLLB = new PointAlarmCountVO();
-                            int warnCount = alarmDao.getWithinAlarmCount(institutionCode, beginTime, endTime, 1, "LLB");
-                            int alarmCount = alarmDao.getWithinAlarmCount(institutionCode, beginTime, endTime, 2, "LLB");
-                            alarmCountLLB.setAlarmCode("LLB");
+                            int warnCount = alarmDao.getWithinAlarmCount(institutionCode, beginTime, endTime, 1, AlarmCodeEnum.LLB.toString());
+                            int alarmCount = alarmDao.getWithinAlarmCount(institutionCode, beginTime, endTime, 2, AlarmCodeEnum.LLB.toString());
+                            alarmCountLLB.setAlarmCode(AlarmCodeEnum.LLB.toString());
                             alarmCountLLB.setAlarmName("油气处理装置进出口流量比");
                             alarmCountLLB.setWarnCount(warnCount);
                             alarmCountLLB.setAlarmCount(alarmCount);
@@ -113,9 +114,9 @@ public class MapServiceImpl implements IMapService {
                             allAlarmCount += alarmCount;
                             //油气收集系统压力
                             PointAlarmCountVO alarmCountYL = new PointAlarmCountVO();
-                            warnCount = alarmDao.getWithinAlarmCount(institutionCode, beginTime, endTime, 1, "YL");
-                            alarmCount = alarmDao.getWithinAlarmCount(institutionCode, beginTime, endTime, 2, "YL");
-                            alarmCountYL.setAlarmCode("YL");
+                            warnCount = alarmDao.getWithinAlarmCount(institutionCode, beginTime, endTime, 1, AlarmCodeEnum.YL.toString());
+                            alarmCount = alarmDao.getWithinAlarmCount(institutionCode, beginTime, endTime, 2, AlarmCodeEnum.YL.toString());
+                            alarmCountYL.setAlarmCode(AlarmCodeEnum.YL.toString());
                             alarmCountYL.setAlarmName("油气收集系统压力");
                             alarmCountYL.setWarnCount(warnCount);
                             alarmCountYL.setAlarmCount(alarmCount);
@@ -124,9 +125,9 @@ public class MapServiceImpl implements IMapService {
                             allAlarmCount += alarmCount;
                             //油气处理装置出口浓度
                             PointAlarmCountVO alarmCountND = new PointAlarmCountVO();
-                            warnCount = alarmDao.getWithinAlarmCount(institutionCode, beginTime, endTime, 1, "ND");
-                            alarmCount = alarmDao.getWithinAlarmCount(institutionCode, beginTime, endTime, 2, "ND");
-                            alarmCountND.setAlarmCode("ND");
+                            warnCount = alarmDao.getWithinAlarmCount(institutionCode, beginTime, endTime, 1, AlarmCodeEnum.ND.toString());
+                            alarmCount = alarmDao.getWithinAlarmCount(institutionCode, beginTime, endTime, 2, AlarmCodeEnum.ND.toString());
+                            alarmCountND.setAlarmCode(AlarmCodeEnum.ND.toString());
                             alarmCountND.setAlarmName("油气处理装置出口浓度");
                             alarmCountND.setWarnCount(warnCount);
                             alarmCountND.setAlarmCount(alarmCount);
@@ -135,9 +136,9 @@ public class MapServiceImpl implements IMapService {
                             allAlarmCount += alarmCount;
                             //发油气液比
                             PointAlarmCountVO alarmCountQYB = new PointAlarmCountVO();
-                            warnCount = alarmDao.getWithinAlarmCount(institutionCode, beginTime, endTime, 1, "QYB");
-                            alarmCount = alarmDao.getWithinAlarmCount(institutionCode, beginTime, endTime, 2, "QYB");
-                            alarmCountQYB.setAlarmCode("QYB");
+                            warnCount = alarmDao.getWithinAlarmCount(institutionCode, beginTime, endTime, 1, AlarmCodeEnum.QYB.toString());
+                            alarmCount = alarmDao.getWithinAlarmCount(institutionCode, beginTime, endTime, 2, AlarmCodeEnum.QYB.toString());
+                            alarmCountQYB.setAlarmCode(AlarmCodeEnum.QYB.toString());
                             alarmCountQYB.setAlarmName("发油气液比");
                             alarmCountQYB.setWarnCount(warnCount);
                             alarmCountQYB.setAlarmCount(alarmCount);
