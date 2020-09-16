@@ -68,11 +68,18 @@ public interface InstitutionDao {
     int deleteListInstitution(@Param("listInstitutionId") List<Long> listInstitutionId);
 
     /**
-     * 通过机构Id获取机构Code
+     * 通过机构Id获取机构Code(List)
      *
      * @param listInstitutionId
      * @return
      */
-    List<String> selectInstitutionCodeById(@Param("listInstitutionId") List<Long> listInstitutionId);
+    List<String> listInstitutionCodeById(@Param("listInstitutionId") List<Long> listInstitutionId);
+
+    /**
+     * 通过机构Id获取机构Code
+     * @param institutionId
+     * @return
+     */
+    String selectInstitutionCodeById(@Param("institutionId") Long institutionId);
 
 }

@@ -259,4 +259,12 @@
         </foreach>
     </select>
 
+    <!-- 通过deviceCode获取deviceName -->
+    <select id="selectDeviceNameByCode" resultType="java.lang.String">
+        SELECT device_name
+        FROM base_device
+        WHERE device_code = #{deviceCode}
+        LIMIT 0,1
+    </select>
+
 </mapper>

@@ -2,6 +2,28 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tcb.vru_service.dao.AlarmDao">
 
+    <resultMap id="dataAlarmDOResultMap" type="com.tcb.vru_service.pojo.DataAlarmDO">
+        <id property="alarmId" column="alarm_id" jdbcType="BIGINT"/>
+        <result property="alarmCode" column="alarm_code" jdbcType="VARCHAR"/>
+        <result property="institutionCode" column="institution_code" jdbcType="VARCHAR"/>
+        <result property="deviceCode" column="device_code" jdbcType="VARCHAR"/>
+        <result property="alarmInfo" column="alarm_info" jdbcType="VARCHAR"/>
+        <result property="alarmAction" column="alarm_action" jdbcType="VARCHAR"/>
+        <result property="actionUser" column="action_user" jdbcType="VARCHAR"/>
+        <result property="alarmStatus" column="alarm_status" jdbcType="VARCHAR"/>
+        <result property="alarmTime" column="alarm_time" jdbcType="TIMESTAMP"/>
+        <result property="actionTime" column="action_time" jdbcType="TIMESTAMP"/>
+        <result property="sendFlag" column="send_flag" jdbcType="TINYINT"/>
+        <result property="thingCode" column="thing_code" jdbcType="VARCHAR"/>
+        <result property="minValue" column="min_value" jdbcType="DOUBLE"/>
+        <result property="maxValue" column="max_value" jdbcType="DOUBLE"/>
+        <result property="thingValue" column="thing_value" jdbcType="DOUBLE"/>
+        <result property="levelNo" column="level_no" jdbcType="INTEGER"/>
+        <result property="dataTime" column="data_time" jdbcType="TIMESTAMP"/>
+        <result property="planId" column="plan_id" jdbcType="INTEGER"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
     <resultMap id="dataAlarmMap" type="com.tcb.vru_service.model.DataAlarmVO">
         <result column="institution_name" property="institution" jdbcType="VARCHAR"/>
         <result column="device_name" property="deviceName" jdbcType="VARCHAR"/>
@@ -133,11 +155,8 @@
         SELECT COUNT(alarm_id)
         FROM data_alarm
         WHERE alarm_time BETWEEN #{beginTime} AND #{endTime}
-        <if test="institutionCodeList != null and institutionCodeList.size()>0">
-            AND institution_code IN
-            <foreach collection="institutionCodeList" item="item" open="(" separator="," close=")">
-                #{item}
-            </foreach>
+        <if test="institutionCode != null and institutionCode != ''">
+            AND institution_code = #{institutionCode}
         </if>
         <if test="levelNo != null">
             AND level_no = #{levelNo}
@@ -145,6 +164,55 @@
         <if test="alarmCode != null and alarmCode != ''">
             AND alarm_code = #{alarmCode}
         </if>
+    </select>
+
+    <!-- 获取报警数据 -->
+    <select id="listAlarm" resultMap="dataAlarmDOResultMap">
+        SELECT DISTINCT
+            alarm_id,
+            alarm_code,
+            institution_code,
+            device_code,
+            alarm_info,
+            alarm_action,
+            action_user,
+            alarm_status,
+            alarm_time,
+            action_time,
+            send_flag,
+            thing_code,
+            min_value,
+            max_value,
+            thing_value,
+            level_no,
+            data_time,
+            plan_id,
+            update_time
+        FROM data_alarm
+        <where>
+            alarm_time BETWEEN #{beginTime} AND #{endTime}
+            <if test="institutionCodeList != null and institutionCodeList.size()>0">
+                AND institution_code IN
+                <foreach collection="institutionCodeList" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="deviceCodeList != null and deviceCodeList.size()>0">
+                AND device_code IN
+                <foreach collection="deviceCodeList" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="alarmCodeList != null and alarmCodeList.size()>0">
+                AND alarm_code IN
+                <foreach collection="alarmCodeList" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="levelNo != null">
+                AND level_no = #{levelNo}
+            </if>
+        </where>
     </select>
 
 </mapper>

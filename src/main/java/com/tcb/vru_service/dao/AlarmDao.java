@@ -6,6 +6,7 @@ import com.tcb.vru_service.util.AlarmCodeEnum;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -69,17 +70,36 @@ public interface AlarmDao {
     /**
      * 获取条件范围内报警预警个数
      *
-     * @param institutionCodeList
+     * @param institutionCode
      * @param beginTime
      * @param endTime
      * @param levelNo
      * @param alarmCode
      * @return
      */
-    int getWithinAlarmCount(@Param("institutionCodeList") List<String> institutionCodeList,
+    int getWithinAlarmCount(@Param("institutionCode") String institutionCode,
                             @Param("beginTime") String beginTime,
                             @Param("endTime") String endTime,
                             @Param("levelNo") Integer levelNo,
                             @Param("alarmCode") String alarmCode);
+
+    /**
+     * 获取报警数据
+     *
+     * @param institutionCodeList
+     * @param deviceCodeList
+     * @param alarmCodeList
+     * @param beginTime
+     * @param endTime
+     * @param levelNo
+     * @return
+     */
+    List<DataAlarmDO> listAlarm(@Param("institutionCodeList") List<String> institutionCodeList,
+                                @Param("deviceCodeList") List<String> deviceCodeList,
+                                @Param("alarmCodeList") String alarmCodeList,
+                                @Param("beginTime") Timestamp beginTime,
+                                @Param("endTime") Timestamp endTime,
+                                @Param("levelNo") Integer levelNo);
+
 
 }

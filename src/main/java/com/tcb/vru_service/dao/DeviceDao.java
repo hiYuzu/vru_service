@@ -89,5 +89,11 @@ public interface DeviceDao {
      */
     List<String> selectDeviceCodeById(@Param("listDeviceId") List<Integer> listDeviceId);
 
+    /**
+     * 通过deviceCode获取deviceName
+     * @param deviceCode
+     * @return
+     */
+    String selectDeviceNameByCode(@Param("deviceCode") String deviceCode);
 
 }

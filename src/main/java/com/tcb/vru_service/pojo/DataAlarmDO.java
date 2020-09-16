@@ -26,7 +26,6 @@ public class DataAlarmDO extends BaseDO {
     private Double minValue;
     private Double maxValue;
     private Double thingValue;
-    private Integer dataFlag;
     private Integer levelNo;
     private String dataTime;
     private Long planId;
@@ -152,14 +151,6 @@ public class DataAlarmDO extends BaseDO {
 
     public void setThingValue(Double thingValue) {
         this.thingValue = thingValue;
-    }
-
-    public Integer getDataFlag() {
-        return dataFlag;
-    }
-
-    public void setDataFlag(Integer dataFlag) {
-        this.dataFlag = dataFlag;
     }
 
     public Integer getLevelNo() {

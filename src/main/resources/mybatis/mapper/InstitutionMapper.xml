@@ -169,14 +169,22 @@
         </foreach>
     </delete>
 
-    <!-- 通过机构Id获取机构Code -->
-    <select id="selectInstitutionCodeById" resultType="java.lang.String">
+    <!-- 通过机构Id获取机构Code(List) -->
+    <select id="listInstitutionCodeById" resultType="java.lang.String">
         SELECT institution_code
         FROM base_institution
         WHERE institution_id IN
         <foreach collection="listInstitutionId" item="item" open="(" separator="," close=")">
             #{item,jdbcType = INTEGER}
         </foreach>
+    </select>
+
+    <!-- 通过机构Id获取机构Code -->
+    <select id="selectInstitutionCodeById" resultType="java.lang.String">
+        SELECT institution_code
+        FROM base_institution
+        WHERE institution_id = #{institutionId}
+        LIMIT 0,1
     </select>
 
 </mapper>
