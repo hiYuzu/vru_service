@@ -54,4 +54,14 @@ public interface IDataAlarmService {
      * @return
      */
     List<Map> getAlarmDictionary();
+
+    /**
+     * 报警统计
+     * @param levelNo
+     * @param deviceCode
+     * @param beginTime
+     * @param endTime
+     * @return
+     */
+    Map getAlarmStatistic(String levelNo, String deviceCode, String beginTime, String endTime);
 }

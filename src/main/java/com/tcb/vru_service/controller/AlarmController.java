@@ -6,14 +6,15 @@ import com.tcb.vru_service.response.ResultVO;
 import com.tcb.vru_service.service.IDataAlarmService;
 import com.tcb.vru_service.service.IDeviceService;
 import com.tcb.vru_service.service.IInstitutionService;
+import com.tcb.vru_service.util.DateUtil;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * @author hiYuzu
@@ -33,8 +34,10 @@ public class AlarmController {
     public ResultVO<Integer> getAlarmShowDataCount(DataAlarmDO dataAlarmDO) {
         return new ResultVO<>(dataAlarmService.getAlarmDataCount(dataAlarmDO));
     }
+
     /**
      * 查询报警信息
+     *
      * @param dataAlarmDO
      * @param rowIndex
      * @param rowCount
@@ -73,12 +76,8 @@ public class AlarmController {
     }
 
     @PostMapping("/getAlarmStatistic")
-    public ResultVO<Map<String, List>> getAlarmStatistic(String levelNo, String deviceCode, String beginTime, String endTime) {
-        //2020-06-01 00:00:00
-        Map<String, List> result = new HashMap<>(3);
-        ArrayList<String> arrayList = new ArrayList<>();
-        result.put("xAxisData", arrayList);
-        result.put("seriesData", arrayList);
-        return new ResultVO<>(result);
+    public ResultVO<Map> getAlarmStatistic(String levelNo, String deviceCode, String beginTime, String endTime) throws Exception {
+        Map result = dataAlarmService.getAlarmStatistic(levelNo, deviceCode, beginTime, endTime);
+        return result == null ? new ResultVO(false, "数据查询失败") : new ResultVO<>(result);
     }
 }

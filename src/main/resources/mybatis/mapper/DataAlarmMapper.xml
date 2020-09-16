@@ -22,6 +22,11 @@
         <result column="device_code" property="deviceCode" jdbcType="VARCHAR"/>
         <result column="times" property="alarmTimes" javaType="INTEGER"/>
     </resultMap>
+    
+    <resultMap id="getAlarmStatistic" type="java.util.Map">
+        <result column="alarm_time_format" property="alarmTime" jdbcType="VARCHAR"/>
+        <result column="alarm_count" property="alarmCount" javaType="INTEGER"/>
+    </resultMap>
 
     <select id="getAlarmDictionary" resultMap="alarmDictionaryMap">
         SELECT
@@ -126,5 +131,22 @@
         <foreach collection="deviceCodes" item="item" open="(" separator="," close=")">
             #{item}
         </foreach>
+    </select>
+    
+    <select id="getAlarmStatistic" resultMap="getAlarmStatistic">
+        SELECT
+	      DATE_FORMAT(alarm_time,'%Y-%m-%d') AS alarm_time_format,
+          COUNT(*) AS alarm_count
+        FROM
+	      data_alarm
+        WHERE
+          alarm_time BETWEEN #{beginTime}
+	      AND #{endTime}
+	      AND level_no = #{levelNo}
+          AND device_code = #{deviceCode}
+          <if test="alarmCode != null">
+              AND alarm_code = #{alarmCode}
+          </if>
+        GROUP BY alarm_time_format
     </select>
 </mapper>
