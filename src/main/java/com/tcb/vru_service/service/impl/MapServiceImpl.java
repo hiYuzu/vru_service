@@ -66,7 +66,7 @@ public class MapServiceImpl implements IMapService {
                             pointVO.setMapY(temp.getMapY());
                             //实时数据查询
                             TreeMap<String, LinkedHashMap<String, Double>> monitorVOMap = new TreeMap<>();
-                            List<Integer> deviceIdList = CommonFunction.getDeviceIdList(baseDeviceDOList, 1);
+                            List<Integer> deviceIdList = CommonFunction.getDeviceIdList(baseDeviceDOList, 1, temp.getInstitutionId());
                             List<String> deviceCodeList = deviceDao.selectDeviceCodeById(deviceIdList);
                             List<DataStorageDO> dataStorageDOList = storageDao.listRecentValue(deviceCodeList, null, 2011);
                             if (dataStorageDOList != null && dataStorageDOList.size() > 0) {
@@ -172,7 +172,7 @@ public class MapServiceImpl implements IMapService {
                 }
         );//列表
         List<String> listName = new ArrayList<>();
-        List<Integer> deviceIdList = CommonFunction.getDeviceIdList(baseDeviceDOList, 1);
+        List<Integer> deviceIdList = CommonFunction.getDeviceIdList(baseDeviceDOList, 1, institutionId);
         if (deviceIdList != null && deviceIdList.size() > 0) {
             List<DataStorageDO> dataStorageDOList = storageDao.listStorage(deviceIdList, null, 2061, null, beginTime, endTime, null, null);
             if (dataStorageDOList != null && dataStorageDOList.size() > 0) {
