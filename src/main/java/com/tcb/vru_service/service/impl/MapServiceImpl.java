@@ -106,7 +106,7 @@ public class MapServiceImpl implements IMapService {
                             int warnCount = alarmDao.getWithinAlarmCount(institutionCode, beginTime, endTime, 1, AlarmCodeEnum.LLB.toString());
                             int alarmCount = alarmDao.getWithinAlarmCount(institutionCode, beginTime, endTime, 2, AlarmCodeEnum.LLB.toString());
                             alarmCountLLB.setAlarmCode(AlarmCodeEnum.LLB.toString());
-                            alarmCountLLB.setAlarmName("油气处理装置进出口流量比");
+                            alarmCountLLB.setAlarmName(dictionaryDao.selectDictionaryNameByCode(AlarmCodeEnum.LLB.toString(), "alarm_code"));
                             alarmCountLLB.setWarnCount(warnCount);
                             alarmCountLLB.setAlarmCount(alarmCount);
                             alarmCountVOList.add(alarmCountLLB);
@@ -117,7 +117,7 @@ public class MapServiceImpl implements IMapService {
                             warnCount = alarmDao.getWithinAlarmCount(institutionCode, beginTime, endTime, 1, AlarmCodeEnum.YL.toString());
                             alarmCount = alarmDao.getWithinAlarmCount(institutionCode, beginTime, endTime, 2, AlarmCodeEnum.YL.toString());
                             alarmCountYL.setAlarmCode(AlarmCodeEnum.YL.toString());
-                            alarmCountYL.setAlarmName("油气收集系统压力");
+                            alarmCountYL.setAlarmName(dictionaryDao.selectDictionaryNameByCode(AlarmCodeEnum.YL.toString(), "alarm_code"));
                             alarmCountYL.setWarnCount(warnCount);
                             alarmCountYL.setAlarmCount(alarmCount);
                             alarmCountVOList.add(alarmCountYL);
@@ -128,7 +128,7 @@ public class MapServiceImpl implements IMapService {
                             warnCount = alarmDao.getWithinAlarmCount(institutionCode, beginTime, endTime, 1, AlarmCodeEnum.ND.toString());
                             alarmCount = alarmDao.getWithinAlarmCount(institutionCode, beginTime, endTime, 2, AlarmCodeEnum.ND.toString());
                             alarmCountND.setAlarmCode(AlarmCodeEnum.ND.toString());
-                            alarmCountND.setAlarmName("油气处理装置出口浓度");
+                            alarmCountND.setAlarmName(dictionaryDao.selectDictionaryNameByCode(AlarmCodeEnum.ND.toString(), "alarm_code"));
                             alarmCountND.setWarnCount(warnCount);
                             alarmCountND.setAlarmCount(alarmCount);
                             alarmCountVOList.add(alarmCountND);
@@ -139,7 +139,7 @@ public class MapServiceImpl implements IMapService {
                             warnCount = alarmDao.getWithinAlarmCount(institutionCode, beginTime, endTime, 1, AlarmCodeEnum.QYB.toString());
                             alarmCount = alarmDao.getWithinAlarmCount(institutionCode, beginTime, endTime, 2, AlarmCodeEnum.QYB.toString());
                             alarmCountQYB.setAlarmCode(AlarmCodeEnum.QYB.toString());
-                            alarmCountQYB.setAlarmName("发油气液比");
+                            alarmCountQYB.setAlarmName(dictionaryDao.selectDictionaryNameByCode(AlarmCodeEnum.QYB.toString(), "alarm_code"));
                             alarmCountQYB.setWarnCount(warnCount);
                             alarmCountQYB.setAlarmCount(alarmCount);
                             alarmCountVOList.add(alarmCountQYB);
