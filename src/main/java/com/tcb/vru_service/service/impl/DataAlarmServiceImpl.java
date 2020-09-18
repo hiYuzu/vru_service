@@ -94,7 +94,7 @@ public class DataAlarmServiceImpl implements IDataAlarmService {
         for (Map temp : allResult) {
             String alarmTime = DateUtil.TimestampToString(DateUtil.StringToTimestampSecond(temp.get("alarmTime").toString()), DateUtil.DATA_DAY);
 
-            if (alarmTime != null && qybList.size() > 0 && alarmTime.equals(DateUtil.TimestampToString(DateUtil.StringToTimestampSecond(qybList.get(qybIndex).get("alarmTime").toString()), DateUtil.DATA_DAY))) {
+            if (alarmTime != null && qybList.size() > qybIndex && alarmTime.equals(DateUtil.TimestampToString(DateUtil.StringToTimestampSecond(qybList.get(qybIndex).get("alarmTime").toString()), DateUtil.DATA_DAY))) {
                 qybData.add((Integer)(qybList.get(qybIndex).get("alarmCount")));
                 qybIndex++;
             }
@@ -102,7 +102,7 @@ public class DataAlarmServiceImpl implements IDataAlarmService {
                 qybData.add(0);
             }
 
-            if (alarmTime != null && ylList.size() > 0 && alarmTime.equals(DateUtil.TimestampToString(DateUtil.StringToTimestampSecond(ylList.get(ylIndex).get("alarmTime").toString()), DateUtil.DATA_DAY))) {
+            if (alarmTime != null && ylList.size() > ylIndex && alarmTime.equals(DateUtil.TimestampToString(DateUtil.StringToTimestampSecond(ylList.get(ylIndex).get("alarmTime").toString()), DateUtil.DATA_DAY))) {
                 ylData.add((Integer)(ylList.get(ylIndex).get("alarmCount")));
                 ylIndex++;
             }
@@ -110,7 +110,7 @@ public class DataAlarmServiceImpl implements IDataAlarmService {
                 ylData.add(0);
             }
 
-            if (alarmTime != null && ndList.size() > 0 && alarmTime.equals(DateUtil.TimestampToString(DateUtil.StringToTimestampSecond(ndList.get(ndIndex).get("alarmTime").toString()), DateUtil.DATA_DAY))) {
+            if (alarmTime != null && ndList.size() > ndIndex && alarmTime.equals(DateUtil.TimestampToString(DateUtil.StringToTimestampSecond(ndList.get(ndIndex).get("alarmTime").toString()), DateUtil.DATA_DAY))) {
                 ndData.add((Integer)(ndList.get(ndIndex).get("alarmCount")));
                 ndIndex++;
             }
@@ -118,8 +118,8 @@ public class DataAlarmServiceImpl implements IDataAlarmService {
                 ndData.add(0);
             }
 
-            if (alarmTime != null && llbList.size() > 0 && alarmTime.equals(DateUtil.TimestampToString(DateUtil.StringToTimestampSecond(llbList.get(llbIndex).get("alarmTime").toString()), DateUtil.DATA_DAY))) {
-                llbData.add((Integer)(llbList.get(ndIndex).get("alarmCount")));
+            if (alarmTime != null && llbList.size() > llbIndex && alarmTime.equals(DateUtil.TimestampToString(DateUtil.StringToTimestampSecond(llbList.get(llbIndex).get("alarmTime").toString()), DateUtil.DATA_DAY))) {
+                llbData.add((Integer)(llbList.get(llbIndex).get("alarmCount")));
                 llbIndex++;
             }
             else {
@@ -132,16 +132,16 @@ public class DataAlarmServiceImpl implements IDataAlarmService {
         Map<String, Object> ylMap = new HashMap<>(5);
         Map<String, Object> ndMap = new HashMap<>(5);
         Map<String, Object> llbMap = new HashMap<>(5);
-        qybMap.put("name", "发油气液比");
+        qybMap.put("name", "气液比");
         qybMap.put("type", "bar");
         qybMap.put("data", qybData);
-        ylMap.put("name", "系统压力值");
+        ylMap.put("name", "压力值");
         ylMap.put("type", "bar");
         ylMap.put("data", ylData);
-        ndMap.put("name", "出口浓度值");
+        ndMap.put("name", "浓度值");
         ndMap.put("type", "bar");
         ndMap.put("data", ndData);
-        llbMap.put("name", "进出流量比");
+        llbMap.put("name", "流量比");
         llbMap.put("type", "bar");
         llbMap.put("data", llbData);
         seriesData.add(qybMap);

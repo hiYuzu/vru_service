@@ -68,7 +68,7 @@
                 <if test="dataAlarmDO.levelNo != null">
                     AND da.level_no = #{dataAlarmDO.levelNo}
                 </if>
-                <if test="dataAlarmDo.institutionCode != null">
+                <if test="dataAlarmDO.institutionCode != null">
                     AND da.institution_code = #{dataAlarmDO.institutionCode}
                 </if>
                 <if test="dataAlarmDO.deviceCode != null and dataAlarmDO.deviceCode != ''">
@@ -170,6 +170,8 @@
               AND alarm_code = #{alarmCode}
           </if>
         GROUP BY alarm_time_format
+        ORDER BY
+          alarm_time_format ASC
     </select>
 
     <!-- 获取条件范围内报警预警个数 -->
