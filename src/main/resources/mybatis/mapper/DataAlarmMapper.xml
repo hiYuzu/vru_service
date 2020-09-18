@@ -179,9 +179,7 @@
         SELECT COUNT(alarm_id)
         FROM data_alarm
         WHERE alarm_time BETWEEN #{beginTime} AND #{endTime}
-        <if test="institutionCode != null and institutionCode != ''">
-            AND institution_code = #{institutionCode}
-        </if>
+        AND institution_code = #{institutionCode}
         <if test="levelNo != null">
             AND level_no = #{levelNo}
         </if>

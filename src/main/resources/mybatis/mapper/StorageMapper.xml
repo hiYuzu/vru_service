@@ -163,9 +163,16 @@
             ddd.data_time AS begin_time
         FROM data_device_data ddd
         WHERE ddd.device_code IN
-        <foreach collection="listDeviceCode" item="item" open="(" separator="," close=")">
-            #{item}
-        </foreach>
+        <choose>
+            <when test="listDeviceCode != null and listDeviceCode.size()>0">
+                <foreach collection="listDeviceCode" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </when>
+            <otherwise>
+                ('')
+            </otherwise>
+        </choose>
         <if test="listThingCode != null and listThingCode.size()>0">
             AND ddd.thing_code IN
             <foreach collection="listThingCode" item="item" open="(" separator="," close=")">

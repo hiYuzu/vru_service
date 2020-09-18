@@ -5,6 +5,7 @@ import com.tcb.vru_service.model.*;
 import com.tcb.vru_service.pojo.*;
 import com.tcb.vru_service.service.IMapService;
 import com.tcb.vru_service.service.IRoleService;
+import com.tcb.vru_service.util.AlarmCodeEnum;
 import com.tcb.vru_service.util.CommonFunction;
 import com.tcb.vru_service.util.DateUtil;
 import com.tcb.vru_service.util.DefaultParameter;
@@ -65,7 +66,7 @@ public class MapServiceImpl implements IMapService {
                             pointVO.setMapY(temp.getMapY());
                             //实时数据查询
                             TreeMap<String, LinkedHashMap<String, Double>> monitorVOMap = new TreeMap<>();
-                            List<Integer> deviceIdList = CommonFunction.getDeviceIdList(baseDeviceDOList, 1);
+                            List<Integer> deviceIdList = CommonFunction.getDeviceIdList(baseDeviceDOList, 1, temp.getInstitutionId());
                             List<String> deviceCodeList = deviceDao.selectDeviceCodeById(deviceIdList);
                             List<DataStorageDO> dataStorageDOList = storageDao.listRecentValue(deviceCodeList, null, 2011);
                             if (dataStorageDOList != null && dataStorageDOList.size() > 0) {
@@ -100,37 +101,48 @@ public class MapServiceImpl implements IMapService {
                             String institutionCode = institutionDao.selectInstitutionCodeById(temp.getInstitutionId());
                             int allWarnCount = 0;
                             int allAlarmCount = 0;
-                            //气液比
-                            PointAlarmCountVO alarmCountGLR = new PointAlarmCountVO();
-                            int warnCount = alarmDao.getWithinAlarmCount(institutionCode, beginTime, endTime, 1, "GLR");
-                            int alarmCount = alarmDao.getWithinAlarmCount(institutionCode, beginTime, endTime, 2, "GLR");
-                            alarmCountGLR.setAlarmCode("GLR");
-                            alarmCountGLR.setAlarmName("气液比");
-                            alarmCountGLR.setWarnCount(warnCount);
-                            alarmCountGLR.setAlarmCount(alarmCount);
-                            alarmCountVOList.add(alarmCountGLR);
+                            //进出口流量比
+                            PointAlarmCountVO alarmCountLLB = new PointAlarmCountVO();
+                            int warnCount = alarmDao.getWithinAlarmCount(institutionCode, beginTime, endTime, 1, AlarmCodeEnum.LLB.toString());
+                            int alarmCount = alarmDao.getWithinAlarmCount(institutionCode, beginTime, endTime, 2, AlarmCodeEnum.LLB.toString());
+                            alarmCountLLB.setAlarmCode(AlarmCodeEnum.LLB.toString());
+                            alarmCountLLB.setAlarmName(dictionaryDao.selectDictionaryNameByCode(AlarmCodeEnum.LLB.toString(), "alarm_code"));
+                            alarmCountLLB.setWarnCount(warnCount);
+                            alarmCountLLB.setAlarmCount(alarmCount);
+                            alarmCountVOList.add(alarmCountLLB);
                             allWarnCount += warnCount;
                             allAlarmCount += alarmCount;
-                            //压力
-                            PointAlarmCountVO alarmCountPRE = new PointAlarmCountVO();
-                            warnCount = alarmDao.getWithinAlarmCount(institutionCode, beginTime, endTime, 1, "PRE");
-                            alarmCount = alarmDao.getWithinAlarmCount(institutionCode, beginTime, endTime, 2, "PRE");
-                            alarmCountPRE.setAlarmCode("PRE");
-                            alarmCountPRE.setAlarmName("压力");
-                            alarmCountPRE.setWarnCount(warnCount);
-                            alarmCountPRE.setAlarmCount(alarmCount);
-                            alarmCountVOList.add(alarmCountPRE);
+                            //油气收集系统压力
+                            PointAlarmCountVO alarmCountYL = new PointAlarmCountVO();
+                            warnCount = alarmDao.getWithinAlarmCount(institutionCode, beginTime, endTime, 1, AlarmCodeEnum.YL.toString());
+                            alarmCount = alarmDao.getWithinAlarmCount(institutionCode, beginTime, endTime, 2, AlarmCodeEnum.YL.toString());
+                            alarmCountYL.setAlarmCode(AlarmCodeEnum.YL.toString());
+                            alarmCountYL.setAlarmName(dictionaryDao.selectDictionaryNameByCode(AlarmCodeEnum.YL.toString(), "alarm_code"));
+                            alarmCountYL.setWarnCount(warnCount);
+                            alarmCountYL.setAlarmCount(alarmCount);
+                            alarmCountVOList.add(alarmCountYL);
                             allWarnCount += warnCount;
                             allAlarmCount += alarmCount;
-                            //NMHC浓度
-                            PointAlarmCountVO alarmCountNMHC = new PointAlarmCountVO();
-                            warnCount = alarmDao.getWithinAlarmCount(institutionCode, beginTime, endTime, 1, "NMHC");
-                            alarmCount = alarmDao.getWithinAlarmCount(institutionCode, beginTime, endTime, 2, "NMHC");
-                            alarmCountNMHC.setAlarmCode("NMHC");
-                            alarmCountNMHC.setAlarmName("NMHC浓度");
-                            alarmCountNMHC.setWarnCount(warnCount);
-                            alarmCountNMHC.setAlarmCount(alarmCount);
-                            alarmCountVOList.add(alarmCountNMHC);
+                            //油气处理装置出口浓度
+                            PointAlarmCountVO alarmCountND = new PointAlarmCountVO();
+                            warnCount = alarmDao.getWithinAlarmCount(institutionCode, beginTime, endTime, 1, AlarmCodeEnum.ND.toString());
+                            alarmCount = alarmDao.getWithinAlarmCount(institutionCode, beginTime, endTime, 2, AlarmCodeEnum.ND.toString());
+                            alarmCountND.setAlarmCode(AlarmCodeEnum.ND.toString());
+                            alarmCountND.setAlarmName(dictionaryDao.selectDictionaryNameByCode(AlarmCodeEnum.ND.toString(), "alarm_code"));
+                            alarmCountND.setWarnCount(warnCount);
+                            alarmCountND.setAlarmCount(alarmCount);
+                            alarmCountVOList.add(alarmCountND);
+                            allWarnCount += warnCount;
+                            allAlarmCount += alarmCount;
+                            //发油气液比
+                            PointAlarmCountVO alarmCountQYB = new PointAlarmCountVO();
+                            warnCount = alarmDao.getWithinAlarmCount(institutionCode, beginTime, endTime, 1, AlarmCodeEnum.QYB.toString());
+                            alarmCount = alarmDao.getWithinAlarmCount(institutionCode, beginTime, endTime, 2, AlarmCodeEnum.QYB.toString());
+                            alarmCountQYB.setAlarmCode(AlarmCodeEnum.QYB.toString());
+                            alarmCountQYB.setAlarmName(dictionaryDao.selectDictionaryNameByCode(AlarmCodeEnum.QYB.toString(), "alarm_code"));
+                            alarmCountQYB.setWarnCount(warnCount);
+                            alarmCountQYB.setAlarmCount(alarmCount);
+                            alarmCountVOList.add(alarmCountQYB);
                             allWarnCount += warnCount;
                             allAlarmCount += alarmCount;
                             //设置值
@@ -160,7 +172,7 @@ public class MapServiceImpl implements IMapService {
                 }
         );//列表
         List<String> listName = new ArrayList<>();
-        List<Integer> deviceIdList = CommonFunction.getDeviceIdList(baseDeviceDOList, 1);
+        List<Integer> deviceIdList = CommonFunction.getDeviceIdList(baseDeviceDOList, 1, institutionId);
         if (deviceIdList != null && deviceIdList.size() > 0) {
             List<DataStorageDO> dataStorageDOList = storageDao.listStorage(deviceIdList, null, 2061, null, beginTime, endTime, null, null);
             if (dataStorageDOList != null && dataStorageDOList.size() > 0) {

@@ -36,20 +36,25 @@ public class CommonFunction {
 
     /**
      * 筛选设备ID
+     *
      * @param baseDeviceDOList
      * @return
      */
-    public static List<Integer> getDeviceIdList(List<BaseDeviceDO> baseDeviceDOList,Integer fieldId) {
+    public static List<Integer> getDeviceIdList(List<BaseDeviceDO> baseDeviceDOList, Integer fieldId, Long institutionId) {
         List<Integer> deviceIdList = new ArrayList<>();
         if (baseDeviceDOList != null && baseDeviceDOList.size() > 0) {
             for (BaseDeviceDO baseDeviceDO : baseDeviceDOList) {
                 if (baseDeviceDO != null && baseDeviceDO.getDeviceId() != null) {
-                    if(fieldId != null){
-                        if(baseDeviceDO.getFieldId() == fieldId){
-                            deviceIdList.add(baseDeviceDO.getDeviceId());
+                    if (!deviceIdList.contains(baseDeviceDO.getDeviceId())) {
+                        if (fieldId != null && baseDeviceDO.getFieldId().intValue() != fieldId) {
+                            continue;
+                        } else {
+                            if (institutionId != null && baseDeviceDO.getInstitutionId().longValue() != institutionId) {
+                                continue;
+                            } else {
+                                deviceIdList.add(baseDeviceDO.getDeviceId());
+                            }
                         }
-                    }else{
-                        deviceIdList.add(baseDeviceDO.getDeviceId());
                     }
                 }
             }
@@ -59,6 +64,7 @@ public class CommonFunction {
 
     /**
      * 筛选监测就够ID
+     *
      * @param baseDeviceDOList
      * @return
      */
@@ -67,7 +73,9 @@ public class CommonFunction {
         if (baseDeviceDOList != null && baseDeviceDOList.size() > 0) {
             for (BaseDeviceDO baseDeviceDO : baseDeviceDOList) {
                 if (baseDeviceDO != null && baseDeviceDO.getInstitutionId() != null) {
-                    institutionIdList.add(baseDeviceDO.getInstitutionId());
+                    if (!institutionIdList.contains(baseDeviceDO.getInstitutionId())) {
+                        institutionIdList.add(baseDeviceDO.getInstitutionId());
+                    }
                 }
             }
         }
