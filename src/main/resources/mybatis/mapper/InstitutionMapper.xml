@@ -19,7 +19,7 @@
     </resultMap>
 
     <resultMap id="InstitutionBaseInfo" type="java.util.Map">
-        <result column="institution_id" property="value" jdbcType="VARCHAR"/>
+        <result column="institution_id" property="value" javaType="java.lang.String" jdbcType="VARCHAR"/>
         <result column="institution_name" property="label" jdbcType="VARCHAR"/>
     </resultMap>
     <!--获取权限设备基本信息-->
