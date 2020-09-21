@@ -40,8 +40,7 @@
     </resultMap>
 
     <resultMap id="alarmRankMap" type="java.util.Map">
-        <result column="device_name" property="deviceName" jdbcType="VARCHAR"/>
-        <result column="device_code" property="deviceCode" jdbcType="VARCHAR"/>
+        <result column="institution_name" property="institutionName" jdbcType="VARCHAR"/>
         <result column="times" property="alarmTimes" javaType="INTEGER"/>
     </resultMap>
     
@@ -86,12 +85,11 @@
 
     <select id="alarmRank" resultMap="alarmRankMap">
         SELECT
-          device_name,
-          da.device_code,
+          bi.institution_name,
           COUNT( * ) AS times
         FROM
           data_alarm da
-	      LEFT JOIN vru_core.base_device bd ON da.device_code = bd.device_code
+	      LEFT JOIN vru_core.base_institution bi ON da.institution_code = bi.institution_code
         WHERE
           da.level_no = #{levelNo}
           AND alarm_time BETWEEN #{beginTime}
@@ -101,7 +99,7 @@
             #{item}
         </foreach>
         GROUP BY
-          da.device_code
+          da.institution_code
         ORDER BY
           times DESC
           LIMIT 0,

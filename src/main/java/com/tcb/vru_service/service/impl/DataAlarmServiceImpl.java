@@ -44,10 +44,10 @@ public class DataAlarmServiceImpl implements IDataAlarmService {
         ArrayList<String> xAxisData = new ArrayList<>();
         ArrayList<Integer> seriesData = new ArrayList<>();
         for (Map<String, Object> map : list) {
-            if (map.containsKey("deviceName")) {
-                xAxisData.add((String) map.get("deviceName"));
+            if (map.containsKey("institutionName")) {
+                xAxisData.add((String) map.get("institutionName"));
             } else {
-                xAxisData.add((String) map.get("deviceCode"));
+                xAxisData.add("未命名油库");
             }
             seriesData.add((Integer) map.get("alarmTimes"));
         }
